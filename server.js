@@ -37,10 +37,6 @@ app.use(express.static(path.join(__dirname, 'public')))
         }
     });
 
-function getData() {
-    return results;
-}
-
 
 app.post('/presentation', (req, res) => {
     let presentation = {
