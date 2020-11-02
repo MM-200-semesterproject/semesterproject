@@ -9,7 +9,10 @@ const pool = new Pool({
     ssl: {
         rejectUnauthorized: false
     }
+
 });
+
+console.log(DATABASE_URL);
 
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static('public'));
