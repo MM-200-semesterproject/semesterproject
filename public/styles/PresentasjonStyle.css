@@ -1,0 +1,53 @@
+input {
+    font-size: 20px;
+}
+
+body{
+    background-color:#E2E2E2;
+    font-family: sans-serif;
+}
+h1{
+    color: #E2E2E2;
+    font-size: 30px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+.SignUpandLogIn{
+    background-color: #25363A;
+    border: none;
+    padding: 40px 120px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    font-size: 10px;
+    
+
+}
+
+.BtnGreen {
+     background-color:#4e9263;
+     border: none;
+     color: white;
+     padding: 15px 20px;
+     text-align: center;
+     text-decoration: none;
+     display: inline-block;
+     font-size: 20px;
+     margin: 4px 2px;
+     cursor: pointer;
+     border-radius: 10px;
+    
+}
+.BtnGrey {
+     background-color:#E2E2E2;
+     border: none;
+     color:  #25363A;
+     padding: 15px 20px;
+     text-align: center;
+     text-decoration: none;
+     display: inline-block;
+     font-size: 20px;
+     margin: 4px 2px;
+     cursor: pointer;
+     border-radius: 10px;
+}
