@@ -1,17 +1,19 @@
-input {
-    font-size: 20px;
-}
 
+/* General */
 body{
     background-color:#E2E2E2;
     font-family: sans-serif;
 }
+
+/* Text Styles */
 h1{
     color: #E2E2E2;
     font-size: 30px;
     margin-bottom: 40px;
     text-align: center;
 }
+
+/* Diffrent Div Styles */ 
 .SignUpandLogIn{
     background-color: #25363A;
     border: none;
@@ -22,6 +24,11 @@ h1{
     font-size: 10px;
     
 
+}
+
+/* Buttons and Inputs */
+input {
+    font-size: 20px;
 }
 
 .BtnGreen {
