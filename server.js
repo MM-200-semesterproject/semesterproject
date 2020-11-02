@@ -19,14 +19,14 @@ app.use(express.static('\public'));
 app.use(bodyParser.json());
 
 
-app.use(express.static(path.join(__dirname)))
+app.use(express.static(path.join(__dirname, 'public')))
     .get('/db', async(req, res) => {
         try {
             console.log(path.join(__dirname, 'public', 'db.html'));
             const client = await pool.connect();
             const result = await client.query('SELECT * FROM users;');
             const results = { 'results': (result) ? result.rows : null };
-            res.sendFile(path.join('public/db.html'), results);
+            res.sendFile(path.join(__dirname, 'db.html'), results);
             client.release();
         } catch (err) {
             console.error(err);
