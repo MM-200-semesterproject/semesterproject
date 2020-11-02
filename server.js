@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')))
             const result = await client.query('SELECT * FROM users');
             const results = { 'results': (result) ? result.rows : null };
             console.log(results);
-            res.sendFile(path.join(__dirname, 'public', 'db.html'), { result: results });
+            res.sendFile(path.join(__dirname, 'public', 'db.html'), results);
             client.release();
         } catch (err) {
             console.error(err);
@@ -36,6 +36,11 @@ app.use(express.static(path.join(__dirname, 'public')))
             //console.log(route);
         }
     });
+
+function getData() {
+    return results;
+}
+
 
 app.post('/presentation', (req, res) => {
     let presentation = {
