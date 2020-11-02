@@ -26,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')))
             const client = await pool.connect();
             const result = await client.query('SELECT * FROM users');
             const results = { 'results': (result) ? result.rows : null };
+            console.log(results);
             res.sendFile(path.join(__dirname, 'public', 'db.html'), results);
             client.release();
         } catch (err) {
