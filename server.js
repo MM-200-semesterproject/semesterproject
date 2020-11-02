@@ -24,12 +24,13 @@ app.get('/db', async(req, res) => {
         const result = await client.query('SELECT * FROM users');
         const results = { 'results': (result) ? result.rows : null };
         res.sendFile(path.join(__dirname, 'public', 'db.html'), results);
+        console.log(path.join(__dirname, 'public', 'db.html'));
         client.release();
     } catch (err) {
         console.error(err);
         res.send("Error " + err);
-        let path = path.join(__dirname, 'public', 'db.html');
-        console.log(path);
+        let route = path.join(__dirname, 'public');
+        console.log(route);
     }
 })
 
