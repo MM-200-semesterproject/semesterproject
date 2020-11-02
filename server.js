@@ -12,11 +12,11 @@ const pool = new Pool({
 
 });
 
-console.log(DATABASE_URL);
-
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static('public'));
 app.use(bodyParser.json());
+
+
 
 app.get('/db', async(req, res) => {
     try {
@@ -28,6 +28,8 @@ app.get('/db', async(req, res) => {
     } catch (err) {
         console.error(err);
         res.send("Error " + err);
+        let path = path.join(__dirname, 'public', 'db.html');
+        console.log(path);
     }
 })
 
