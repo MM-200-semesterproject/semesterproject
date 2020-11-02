@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 
-<head></head>
+
+<head>
+    <script src="server.js"></script>
+</head>
 
 <body>
 
@@ -16,15 +19,12 @@
 
     <script>
         let list = document.getElementById("list");
-
-        function tranfer(data) {
-            data.forEach(function(row) {
-                let html = `
+        results.forEach(function(row) {
+            let html = `
         <li>Email:${row.email}, password:${row.password}, id: ${row.id}</li>
 `;
-                list.innerHTML = html;
-            });
-        }
+            list.innerHTML = html;
+        });
     </script>
 
 </body>

@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const app = express();
-const dbTrasfer = require('db.html');
 
 //Postgresql Database connection
 const { Pool } = require('pg');
@@ -28,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')))
             const result = await client.query('SELECT * FROM users');
             const results = { 'results': (result) ? result.rows : null };
             console.log(results);
-            res.sendFile(path.join(__dirname, 'public', 'db.html'), dbTrasfer.tranfer(results));
+            res.sendFile(path.join(__dirname, 'public', 'db.html'), { result: results });
             client.release();
         } catch (err) {
             console.error(err);
