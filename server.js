@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const app = express();
 
@@ -9,30 +10,31 @@ const pool = new Pool({
     ssl: {
         rejectUnauthorized: false
     }
-
 });
+
+express()
 
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
 
-
-app.get('/db', async(req, res) => {
-    try {
-        const client = await pool.connect();
-        const result = await client.query('SELECT * FROM users');
-        const results = { 'results': (result) ? result.rows : null };
-        res.sendFile(path.join(__dirname, 'public', 'db.html'), results);
-        console.log(path.join(__dirname, 'public', 'db.html'));
-        client.release();
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-        let route = path.join(__dirname, 'public');
-        console.log(route);
-    }
-})
+app.use(express.static(__dirname + '/public'))
+    .get('/db', async(req, res) => {
+        try {
+            const client = await pool.connect();
+            const result = await client.query('SELECT * FROM users');
+            const results = { 'results': (result) ? result.rows : null };
+            res.sendFile('./public/db.html', results);
+            console.log('./public/db.html');
+            client.release();
+        } catch (err) {
+            console.error(err);
+            res.send("Error " + err);
+            // let route = path.join(__dirname, 'public');
+            //console.log(route);
+        }
+    });
 
 app.post('/presentation', (req, res) => {
     let presentation = {
