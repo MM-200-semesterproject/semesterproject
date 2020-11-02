@@ -1,0 +1,59 @@
+
+
+
+input {
+    font-size: 20px;
+}
+
+body{
+    background-color:#E2E2E2;
+}
+
+.SignUpandLogIn{
+    background-color: #25363A;
+    border: none;
+    padding: 50px 120px;
+    margin: 50px 650px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    font-size: 10px;
+
+}
+
+.LogIn {
+     background-color:#4e9263;
+     border: none;
+     color: white;
+     padding: 15px 20px;
+     text-align: center;
+     text-decoration: none;
+     display: inline-block;
+     font-size: 16px;
+     margin: 4px 2px;
+     cursor: pointer;
+     border-radius: 10px;
+    
+}
+.SignUp {
+     background-color:#E2E2E2;
+     border: none;
+     color: #485153;
+     padding: 15px 20px;
+     text-align: center;
+     text-decoration: none;
+     display: inline-block;
+     font-size: 16px;
+     margin: 4px 2px;
+     cursor: pointer;
+     border-radius: 10px;
+}
+
+
+.LogIn {
+    font-size: 20px;
+}
+
+.SignUp{
+    font-size: 20px;
+}
