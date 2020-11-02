@@ -8,6 +8,7 @@
   },
   "author": "Filip Piotr Szutkowski, Tor-Even Voreland, Caroline Bårdsen",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "pg": "^8.4.2"
   }
 }
