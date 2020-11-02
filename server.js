@@ -15,18 +15,18 @@ const pool = new Pool({
 express()
 
 app.set('port', (process.env.PORT || 8080));
-app.use(express.static('public'));
+app.use(express.static('\public'));
 app.use(bodyParser.json());
 
 
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(path.join(__dirname, 'public')))
     .get('/db', async(req, res) => {
         try {
+            console.log(path.join(__dirname, 'public', 'db.html'));
             const client = await pool.connect();
             const result = await client.query('SELECT * FROM users');
             const results = { 'results': (result) ? result.rows : null };
-            res.sendFile('./public/db.html', results);
-            console.log('./public/db.html');
+            res.sendFile(path.join(__dirname, 'db.html'), results);
             client.release();
         } catch (err) {
             console.error(err);
