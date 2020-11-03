@@ -49,7 +49,7 @@ app.post('/presentation', (req, res) => {
 })
 
 pool.query(
-    "INSERT INTO student(firstname, lastname, age, address, email)VALUES('Mary Ann', 'Wilters', 20, '74 S Westgate St', 'mroyster@royster.com')",
+    "INSERT INTO users(email, password, id)VALUES('MAnn@gmail.com', 'asdfghjkl', 20)",
     (err, res) => {
         console.log(err, res);
         pool.end();
