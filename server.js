@@ -4,9 +4,10 @@ const bodyParser = require('body-parser');
 const app = express();
 
 //Postgresql Database connection
-const { Pool } = require('pg');
+const { Pool, Client } = require('pg');
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
+
     ssl: {
         rejectUnauthorized: false
     }
@@ -46,6 +47,14 @@ app.post('/presentation', (req, res) => {
     res.status(200).json(presentation);
     return
 })
-
+app.get('/db-user', (req, res) => {
+    pool.query(
+        "INSERT INTO student(firstname, lastname, age, address, email)VALUES('Mary Ann', 'Wilters', 20, '74 S Westgate St', 'mroyster@royster.com')",
+        (err, res) => {
+            console.log(err, res);
+            pool.end();
+        }
+    );
+});
 
 app.listen(app.get('port'), function() { console.log('server running', app.get('port')) });
