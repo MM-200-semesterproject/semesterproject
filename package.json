@@ -10,5 +10,16 @@
   "dependencies": {
     "express": "^4.17.1",
     "pg": "^8.4.2"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carob16/semesterproject.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carob16/semesterproject/issues"
+  },
+  "homepage": "https://github.com/carob16/semesterproject#readme"
 }
