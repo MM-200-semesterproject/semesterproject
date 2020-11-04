@@ -8,6 +8,24 @@ body{
     font-family: sans-serif;
 }
 
+.editWrapper {
+    display: grid;
+    grid-template-columns: 20% auto;
+    grid-template-rows: 80vh auto;
+    align-items: stretch;
+    margin: 0;
+}
+.loginWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.header {
+    height: 5%;
+    max-height: 200px;
+    background-color: #485153;
+}
+
 /* Text Styles */
 h1{
     color: #E2E2E2;
@@ -24,26 +42,45 @@ h3.userAddedText {
 
 /* Diffrent Div Styles */ 
 .SignUpandLogIn{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     background-color: #25363A;
     border: none;
+    max-width: 250px;
     padding: 40px 120px;
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
     font-size: 10px;
 }
 
-.slideDiv{
-    border: 2px solid black; 
-    margin: 60px;
-    width: var(--edit-slide-width);
-    height: var(--edit-slide-height);
+.editMenu {
+    grid-column: auto;
+    grid-row: 1 / span 2;
+    background-color: #25363A;
+    border: none;
+    padding-left: 5%;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.slideDiv {
+    display: flex;
+    grid-column: 2 / span 1; 
+    grid-row: 1 / span 1;
+    position: relative;
+    background-color: #ffffff;
+    border: 1px solid black; 
     overflow: hidden;
 }
 
+
 /* Buttons and Inputs */
 input {
+    border-radius: 5px;
     font-size: 20px;
+    margin-bottom: 26px;
 }
 
 .BtnGreen {
@@ -55,7 +92,7 @@ input {
      text-decoration: none;
      display: inline-block;
      font-size: 20px;
-     margin: 4px 2px;
+     margin: 8px 8px;
      cursor: pointer;
      border-radius: 10px;
     
@@ -69,7 +106,7 @@ input {
      text-decoration: none;
      display: inline-block;
      font-size: 20px;
-     margin: 4px 2px;
+     margin: 8px 8px;
      cursor: pointer;
      border-radius: 10px;
 }
