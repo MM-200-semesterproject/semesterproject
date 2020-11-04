@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const { Pool, Client } = require('pg');
 
-express()
+//express()
 
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static('\public'));
@@ -61,7 +61,7 @@ pool.query(queryString, (err, res) => {
         console.log("Postgres response:", res);
 
         // get the keys for the response object
-        var keys = Object.keys(res);
+        let keys = Object.keys(res);
 
         // log the response keys to console
         console.log("\nkeys type:", typeof keys);
