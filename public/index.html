@@ -10,7 +10,8 @@
     
 <!-- Temporary html shell for testing the code. Temporary landing page right into edit mode for slides -->
 <header class="header">heihei</header>
-<div class="wrapper">
+
+<div class="editWrapper">
     <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
     <div class="editMenu">
 
@@ -18,20 +19,21 @@
             <option value="untitled1">Untitled 1</option>
         </select><br><br>
 
-        <input type="text" class="" id="inpPresName" placeholder="Title"><br><br>
+        <input type="text" class="input" id="inpPresName" placeholder="Title"><br><br>
 
         <button id="addTxt" class="BtnGrey">Add text</button><br>
-        <button id="addImg">Add image</button><br>
+        <button id="addImg" class="BtnGrey">Add image</button><br>
 
     </div>
 
-    <div id="slideDiv" class="slideDiv" style="grid-column: 2 / span 1; grid-row: 2 / span 1;">
+    <div class="editActiveArea">
+        <div id="slideDiv" class="slideDiv">
+        </div>
+        <footer class="editFooter">
+            this is a footerS
+        </footer>
     </div>
- 
-
-    <div style="grid-column: 2 / span 1; grid-row: 3 / span 1;">
-        <p>functional area</p>
-    </div>
+    
 
 </div>
 

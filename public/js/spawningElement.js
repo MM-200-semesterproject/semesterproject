@@ -10,11 +10,12 @@ class TextBox {
         let elm = document.createElement("h3");
         elm.setAttribute('class', 'userAddedText');
         elm.setAttribute('contentEditable', 'true');
+        elm.setAttribute('draggable', 'true');
         elm.textContent = this.content;
         slideDiv.appendChild(elm);
     }
 
-    
+
 }
 
 
