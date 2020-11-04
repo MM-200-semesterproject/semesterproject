@@ -7,7 +7,6 @@ const app = express();
 
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static('\public'));
-app.use('/static', express.static(__dirname + '/public/')); //to include stylesheets
 app.use(bodyParser.json());
 
 app.post('/presentation', (req, res) => {
