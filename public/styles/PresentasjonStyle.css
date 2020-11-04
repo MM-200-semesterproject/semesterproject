@@ -13,6 +13,12 @@ h1{
     text-align: center;
 }
 
+h3.userAddedText {
+    width: fit-content;
+    height: 60px;
+    border: 2px solid green;
+}    
+
 /* Diffrent Div Styles */ 
 .SignUpandLogIn{
     background-color: #25363A;
