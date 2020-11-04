@@ -13,6 +13,8 @@ class TextBox {
         elm.textContent = this.content;
         slideDiv.appendChild(elm);
     }
+
+    
 }
 
 

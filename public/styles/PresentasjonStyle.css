@@ -1,4 +1,7 @@
-
+:root {
+    --edit-slide-width: 90vh;
+    --edit-slide-height: ((--edit-slide-width/16)*9);
+}
 /* General */
 body{
     background-color:#E2E2E2;
@@ -14,10 +17,10 @@ h1{
 }
 
 h3.userAddedText {
-    width: fit-content;
-    height: 60px;
+    padding: 10px 20px;
+    width: min-content;
     border: 2px solid green;
-}    
+}
 
 /* Diffrent Div Styles */ 
 .SignUpandLogIn{
@@ -28,8 +31,14 @@ h3.userAddedText {
     display: flex;
     flex-direction: column;
     font-size: 10px;
-    
+}
 
+.slideDiv{
+    border: 2px solid black; 
+    margin: 60px;
+    width: var(--edit-slide-width);
+    height: var(--edit-slide-height);
+    overflow: hidden;
 }
 
 /* Buttons and Inputs */
