@@ -2,9 +2,27 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const app = express();
+const { Pool, Client } = require('pg');
+
+express()
+
+app.set('port', (process.env.PORT || 8080));
+app.use(express.static('\public'));
+app.use(bodyParser.json());
+
+app.post('/presentation', (req, res) => {
+    let presentation = {
+        elements: req.body,
+    }
+
+    res.status(200).json(presentation);
+    return
+})
+
+//DATABASE CONNECTIONS - ASK CAROLINE FOR EXPLANATION
 
 //Postgresql Database connection
-const { Pool, Client } = require('pg');
+
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
 
@@ -13,13 +31,7 @@ const pool = new Pool({
     }
 });
 
-express()
-
-app.set('port', (process.env.PORT || 8080));
-app.use(express.static('\public'));
-app.use(bodyParser.json());
-
-
+//getting data from database(not working yet)
 app.use(express.static(path.join(__dirname, 'public')))
     .get('/db', async(req, res) => {
         try {
@@ -33,28 +45,29 @@ app.use(express.static(path.join(__dirname, 'public')))
         } catch (err) {
             console.error(err);
             res.send("Error " + err);
-            // let route = path.join(__dirname, 'public');
-            //console.log(route);
+
         }
     });
 
 
-app.post('/presentation', (req, res) => {
-    let presentation = {
-        elements: req.body,
-    }
+//sending data to "users" table in database
+let queryString = `
+INSERT INTO users(email, password, id)VALUES('MaryAnn@hotmail.com', 'asdfghjkl', 20)
+`;
+pool.query(queryString, (err, res) => {
+    // check if the response is not 'undefined'
+    if (res !== undefined) {
+        // log the response to console
+        console.log("Postgres response:", res);
 
-    res.status(200).json(presentation);
-    return
-})
+        // get the keys for the response object
+        var keys = Object.keys(res);
 
-pool.query(
-    "INSERT INTO users(email, password, id)VALUES('MAnn@gmail.com', 'asdfghjkl', 20)",
-    (err, res) => {
-        console.log(err, res);
-        pool.end();
+        // log the response keys to console
+        console.log("\nkeys type:", typeof keys);
+        console.log("keys for Postgres response:", keys);
     }
-);
+});
 
 
 app.listen(app.get('port'), function() { console.log('server running', app.get('port')) });
