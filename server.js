@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
+//Getting modules instanced
 const app = express();
+
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static('public'));
 app.use(bodyParser.json());
