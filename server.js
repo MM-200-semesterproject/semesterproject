@@ -1,10 +1,9 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const app = express();
 const { Pool, Client } = require('pg');
-
-//express()
+//Getting modules instanced
+const app = express();
 
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static('\public'));

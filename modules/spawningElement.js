@@ -1,9 +1,17 @@
-const fs = require('fs');
 
 class TextBox {
-    constructor ()
+    constructor (content) {
 
-    spawnText () {
-        let ele = 5;
+        this.content = content;
+
+    }
+
+    spawnText(slideDiv) {
+        let elm = document.createElement("div");
+        elm.textContent = this.content;
+        slideDiv.appendChild(elm);
     }
 }
+
+
+export {TextBox};
