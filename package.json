@@ -8,6 +8,18 @@
   },
   "author": "Filip Piotr Szutkowski, Tor-Even Voreland, Caroline Bårdsen",
   "dependencies": {
-    "express": "^4.17.1"
-  }
+    "express": "^4.17.1",
+    "pg": "^8.4.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carob16/semesterproject.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carob16/semesterproject/issues"
+  },
+  "homepage": "https://github.com/carob16/semesterproject#readme"
 }
