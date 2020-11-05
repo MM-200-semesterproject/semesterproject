@@ -13,8 +13,6 @@ btnAddTxt.addEventListener('click', async evt => {
 let presMenuSelect = document.getElementById('crntPresentation');
 let savePresBtn = document.getElementById('savePresBtn');
 
-
-
 savePresBtn.addEventListener('click', presTitle => {
   //Code to check if title already exist, if so -> update presentation
   //if there is no title written in input -> do nothing
