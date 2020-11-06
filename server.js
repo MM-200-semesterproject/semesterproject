@@ -42,7 +42,7 @@ let queryString = //db.createUser('MaryAnn@hotmail.com', 'asdfghjkl'); //db.crea
                 console.log('row inserted with id: ' + result.rows[0].id);
             }
             console.log('Client will end now!!!');
-            client.end();
+            pool.end();
 
         });
 
