@@ -1,6 +1,5 @@
 //Create new user - må sendes til kryptering først!
-exports.createUser = (encrypted(email), encrypted(password))
-let queryString = `INSERT INTO users(email, password, id, presentations)VALUES('MaryAnn@hotmail.com', 'asdfghjkl', 20, '')`;
+exports.createUser = (email, password) => `INSERT INTO users(Email, Password)VALUES(${email}, ${password})`;
 //UPDATE powerpoint
 
 //on client-> let presentations = JSON.stringify(presentationData)
