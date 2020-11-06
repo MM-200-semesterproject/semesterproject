@@ -32,19 +32,19 @@ const pool = new Pool({
 
 console.log(encrypt.hashCode('MaryAnn@hotmail.com'));
 
-let queryString = //db.createUser('MaryAnn@hotmail.com', 'asdfghjkl'); //db.createUser("exaplme@email.com", "passwordEx");
-    //sending data to "users" table in database
-    pool.query('INSERT INTO users (Email, Password) VALUES("hanna@post.no", "1234") RETURNING id',
-        function(err, result) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('row inserted with id: ' + result.rows[0].id);
-            }
-            console.log('Client will end now!!!');
-            pool.end();
+//let queryString = //db.createUser('MaryAnn@hotmail.com', 'asdfghjkl'); //db.createUser("exaplme@email.com", "passwordEx");
+//sending data to "users" table in database
+pool.query("INSERT INTO users(Email, Password) VALUES('hanna@post.no', '1234') RETURNING id",
+    function(err, result) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('row inserted with id: ' + result.rows[0].id);
+        }
+        console.log('Client will end now!!!');
+        pool.end();
 
-        });
+    });
 
 
 app.listen(app.get('port'), function() { console.log('server running', app.get('port')) });
