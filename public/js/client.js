@@ -13,7 +13,7 @@ btnAddTxt.addEventListener('click', async evt => {
 let presMenuSelect = document.getElementById('crntPresentation');
 let savePresBtn = document.getElementById('savePresBtn');
 
-savePresBtn.addEventListener('click', presTitle => {
+/*savePresBtn.addEventListener('click', presTitle => {
   //Code to check if title already exist, if so -> update presentation
   //if there is no title written in input -> do nothing
   //when presentation saved, add to list above and alert user "saved"
@@ -22,21 +22,28 @@ savePresBtn.addEventListener('click', presTitle => {
   let elm = document.createElement("option");
   elm.innerHTML = `${newPres}`;
   presMenuSelect.appendChild(elm);
-});
-// Dette skal kunne finne mouse position, men er obsolete.
-/*const slideDiv = document.getElementById('slideDiv');
-let userElm = document.getElementById('userText1'); //Will be variable activeElement after figuring out how to let this var be whatever user clicked
 
-let active = false;
-let pageX = 0;
-let pageY = 0;
+  getPresList();
 
-function getMousePos(evt) {
-  pageX = evt.pageX;
-  pageY = evt.pageY;
-}
-console.log(pageX + ', ' + pageY);
+});*/
 
-slideDiv.addEventListener('mousedown', dragStart, false);
-slideDiv.addEventListener('mousemove', drag, false);
-slideDiv.addEventListener('mouseup', dragEnd, false);*/
+let presentations = [];
+let savePresForm = document.getElementById('savePresForm');
+savePresForm.addEventListener('submit', async evt => {
+  evt.preventDefault();
+
+  let url = 'https://moreslides.herokuapp.com/presentation';
+
+  let fdata = new FormData(savePresForm);
+  console.log(fdata);
+
+  let cfg = {
+    method: "POST",
+    body: fdata
+  }
+
+  let response = await fetch(url, cfg).then(data => {
+    response.json();
+    console.log(data);
+  });
+})
