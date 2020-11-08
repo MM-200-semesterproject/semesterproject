@@ -8,7 +8,7 @@ const pool = new Pool({
     }
 });
 
-exports.dbCreateUser = {
+module.exports = {
 
     newUser: function(inp) {
 
