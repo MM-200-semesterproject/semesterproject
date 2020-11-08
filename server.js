@@ -29,8 +29,8 @@ app.post('/signUp', function(request, response) {
     response.send(request.body); // echo the result back
 });
 
-app.get('/create-user', function(request, response) {
-    request.sendFile("./public/sign-up-copy.html");
+app.get('/create-user', function(request, res) {
+    res.sendFile("./public/sign-up-copy.html");
 })
 
 
