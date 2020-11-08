@@ -30,7 +30,7 @@ app.post('/signUp', function(request, response) {
 });
 
 app.get('/create-user', function(request, response) {
-    req.sendFile("./public/sign-up-copy.html");
+    request.sendFile("./public/sign-up-copy.html");
 })
 
 
