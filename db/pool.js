@@ -16,7 +16,7 @@ module.exports = {
         //console.log(input.user.username, " ", input);
         //let queryString = //db.createUser('MaryAnn@hotmail.com', 'asdfghjkl'); //db.createUser("exaplme@email.com", "passwordEx");
         //sending data to "users" table in database
-        pool.query(`INSERT INTO users(Email, Password) VALUES(${input.user.username}, ${input.user.password}) RETURNING id`,
+        pool.query(`INSERT INTO users(Email, Password) VALUES($1, $2) RETURNING id`, [input.user.username, input.user.password],
             function(err, result) {
                 if (err) {
                     console.log(err);
