@@ -27,7 +27,7 @@ app.use(express.json());
 // Access the parse results as request.body
 app.post('/signUp', function(request, response) {
     console.log(request.body);
-    pool.dbCreateUser(request.body);
+    pool.newUser(request.body);
     // JSON text --> validation in signUp.html? Skal det være en email eller kan det være hva som helst? --> sendes til encryption before database
     response.send(request.body); // echo the result back
 });
