@@ -13,7 +13,7 @@ module.exports = {
     newUser: function(inp) {
 
         let input = inp; //JSON.parse(inp);
-        console.log(input.username, " ", input);
+        console.log(input.user.username, " ", input);
         //let queryString = //db.createUser('MaryAnn@hotmail.com', 'asdfghjkl'); //db.createUser("exaplme@email.com", "passwordEx");
         //sending data to "users" table in database
         pool.query(`INSERT INTO users(Email, Password) VALUES(${input.username}, ${input.password}) RETURNING id`,
