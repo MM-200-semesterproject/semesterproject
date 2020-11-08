@@ -29,7 +29,7 @@ app.post('/signUp', function(request, response) {
     response.send(request.body); // echo the result back
 });
 
-app.post('/create-user', function(request, response) {
+app.get('/create-user', function(request, response) {
     location.href("./public/sign-up-copy.html");
 })
 
