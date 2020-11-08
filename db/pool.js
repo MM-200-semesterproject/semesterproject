@@ -8,21 +8,29 @@ const pool = new Pool({
     }
 });
 
-function dbCreateUser(inp) {
+exports.dbCreateUser = {
 
-    let input = JSON.parse(inp);
-    console.log(input);
-    //let queryString = //db.createUser('MaryAnn@hotmail.com', 'asdfghjkl'); //db.createUser("exaplme@email.com", "passwordEx");
-    //sending data to "users" table in database
-    pool.query(`INSERT INTO users(Email, Password) VALUES(${input.username}, ${input.password}) RETURNING id`,
-        function(err, result) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('row inserted with id: ' + result.rows[0].id);
-            }
-            console.log('Client will end now!!!');
-            pool.end();
+    newUser: function(inp) {
 
-        });
+        let input = JSON.parse(inp);
+        console.log(input.username, " ", input);
+        //let queryString = //db.createUser('MaryAnn@hotmail.com', 'asdfghjkl'); //db.createUser("exaplme@email.com", "passwordEx");
+        //sending data to "users" table in database
+        pool.query(`INSERT INTO users(Email, Password) VALUES(${input.username}, ${input.password}) RETURNING id`,
+            function(err, result) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('row inserted with id: ' + result.rows[0].id);
+                }
+                console.log('Client will end now!!!');
+                pool.end();
+
+            });
+    },
+
+    loadUser: function() {},
+
+    update: function() {}
+
 }
