@@ -5,6 +5,7 @@ const encrypt = require('./modules/encryption.js');
 const { Pool, Client } = require('pg');
 //Getting modules instanced
 const app = express();
+const path = require('path');
 
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static('\public'));
