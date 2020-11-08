@@ -10,6 +10,7 @@ const path = require('path');
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static('\public'));
 app.use(bodyParser.json())
+app.use(express.json()); //parser JSON bodies sent by Clients
 
 
 app.post('/presentation', (req, res) => {
@@ -21,27 +22,20 @@ app.post('/presentation', (req, res) => {
     return
 })
 
-// Parse JSON bodies (as sent by API clients)
-app.use(express.json());
-
-// Access the parse results as request.body
+//method accessed in sign-up-copy.html
 app.post('/signUp', function(request, response) {
-    // console.log(request.body);
+    // Sends object to pool.js-->DB;
     pool.newUser(request.body);
     // JSON text --> validation in signUp.html? Skal det være en email eller kan det være hva som helst? --> sendes til encryption before database
-    response.send(request.body); // echo the result back
+    // response.send(request.body); // echo the result back
 });
+
 
 app.get('/create-user', function(request, res) {
     res.sendFile(path.join(__dirname, 'public', 'sign-up-copy.html'));
 })
 
-
-//DATABASE CONNECTIONS-------------------------------
-//---------------------------------------------------
-
-
-
+// encryption-script:
 //console.log(encrypt.hashCode('MaryAnn@hotmail.com'));
 
 
