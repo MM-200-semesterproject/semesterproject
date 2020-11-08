@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create user</title>
+    <link rel="stylesheet" href="styles/PresentasjonStyle.css">
+</head>
+
+<body>
+
+    <form method="post" id="signUpForm">
+        <input id="username" type="text" name="user[username]">
+        <input id="password" type="text" name="user[password]">
+        <input class="BtnGreen" type="submit" value="Signup">
+    </form>
+
+    <script>
+        let signUpForm = document.getElementById("signUpForm");
+
+        signUpForm.addEventListener('submit', async function(e) {
+            let inputUsername = document.getElementById("username").value;
+            let inputPassword = document.getElementById("password").value;
+            try {
+                let response = fetch('/signUp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        user: {
+
+                            username: inputUsername,
+                            password: inputPassword
+                        }
+                    })
+                });
+            } catch (err) {
+                outtext.innerHTML = "Error:" + err;
+            }
+
+
+        });
+    </script>
+
+
+
+</body>
+
+
+
+</html>

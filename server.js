@@ -8,7 +8,8 @@ const app = express();
 
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static('\public'));
-app.use(bodyParser.json());
+app.use(bodyParser.json())
+
 
 app.post('/presentation', (req, res) => {
     let presentation = {
@@ -18,6 +19,20 @@ app.post('/presentation', (req, res) => {
     res.status(200).json(presentation);
     return
 })
+
+// Parse JSON bodies (as sent by API clients)
+app.use(express.json());
+
+// Access the parse results as request.body
+app.post('/signUp', function(request, response) {
+    console.log(request.body); // JSON text --> validation in signUp.html? Skal det være en email eller kan det være hva som helst? --> sendes til encryption before database
+    response.send(request.body); // echo the result back
+});
+
+app.post('/create-user', function(request, response) {
+    location.href("./public/sign-up-copy.html");
+})
+
 
 //DATABASE CONNECTIONS-------------------------------
 //---------------------------------------------------
