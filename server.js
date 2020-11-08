@@ -42,7 +42,7 @@ app.get('/create-user', function(request, res) {
 
 
 
-console.log(encrypt.hashCode('MaryAnn@hotmail.com'));
+//console.log(encrypt.hashCode('MaryAnn@hotmail.com'));
 
 
 app.listen(app.get('port'), function() { console.log('server running', app.get('port')) });

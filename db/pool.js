@@ -12,7 +12,7 @@ module.exports = {
 
     newUser: function(inp) {
 
-        let input = JSON.parse(inp);
+        let input = inp; //JSON.parse(inp);
         console.log(input.username, " ", input);
         //let queryString = //db.createUser('MaryAnn@hotmail.com', 'asdfghjkl'); //db.createUser("exaplme@email.com", "passwordEx");
         //sending data to "users" table in database
