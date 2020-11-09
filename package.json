@@ -8,10 +8,10 @@
   },
   "author": "Filip Piotr Szutkowski, Tor-Even Voreland, Caroline Bårdsen",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "pg": "^8.4.2"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/carob16/semesterproject.git"
