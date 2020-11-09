@@ -31,14 +31,14 @@ app.post('/signUp', function(request, response) {
     // response.send(request.body); // echo the result back
 });
 
-let newPresentation = [2, [{ name: "slide1", title: "" }]]; //userid and empty presentation
+let newPresentation = [3, [{ name: "slide1", title: "" }]]; //userid and empty presentation
 pool.createPres(newPresentation);
-pool.createPres([1, [{ name: "slide1", title: "" }]]);
-
+let createdPresentation = pool.createPres([1, [{ name: "slide1", title: "" }]]);
+console.log("createdPresentation:" + createdPresentation);
 let presentations = [ //Array with 2 indexes 1: id from DB, 2: object with keyes. Each key has an array with slides
-    2, [{ name: "slide1", title: "title1" }, { name: "slide2", title: "title2" }, { name: "slide3", title: "title3" }]
+    3, [{ name: "slide1", title: "title1" }, { name: "slide2", title: "title2" }, { name: "slide3", title: "title3" }]
 ];
-//pool.updatePres(presentations);
+pool.updatePres(presentations);
 
 
 app.get('/create-user', function(request, res) {
