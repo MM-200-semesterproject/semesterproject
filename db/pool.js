@@ -58,7 +58,7 @@ module.exports = {
                 }
                 console.log('Client will end now!');
 
-                presentationArray = [result.rows[0].presentationid, result.rows[0].data];
+                presentationArray = await [result.rows[0].presentationid, result.rows[0].data];
                 pool.end();
 
             });
@@ -66,7 +66,7 @@ module.exports = {
     },
 
 
-    updatePres: async function(inp) {
+    updatePres: function(inp) {
 
         let input = inp;
         pool.query(`UPDATE presentations SET data =$1 WHERE presentationid = $2 RETURNING id`, [input[1], input[0]],
@@ -83,5 +83,7 @@ module.exports = {
 
             });
     },
+
+
 
 }
