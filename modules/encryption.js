@@ -1,3 +1,5 @@
+const pool = require('./db/pool.js');
+
 exports.hashCode = function(userData) {
 
     let password = userData.user.password;
@@ -5,6 +7,7 @@ exports.hashCode = function(userData) {
 
     let object = { user: { username: createHash(username), password: createHash(password) } };
 
+    pool.newUser(object);
 
 
     return object;
