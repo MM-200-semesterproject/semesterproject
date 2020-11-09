@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./db/dbUpdates.js');
-const encrypt = require('./modules/encryption.js');
+const encrypt = require('./db/encryption.js');
 const pool = require('./db/pool.js');
 //Getting modules instanced
 const app = express();
