@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Mode</title>
-    <link rel="stylesheet" href="styles/PresentasjonStyle.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="styles/PresentasjonStyle.css">
 </head>
+
 <body>
+
     
 <!-- Temporary html shell for testing the code. Temporary landing page right into edit mode for slides -->
 <header class="header">heihei</header>
-<div class="wrapper">
+
+<div class="editWrapper">
     <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
     <div class="editMenu">
 
@@ -18,26 +22,40 @@
             <option value="untitled1">Untitled 1</option>
         </select><br><br>
 
-        <input type="text" class="" id="inpPresName" placeholder="Title"><br><br>
+        <form id="savePresForm">
+            <input id="inpPresTitle" class="input" type="text" placeholder="Presentation Title"/>
+            <input id="saveNewPres" class="BtnGreen" type="submit" value="Save Presentation"/>
+        </form>
 
-        <button id="addTxt" class="BtnGrey">Add text</button><br>
-        <button id="addImg">Add image</button><br>
+        <h2 class="h2menu">Add Slide</h2>
+        <button id="addTxt" class="BtnGrey">Text</button><br>
+        <button id="addImg" class="BtnGrey">Image</button><br>
+        <button id="addList" class="BtnGrey">List</button><br>
 
-    </div>
+        <button id="presentMode" class="BtnGreen">Presentation mode</button>
 
-    
-        <div id="slideDiv" class="slide">
-            <p>this will be the slides area</p>
+
+
+
+    <div class="editActiveArea">
+        <div id="slideDiv" class="slideDiv">
         </div>
-  
+        <footer class="editFooter">
+            <div style="text-align: center;">
+                <span id="dot" class="dot"></span>
+                <span id="dot" class="dot"></span>
+            </div>
+        </footer>
 
-    <div style="grid-column: 2 / span 1; grid-row: 3 / span 1;">
-        <p>functional area</p>
     </div>
+    
 
-</div>
+    <script src="client.js"></script>
 
-<script src="client.js"></script>
+<script type='module' src="js/spawningElement.js"></script>
+<script type='module' src="js/client.js"></script>
+
 
 </body>
+
 </html>
