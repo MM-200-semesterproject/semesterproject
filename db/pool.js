@@ -24,8 +24,6 @@ module.exports = {
                     console.log('row inserted with id: ' + result.rows[0].id);
                     newUserState = true;
                 }
-                console.log('Client will end now!');
-                pool.end();
 
             });
         return newUserState;
@@ -36,12 +34,13 @@ module.exports = {
         let input = inp;
         try {
 
-            pool.query(`SELECT * FROM users WHERE email = $1`, [input.user.username], result);
-            console.log('Result loadUser id:' + result.rows[0].id);
+            pool.query(`SELECT * FROM users WHERE email = $1`, [input.user.username], function(err, result) {
+                console.log('Result loadUser id:' + result.rows[0].id);
+                pool.end();
+            });
 
-            pool.end();
         } catch (err) {
-            console.log(err)
+            console.log("Error on Load user:" + err);
             pool.end();
         }
 

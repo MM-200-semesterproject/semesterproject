@@ -27,14 +27,11 @@ app.post('/presentation', (req, res) => {
 app.post('/signUp', function(request, response) {
     // Sends object to pool.js-->DB;
     let data = encrypt.hashCode(request.body);
-    let newUser = pool.newUser(data);
-    console.log("new user: " + newUser);
-    if (newUser == true) {
-        response.send(alert("User created, please login with your password"));
-        response.sendFile(path.join(__dirname, 'public', 'login.html'));
-    } else {
-        response.send(error + " Try again");
-    }
+    //let newUser = pool.newUser(data);
+    // console.log("new user: " + newUser);
+    response.send(alert("User created, please login with your password"));
+    response.sendFile(path.join(__dirname, 'public', 'login.html'));
+    response.send(error + " Try again");
     // JSON text --> validation in signUp.html? Skal det være en email eller kan det være hva som helst? --> sendes til encryption before database
     // response.send(request.body); // echo the result back
 });
