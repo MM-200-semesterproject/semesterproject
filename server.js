@@ -31,6 +31,11 @@ app.post('/signUp', function(request, response) {
     // response.send(request.body); // echo the result back
 });
 
+let presentations = [ //Array with 2 indexes 1: id from DB, 2: object with keyes. Each key has an array with slides
+    13, { 1: [{ name: "slide1", title: "title1" }, { name: "slide2", title: "title2" }, { name: "slide3", title: "title3" }], 2: [{ name: "slide1", title: "title1" }, { name: "slide2", title: "title2" }, { name: "slide3", title: "title3" }], 3: [{ name: "slide1", title: "title1" }, { name: "slide2", title: "title2" }, { name: "slide3", title: "title3" }] }
+];
+pool.updatePres(presentations);
+
 
 app.get('/create-user', function(request, res) {
     res.sendFile(path.join(__dirname, 'public', 'sign-up-copy.html'));
@@ -40,6 +45,6 @@ app.get('/create-user', function(request, res) {
 //console.log(encrypt.hashCode('MaryAnn@hotmail.com'));
 
 
-app.listen(app.get('port'), function() { 
-    console.log('server running', app.get('port')) 
+app.listen(app.get('port'), function() {
+    console.log('server running', app.get('port'))
 });
