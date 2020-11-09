@@ -13,6 +13,7 @@ app.use(bodyParser.json())
 app.use(express.json()); //parser JSON bodies sent by Clients
 
 
+//Getting presentation array from client (?)
 app.post('/presentation', (req, res) => {
     let presentation = {
         elements: req.body,
@@ -39,4 +40,6 @@ app.get('/create-user', function(request, res) {
 //console.log(encrypt.hashCode('MaryAnn@hotmail.com'));
 
 
-app.listen(app.get('port'), function() { console.log('server running', app.get('port')) });
+app.listen(app.get('port'), function() { 
+    console.log('server running', app.get('port')) 
+});
