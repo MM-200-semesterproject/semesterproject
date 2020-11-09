@@ -1,4 +1,5 @@
 const { Pool } = require('pg')
+const encrypt = require('./encryption.js');
 
 //Postgresql Database connection
 const pool = new Pool({
@@ -10,10 +11,10 @@ const pool = new Pool({
 
 module.exports = {
 
-    newUser: function(inp) {
+    newUser: function(body) {
 
-        let input = inp;
-        let newUserState = false;
+        let input = encrypt.hashCode(body);
+        console.log("hadhed input inside newUser: " + input);
 
         pool.query(`INSERT INTO users(Email, Password) VALUES($1, $2) RETURNING id`, [input.user.username, input.user.password],
             function(err, result) {
@@ -26,8 +27,6 @@ module.exports = {
                 }
 
             });
-        return newUserState;
-
     },
 
     loadUser: function(inp) { //get username and password 2. validate username, validate username + password, if not return error. else return SELECT * FROM presentations WHERE userid = result.rows[0].id;
