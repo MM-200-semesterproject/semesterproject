@@ -46,6 +46,7 @@ module.exports = {
 
     createPres: function(inp) {
         let input = inp;
+        console.log(input, " ", input[0]);
         pool.query(`INSERT INTO presentations(userid, data)VALUES($1,$2) RETURNING presentid`, [input[0], input[1]], //input 1=userid, input 2 = data
             function(err, result) {
                 if (err) {
