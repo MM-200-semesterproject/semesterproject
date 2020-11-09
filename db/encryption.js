@@ -5,12 +5,9 @@ exports.hashCode = function(userData) {
     let password = userData.user.password;
     let username = userData.user.username;
 
-    let object = { user: { username: createHash(username), password: createHash(password) } };
+    let returnObject = { user: { username: createHash(username), password: createHash(password) } };
 
-    pool.newUser(object);
-
-
-    return object;
+    return returnObject;
 }
 
 function createHash(string) {

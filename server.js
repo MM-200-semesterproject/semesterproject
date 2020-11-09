@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./db/dbUpdates.js');
-const encrypt = require('./db/encryption.js');
+
 const pool = require('./db/pool.js');
 //Getting modules instanced
 const app = express();
@@ -26,12 +26,16 @@ app.post('/presentation', (req, res) => {
 //method accessed in sign-up-copy.html
 app.post('/signUp', function(request, response) {
     // Sends object to pool.js-->DB;
-    let data = encrypt.hashCode(request.body);
+    try {
+        pool.newUser(request.body);
+    } catch (error) {
+        response.send(error + " Try again");
+    }
     //let newUser = pool.newUser(data);
     // console.log("new user: " + newUser);
-    response.send(alert("User created, please login with your password"));
+    response.send("User created, please login with your password");
     response.sendFile(path.join(__dirname, 'public', 'login.html'));
-    response.send(error + " Try again");
+
     // JSON text --> validation in signUp.html? Skal det være en email eller kan det være hva som helst? --> sendes til encryption before database
     // response.send(request.body); // echo the result back
 });
@@ -44,7 +48,7 @@ let body = {
     }
 }
 
-console.log(encrypt.hashCode(body));
+//console.log(encrypt.hashCode(body));
 
 app.get('/create-user', function(request, res) {
     res.sendFile(path.join(__dirname, 'public', 'sign-up-copy.html'));
