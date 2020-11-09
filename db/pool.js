@@ -53,13 +53,13 @@ module.exports = {
                     console.log(err);
                 } else {
                     console.log(input[2]);
-                    console.log('coliumn updated with prsentations: ' + result.rows[0].presentationid);
+                    console.log('coliumn updated with prsentations: ' + result.rows[0]);
                 }
                 console.log('Client will end now!');
                 pool.end();
 
             });
-        return result.rows[0].presentationid;
+        // return result.rows[0].presentationid;
 
     },
 

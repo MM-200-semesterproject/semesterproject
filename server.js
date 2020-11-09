@@ -32,11 +32,11 @@ app.post('/signUp', function(request, response) {
 });
 
 let newPresentation = [2, [{ name: "slide1", title: "" }]]; //userid and empty presentation
-let presentationId = pool.createPres(newPresentation);
-console.log(presentationId);
+pool.createPres(newPresentation);
+pool.createPres([1, [{ name: "slide1", title: "" }]]);
 
 let presentations = [ //Array with 2 indexes 1: id from DB, 2: object with keyes. Each key has an array with slides
-    presentationId, [{ name: "slide1", title: "title1" }, { name: "slide2", title: "title2" }, { name: "slide3", title: "title3" }]
+    2, [{ name: "slide1", title: "title1" }, { name: "slide2", title: "title2" }, { name: "slide3", title: "title3" }]
 ];
 pool.updatePres(presentations);
 
