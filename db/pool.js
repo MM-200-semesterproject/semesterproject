@@ -47,22 +47,21 @@ module.exports = {
     createPres: function(inp) {
         let input = inp;
         console.log(input, " ", input[0]);
-        let presentationArray = "";
         pool.query(`INSERT INTO presentations(userid, data)VALUES($1,$2) RETURNING presentationid`, [input[0], input[1]], //input 1=userid, input 2 = data
-
             function(err, result) {
                 if (err) {
+                    console.log(input[0]);
                     console.log(err);
                 } else {
-                    console.log('column updated with prsentations: ' + result.rows[0].data + ", presentationid = " + result.rows[0].presentationid);
+                    console.log(input[2]);
+                    console.log('coliumn updated with prsentations: ' + result.rows[0]);
                 }
                 console.log('Client will end now!');
-
-                presentationArray = [result.rows[0].presentationid, result.rows[0].data];
                 pool.end();
 
             });
-        return presentationArray;
+        // return result.rows[0].presentationid;
+
     },
 
 
