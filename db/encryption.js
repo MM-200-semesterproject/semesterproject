@@ -3,6 +3,7 @@ const pool = require('./pool.js');
 exports.hashCode = function(userData) {
 
     let password = userData.user.password;
+    console.log(userData.user.password + ", password var = " + password);
     let username = userData.user.username;
 
     let returnObject = { user: { username: createHash(username), password: createHash(password) } };
