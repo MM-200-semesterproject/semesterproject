@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./db/dbUpdates.js');
-const encrypt = require('./modules/encryption.js');
+
 const pool = require('./db/pool.js');
 //Getting modules instanced
 const app = express();
@@ -26,11 +26,35 @@ app.post('/presentation', (req, res) => {
 //method accessed in sign-up-copy.html
 app.post('/signUp', function(request, response) {
     // Sends object to pool.js-->DB;
-    pool.newUser(request.body);
+    try {
+        pool.newUser(request.body);
+    } catch (error) {
+        response.send(error + " Try again");
+    }
+    //let newUser = pool.newUser(data);
+    // console.log("new user: " + newUser);
+    response.send("User created, please login with your password");
+    response.sendFile(path.join(__dirname, 'public', 'login.html'));
+
     // JSON text --> validation in signUp.html? Skal det være en email eller kan det være hva som helst? --> sendes til encryption before database
     // response.send(request.body); // echo the result back
 });
 
+let body = {
+    user: {
+
+        username: "input@gmail.com",
+        password: "inputPassword"
+    }
+}
+
+//console.log(encrypt.hashCode(body));
+
+app.get('/create-user', function(request, res) {
+    res.sendFile(path.join(__dirname, 'public', 'sign-up-copy.html'));
+})
+
+/*
 let newPresentation = [3, [{ name: "slide1", title: "" }]]; //userid and empty presentation
 pool.createPres(newPresentation);
 pool.createPres([1, [{ name: "slide1", title: "" }]]);
@@ -41,14 +65,12 @@ let presentations = [ //Array with 2 indexes 1: presentationid from DB, 2: an ar
 pool.updatePres(presentations);
 
 
-app.get('/create-user', function(request, res) {
-    res.sendFile(path.join(__dirname, 'public', 'sign-up-copy.html'));
-})
+
 
 // encryption-script:
 //console.log(encrypt.hashCode('MaryAnn@hotmail.com'));
 
-
+*/
 app.listen(app.get('port'), function() {
     console.log('server running', app.get('port'))
 });
