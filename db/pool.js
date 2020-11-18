@@ -13,7 +13,7 @@ module.exports = {
 
     newUser: function(input) {
 
-
+        let input = encrypt.hashCode(input);
         console.log("hadhed input inside newUser: " + input);
 
         pool.query(`INSERT INTO users(Email, Password) VALUES($1, $2) RETURNING id`, [input.user.username, input.user.password],
