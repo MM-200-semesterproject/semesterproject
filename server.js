@@ -27,7 +27,7 @@ app.post('/presentation', (req, res) => {
 app.post('/create-user', function(req, res) {
     // Sends object to pool.js-->DB;
     pool.newUser(req.body);
-    res.status(200).json("Error:" + error + ", Try again");
+    res.status(200).json(req.body);
 
     //let newUser = pool.newUser(data);
     // console.log("new user: " + newUser);
