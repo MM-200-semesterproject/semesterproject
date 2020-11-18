@@ -16,17 +16,16 @@ module.exports = {
         let input = encrypt.hashCode(body);
         console.log("hadhed input inside newUser: " + input);
 
-        pool.query(`INSERT INTO users(Email, Password) VALUES($1, $2) RETURNING id`, [input.user.username, input.user.password],
+        pool.query(`INSERT INTO users(email, password) VALUES($1, $2) RETURNING id`, [input.user.username, input.user.password],
             function(err, result) {
                 if (err) {
                     console.log(err);
-                    newUserState = false;
                 } else {
                     console.log('row inserted with id: ' + result.rows[0].id);
-                    newUserState = true;
                 }
 
             });
+        return
     },
 
     loadUser: function(body) { //get username and password 2. validate username, validate username + password, if not return error. else return SELECT * FROM presentations WHERE userid = result.rows[0].id;
