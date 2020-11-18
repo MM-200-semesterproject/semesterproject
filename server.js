@@ -24,13 +24,11 @@ app.post('/presentation', (req, res) => {
 })
 
 //method accessed in sign-up-copy.html
-app.post('/create-user', function(request, response) {
+app.post('/create-user', function(req, res) {
     // Sends object to pool.js-->DB;
-    try {
-        pool.newUser(request.body);
-    } catch (error) {
-        response.send(error + " Try again");
-    }
+    pool.newUser(req.body);
+    res.status(200).json("Error:" + error + ", Try again");
+
     //let newUser = pool.newUser(data);
     // console.log("new user: " + newUser);
     // response.send("User created, please login with your password");
