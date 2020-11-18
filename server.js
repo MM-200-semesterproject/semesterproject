@@ -24,8 +24,7 @@ app.post('/presentation', (req, res) => {
 })
 
 //method accessed in sign-up-copy.html
-app.post('/signUp', function(request, response) {
-    res.sendFile(path.join(__dirname, 'public', 'sign-up-copy.html'));
+app.post('/create-user', function(request, response) {
     // Sends object to pool.js-->DB;
     try {
         pool.newUser(request.body);
@@ -35,7 +34,7 @@ app.post('/signUp', function(request, response) {
     //let newUser = pool.newUser(data);
     // console.log("new user: " + newUser);
     // response.send("User created, please login with your password");
-    response.sendFile(path.join(__dirname, 'public', 'login.html'));
+    //response.sendFile(path.join(__dirname, 'public', 'login.html'));
 
     // JSON text --> validation in signUp.html? Skal det være en email eller kan det være hva som helst? --> sendes til encryption before database
     // response.send(request.body); // echo the result back
@@ -45,8 +44,18 @@ app.post('/signUp', function(request, response) {
 
 //console.log(encrypt.hashCode(body));
 
-app.post('/create-user', function(request, res) {
+app.get('/create-user', function(request, res) {
     res.sendFile(path.join(__dirname, 'public', 'sign-up-copy.html'));
+
+})
+
+app.get('/log-in', function(request, res) {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+
+})
+
+app.get('/pres-mode', function(request, res) {
+    res.sendFile(path.join(__dirname, 'public', 'PresMode.html'));
 
 })
 
