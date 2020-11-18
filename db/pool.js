@@ -11,9 +11,9 @@ const pool = new Pool({
 
 module.exports = {
 
-    newUser: function(input) {
+    newUser: function(body) {
 
-        let input = encrypt.hashCode(input);
+        let input = encrypt.hashCode(body);
         console.log("hadhed input inside newUser: " + input);
 
         pool.query(`INSERT INTO users(Email, Password) VALUES($1, $2) RETURNING id`, [input.user.username, input.user.password],
