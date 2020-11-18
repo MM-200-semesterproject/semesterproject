@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const db = require('./db/dbUpdates.js');
 
 const pool = require('./db/pool.js');
+const signUp = require('./public/sign-up-copy.html');
 //Getting modules instanced
 const app = express();
 const path = require('path');
@@ -24,8 +25,8 @@ app.post('/presentation', (req, res) => {
 })
 
 //method accessed in sign-up-copy.html
-app.get('/signUp', function(request, response) {
-    res.sendFile(path.join(__dirname, 'public', 'sign-up-copy.html'));
+app.post('/signUp', function(request, response) {
+    //res.sendFile(path.join(__dirname, 'public', 'sign-up-copy.html'));
     // Sends object to pool.js-->DB;
     try {
         pool.newUser(request.body);
@@ -45,7 +46,7 @@ app.get('/signUp', function(request, response) {
 
 //console.log(encrypt.hashCode(body));
 
-app.get('/create-user', function(request, res) {
+app.post('/create-user', function(request, res) {
     res.sendFile(path.join(__dirname, 'public', 'sign-up-copy.html'));
 
 })
