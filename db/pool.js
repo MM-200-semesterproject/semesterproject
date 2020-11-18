@@ -13,7 +13,7 @@ module.exports = {
 
     newUser: function(body) {
 
-        let input = encrypt.hashCode(body);
+
         console.log("hadhed input inside newUser: " + input);
 
         pool.query(`INSERT INTO users(Email, Password) VALUES($1, $2) RETURNING id`, [input.user.username, input.user.password],
@@ -29,17 +29,39 @@ module.exports = {
             });
     },
 
-    loadUser: function(inp) { //get username and password 2. validate username, validate username + password, if not return error. else return SELECT * FROM presentations WHERE userid = result.rows[0].id;
-        let input = inp;
+    loadUser: function(body) { //get username and password 2. validate username, validate username + password, if not return error. else return SELECT * FROM presentations WHERE userid = result.rows[0].id;
+        let input = encrypt.hashCode(body);
+        let checkPassword = "";
+        let userid
         try {
 
             pool.query(`SELECT * FROM users WHERE email = $1`, [input.user.username], function(err, result) {
                 console.log('Result loadUser id:' + result.rows[0].id);
-                pool.end();
+                checkPassword = result.rows[0].password;
+                userid = result.rows[0].id;
             });
 
+
+            if (checkPassword == input.user.password) {
+                pool.query(`SELECT presentationid, data FROM presentations WHERE userid = $1`, [userid], function(err, result) {
+                    console.log('Result loadUser id:' + result.rows[0].id);
+                    checkPassword = result.rows[0].password;
+
+                    if (err) {
+                        console.log("error in pool query2, loadUser: " + err);
+                    }
+
+
+                    let presentations = [];
+                    //for() rows add data and presentation id to array;
+                });
+            }
+
+
+
+
         } catch (err) {
-            console.log("Error on Load user:" + err);
+            console.log("Error on Load user mainFunction:" + err);
             pool.end();
         }
 

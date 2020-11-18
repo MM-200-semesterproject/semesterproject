@@ -24,7 +24,7 @@
             let inputPassword = document.getElementById("password").value;
             try {
                 let response = fetch('/signUp', {
-                    method: 'GET',
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
