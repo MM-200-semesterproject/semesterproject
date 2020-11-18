@@ -23,7 +23,7 @@
             let inputUsername = document.getElementById("username").value;
             let inputPassword = document.getElementById("password").value;
             try {
-                let response = fetch('/signUp', {
+                let response = fetch('/create-user', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

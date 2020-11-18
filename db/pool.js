@@ -11,7 +11,7 @@ const pool = new Pool({
 
 module.exports = {
 
-    newUser: function(body) {
+    newUser: function(input) {
 
 
         console.log("hadhed input inside newUser: " + input);
