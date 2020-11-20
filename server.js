@@ -23,6 +23,7 @@ app.post('/presentation', (req, res) => {
 });
 
 //method accessed in sign-up-copy.html
+
 app.post('/signUp', function (request, response) {
   // Sends object to pool.js-->DB;
   try {
@@ -64,8 +65,6 @@ let presentations = [ //Array with 2 indexes 1: presentationid from DB, 2: an ar
     1, [{ name: "slide1", title: "title1" }, { name: "slide2", title: "title2" }, { name: "slide3", title: "title3" }]
 ];
 pool.updatePres(presentations);
-
-
 
 
 // encryption-script:
