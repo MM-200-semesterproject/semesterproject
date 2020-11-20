@@ -25,7 +25,7 @@ let savePresBtn = document.getElementById('savePresBtn');
 });*/
 
 let presentations = [];
-let savePresForm = document.getElementById('createPres');
+let savePresForm = document.getElementById('savePresForm');
 savePresForm.addEventListener('submit', async (evt) => {
   evt.preventDefault();
 
