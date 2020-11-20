@@ -19,7 +19,9 @@ class StorageHandler {
     const client = new pg.Client(this.credentials);
     const input = encrypt.hashCode(body);
     let results = null;
-    console.log('hadhed input inside newUser: ' + input);
+    console.log(
+      `Pool.js: hadhed input inside newUser: username: ${input.user.username}, password: ${input.user.password}`
+    );
 
     try {
       await client.connect();
