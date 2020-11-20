@@ -60,8 +60,7 @@ class StorageHandler {
   async createPres(inp) {
     const client = new pg.Client(this.credentials);
     const input = inp;
-    let presentationArray = null;
-    let result = null;
+    let results = null;
 
     try {
       await client.connect();
