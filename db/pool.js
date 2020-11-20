@@ -37,6 +37,70 @@ class StorageHandler {
       client.end();
     }
   }
+
+  async loadUser(inp) {
+    const client = new pg.Client(this.credentials);
+    const input = inp;
+    let results = null;
+
+    try {
+      await client.connect();
+      results = await client.query('SELECT * FROM users WHERE email = $1', [
+        input.user.username,
+      ]);
+      results = results.rows[0].id;
+      console.log(`Result loadUser id: ${results}`);
+      client.end();
+    } catch (err) {
+      console.log(`Error on loadUser: ${err}`);
+      client.end();
+    }
+  }
+
+  async createPres(inp) {
+    const client = new pg.Client(this.credentials);
+    const input = inp;
+    let presentationArray = null;
+    let result = null;
+
+    try {
+      await client.connect();
+      results = await client.query(
+        'INSERT INTO presentations(userid, data)VALUES($1,$2) RETURNING presentationid',
+        [input[0], input[1]] //input 1=userid, input 2 = data
+      );
+      results = results.rows[0];
+      console.log(
+        `Column updated with presentations: ${results.data}, presentationID: ${results.presentationid}`
+      );
+      console.log('Client will end now!');
+      client.end();
+    } catch (err) {
+      console.log(`Error on createPress: ${err}`);
+      client.end();
+    }
+  }
+
+  async UpdatePres(inp) {
+    const client = new pg.Client(this.credentials);
+    let input = inp;
+    let result = null;
+
+    try {
+      await client.connect();
+      result = await client.query(
+        'UPDATE presentations SET data =$1 WHERE presentationid = $2 RETURNING presentationid',
+        [input[1], input[0]]
+      );
+      results = result.rows[0];
+      console.log(
+        `column updated with presentation: ${results.presentations} for user ${results.userid}`
+      );
+      client.end();
+    } catch (err) {
+      console.log(`Error in UpdatePres: ${err}`);
+    }
+  }
 }
 
 module.exports = new StorageHandler(dbCredentials);
