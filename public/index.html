@@ -38,22 +38,106 @@
 
 
     <div class="editActiveArea">
-        <div id="slideDiv" class="slideDiv">
-        </div>
-        <footer class="editFooter">
-            <div style="text-align: center;">
-                <span id="dot" class="dot"></span>
-                <span id="dot" class="dot"></span>
+        <div id="slideDiv" class="slideDiv slideShowbody" >
+<!--TorEven-->
+            <a class="prev" onclick="navigate(-1)">&#8249;</a>
+            <div id = "container" class="slideshow-container"> 
             </div>
+             <a class="next" onclick="navigate(1)">&#8250;</a>
+        </div>
+        <div style="text-align:center">
+            <span class="dot" onclick="activeSlide(1)"></span>
+            <span class="dot" onclick="activeSlide(2)"></span>
+            <span class="dot" onclick="activeSlide(3)"></span>
+          </div>
+
+
+        <footer class="editFooter">
+            
         </footer>
 
     </div>
     
 
-    <script src="client.js"></script>
+<script type='module' src="./js/spawningElement.js"></script>
+<script type='module' src="./js/client.js"></script>
 
-<script type='module' src="js/spawningElement.js"></script>
-<script type='module' src="js/client.js"></script>
+<script>
+    /*
+    TODO:
+    addEventListner to buttons
+        function that adds a new slide(for example text)
+            
+    
+    
+    
+    */
+  let presentation = [[{text:"slide a", img:"6789", list: ["8"]}],[{text:"slide 2", img:"img2", list: [""]}],[{text:"slide c", img:"img3", list: [""]}]]
+      let container= document.getElementById("container");
+       let showIndex = 1;
+       
+       
+      loadPresentation();
+      loadSlides(showIndex);
+
+      //---------------------Funksjoner--------------------------
+
+      function activeSlide(n) {
+  loadSlides(showIndex = n);
+}
+function navigate(num) {
+        
+       loadSlides(showIndex += num);
+}
+    
+function loadPresentation(){
+        
+        
+        for (let slide of presentation){
+
+          let div = document.createElement("div");
+          
+          
+          let html = "";
+          for (let element of slide){    
+            let text = "";
+            
+            text = element.text;
+            console.log(text);
+            let img  =   element.img;
+            let list =   element.list;
+
+           div.classList.add("slide");
+            html = `<h6>${text}</h6>
+                        `;
+              div.innerHTML = html; 
+              
+            console.log(div);
+             container.appendChild(div);
+            
+                        
+          }
+         
+        }
+
+      }
+function loadSlides(num) {  let i;
+  let slideshow = document.getElementsByClassName("slide");
+  let dots = document.getElementsByClassName("dot");
+  if (num > slideshow.length) {showIndex = 1}
+  if (num < 1) {showIndex = slideshow.length}
+  for (i = 0; i < slideshow.length; i++) {
+      slideshow[i].style.display = "none";
+  }
+ for (i = 0; i < dots.length; i++) {
+     dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slideshow[showIndex-1].style.display = "block";
+ dots[showIndex-1].className += " active";
+}
+
+
+</script>
 
 
 </body>
