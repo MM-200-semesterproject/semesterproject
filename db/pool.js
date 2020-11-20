@@ -14,55 +14,71 @@ module.exports = {
     newUser: function(body) {
 
         let input = encrypt.hashCode(body);
-        console.log("hadhed input inside newUser: " + input);
-
-        pool.query(`INSERT INTO users(email, password) VALUES($1, $2) RETURNING id`, [input.user.username, input.user.password],
+        console.log("hashed input inside newUser: " + input);
+        pool.query(`SELECT * FROM users WHERE email = $1`, [input.user.username],
             function(err, result) {
                 if (err) {
-                    console.log(err);
+                    console.log("user does not exist:" + err);
+
+                    pool.query(`INSERT INTO users(email, password) VALUES($1, $2) RETURNING id`, [input.user.username, input.user.password],
+                        function(err, result) {
+                            if (err) {
+                                console.log("Could not create new user:" + err);
+                                return 1;
+                            } else {
+                                console.log('row inserted with id: ' + result.rows[0].id);
+                                return 0;
+                            };
+                        });
                 } else {
-                    console.log('row inserted with id: ' + result.rows[0].id);
+                    let message = "User already exist with username" + result.rows[0].id + " - please log in";
+                    return message;
                 }
 
             });
-        return
     },
 
-    loadUser: function(body) { //get username and password 2. validate username, validate username + password, if not return error. else return SELECT * FROM presentations WHERE userid = result.rows[0].id;
+    loadUser: function(body) { //get username and password else return SELECT * FROM presentations WHERE userid = result.rows[0].id;
         let input = encrypt.hashCode(body);
-        let checkPassword = "";
-        let userid
-        try {
+        let userid;
 
-            pool.query(`SELECT * FROM users WHERE email = $1`, [input.user.username], function(err, result) {
-                console.log('Result loadUser id:' + result.rows[0].id);
-                checkPassword = result.rows[0].password;
-                userid = result.rows[0].id;
+
+        pool.query(`SELECT id FROM users WHERE email = $1 AND password = $2`, [input.user.username, input.user.password],
+            function(err, result) {
+                if (err) {
+                    console.log("Could not load user:" + err);
+                    return err;
+                } else {
+                    console.log('Result loadUser id:' + result.rows[0].id);
+                    userid = result.rows[0].id;
+                }
+
+
             });
 
 
-            if (checkPassword == input.user.password) {
-                pool.query(`SELECT presentationid, data FROM presentations WHERE userid = $1`, [userid], function(err, result) {
-                    console.log('Result loadUser id:' + result.rows[0].id);
-                    checkPassword = result.rows[0].password;
-
-                    if (err) {
-                        console.log("error in pool query2, loadUser: " + err);
-                    }
+        if (userid != 0) {
+            pool.query(`SELECT presentationid, data FROM presentations WHERE userid = $1`, [userid], function(err, result) {
 
 
-                    let presentations = [];
-                    //for() rows add data and presentation id to array;
-                });
-            }
+                if (err) {
+                    console.log("error in pool query2, loadUser: " + err);
+                } else {
+                    console.log('Result presentations:' + result.rows[0]);
+                }
 
-
-
-
-        } catch (err) {
-            console.log("Error on Load user mainFunction:" + err);
-            pool.end();
+                let presentations = [];
+                //for() rows add data and presentation id to array;
+            });
         }
+
+
+
+
+
+        console.log("Error on Load user mainFunction:" + err);
+        pool.end();
+
 
         //return [result.id, result.presentations] SELECT * FROM presentations WHERE userid = result.rows[0].id;
     },
@@ -106,6 +122,29 @@ module.exports = {
 
             });
     },
+
+    checkUsers: function(usernameInput) {
+        pool.query(`SELECT * FROM users WHERE email = $1`, [usernameInput],
+            function(err, result) {
+                if (err) {
+                    console.log(usernameInput);
+                    console.log("Error in checkUsers: " + err);
+                } else {
+                    console.log(usernameInput);
+                    console.log('Result loadUser id:' + result.rows[0].id);
+                    console.log(result.rows.length);
+                    if (result.rows[0].id != 0) {
+
+                        console.log("user already exists");
+                        return 1;
+                    }
+                    return 0;
+
+                }
+            });
+
+
+    }
 
 
 
