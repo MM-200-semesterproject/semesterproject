@@ -1,72 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create user</title>
+
     <link rel="stylesheet" href="styles/PresentasjonStyle.css">
     <script src="js/validation.js" type="module"></script>
 </head>
 
-<body>
-
+  <body>
     <form method="post" id="signUpForm" class="SignUpandLogIn">
-        <input id="username" type="text" name="username" placeholder="Username" required>
-        <br><br>
-        <input id="password" type="text" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="password" title="Must contain at minimum 8 characters including: one number, one uppercase and lowercase letter
-        " required>
-        <input id="signUpBtn" class="BtnGreen" type="submit" value="Signup">
-        <a href="./login.html" class="BtnGrey">Back</button>
 
+      <input id="username" type="text" name="user[username]" />
+      <input id="password" type="text" name="user[password]" />
+      <input class="BtnGreen" type="submit" value="Signup" />
     </form>
 
     <script>
-        let signUpForm = document.getElementById("signUpForm");
+      let signUpForm = document.getElementById('signUpForm');
 
-        signUpForm.addEventListener('submit', async function(e) {
-            let inputUsername = document.getElementById("username").value;
-            let inputPassword = document.getElementById("password").value;
-            if (validation(inputUsername, inputPassword) == false) {
-                console.log("The email is not valid. Check your spelling and try again!");
-
-            }
-
-            let cfg = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    user: {
-
-                        username: inputUsername,
-                        password: inputPassword
-                    }
-                })
-            }
-        });
-        /*     try {
-
-                 let response = fetch('/', {
-
-
-                 });
-                 location.href = "login.html";
-
-             } catch (err) {
-                 outtext.innerHTML = "Error:" + err;
-             }
-
-
-         });*/
-
-    
+      signUpForm.addEventListener('submit', async function (e) {
+        let inputUsername = document.getElementById('username').value;
+        let inputPassword = document.getElementById('password').value;
+        try {
+          let response = fetch('/signUp', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              user: {
+                username: inputUsername,
+                password: inputPassword,
+              },
+            }),
+          });
+        } catch (err) {
+          outtext.innerHTML = 'Error:' + err;
+        }
+      });
     </script>
-
-
-</body>
-
-
-
+  </body>
 </html>
