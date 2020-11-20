@@ -10,9 +10,13 @@
 
 <body>
 
-<header class="header">heihei</header>
 
 <div class="editWrapper">
+    <header class="header">
+        <h1>Header</h1>
+        hi this is a header p-tag
+    </header>
+
     <div class="editMenu">
 
         <select id="crntPresentation" name="crntPresentation">
@@ -21,18 +25,16 @@
 
         <form id="savePresForm">
             <input id="inpPresTitle" class="input" type="text" placeholder="Presentation Title"/>
-            <input id="saveNewPres" class="BtnGreen" type="submit" value="Save Presentation"/>
+            <button id="savePres" class="btnGreen" type="submit" value="submit">Save Presentation</button>
+            <button id="createPres" class="btnGreen" type="submit" value="submit">Create New Presentation</button>
         </form>
 
-        <h2 class="h2menu">Add Slide</h2>
-        <button id="addTxt" class="BtnGrey">Text</button><br>
-        <button id="addImg" class="BtnGrey">Image</button><br>
-        <button id="addList" class="BtnGrey">List</button><br>
+        <h2>Add Slide</h2>
+        <button id="addTxt" class="btnGrey">Text</button><br>
+        <button id="addImg" class="btnGrey">Image</button><br>
+        <button id="addList" class="btnGrey">List</button><br>
 
-        <button id="presentMode" class="BtnGreen">Presentation mode</button>
-
-
-
+        <button id="presentMode" class="btnGreen">Presentation mode</button>
 
     <div class="editActiveArea">
         <div id="slideDiv" class="slideDiv slideShowbody" >
@@ -47,12 +49,6 @@
             <span class="dot" onclick="activeSlide(2)"></span>
             <span class="dot" onclick="activeSlide(3)"></span>
           </div>
-
-
-        <footer class="editFooter">
-            
-        </footer>
-
     </div>
     
 

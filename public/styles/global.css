@@ -1,0 +1,112 @@
+body {
+  background-color: #e2e2e2;
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  display: flex;
+  min-height: fit-content;
+  background-color: #485153;
+  box-shadow: 0 2px 4px #191c1d;
+  z-index: 9999;
+  text-justify: auto;
+}
+
+h1 {
+  color: #e2e2e2;
+  font-size: 30px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+h2 {
+  text-align: left;
+  color: #ffffff;
+  margin-bottom: -4px;
+  margin-left: 8px;
+}
+
+a {
+  text-decoration: none;
+  display: flex;
+  flex-wrap: wrap;
+  color: #25363a;
+  justify-content: center;
+  align-content: center;
+  border-radius: 30px;
+  padding: 15px 20px;
+  width: 50px;
+  height: 60px;
+  font-size: 60px;
+}
+
+button {
+  border: none;
+  padding: 15px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 8px 8px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+input {
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  margin-bottom: 0px;
+  padding: 4px;
+  box-shadow: inset 0 0 4px #212324;
+  width: 97%;
+}
+.editWrapper {
+  display: flex;
+  align-items: stretch;
+}
+
+select {
+  appearance: none;
+  border: none;
+  border-radius: 5px;
+  color: #25363a;
+  cursor: pointer;
+  font-size: 18px;
+  margin-bottom: 5px;
+  padding: 4px;
+  display: grid;
+  align-items: center;
+  box-shadow: inset 0 0 4px #25363a;
+}
+
+a.arrowBtn {
+  opacity: 0.3;
+}
+
+a:hover {
+  opacity: 1;
+}
+
+button:active {
+  box-shadow: inset 0 0 4px #212324;
+}
+
+.loginWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.btnGreen {
+  background-color: #4e9263;
+  color: white;
+}
+.btnGrey {
+  background-color: #e2e2e2;
+  color: #25363a;
+}
