@@ -1,14 +1,11 @@
-import {TextBox} from './spawningElement.js';
+import { TextBox } from './spawningElement.js';
 
 const btnAddTxt = document.getElementById('addTxt');
 
-btnAddTxt.addEventListener('click', async evt => {
-
-    let txt1 = new TextBox("text");
-    txt1.spawnText(document.getElementById('slideDiv'));
-
-})
-
+btnAddTxt.addEventListener('click', async (evt) => {
+  let txt1 = new TextBox('text');
+  txt1.spawnText(document.getElementById('slideDiv'));
+});
 
 let presMenuSelect = document.getElementById('crntPresentation');
 let savePresBtn = document.getElementById('savePresBtn');
@@ -28,8 +25,8 @@ let savePresBtn = document.getElementById('savePresBtn');
 });*/
 
 let presentations = [];
-let savePresForm = document.getElementById('savePresForm');
-savePresForm.addEventListener('submit', async evt => {
+let savePresForm = document.getElementById('createPres');
+savePresForm.addEventListener('submit', async (evt) => {
   evt.preventDefault();
 
   let url = 'https://moreslides.herokuapp.com/presentation';
@@ -38,12 +35,12 @@ savePresForm.addEventListener('submit', async evt => {
   console.log(fdata);
 
   let cfg = {
-    method: "POST",
-    body: fdata
-  }
+    method: 'POST',
+    body: fdata,
+  };
 
-  let response = await fetch(url, cfg).then(data => {
+  let response = await fetch(url, cfg).then((data) => {
     response.json();
     console.log(data);
   });
-})
+});

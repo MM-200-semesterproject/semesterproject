@@ -1,0 +1,14 @@
+The css should likely be in one file at the end of this, but that file would be sorted like the files are sorted now, in that case.
+
+GlobalStyles:
+    - body
+    - header 
+    - button stylings
+    - text styling
+    - general slide div wrapper
+    - div for login and signup 
+
+
+General global should be in type selectors.
+next level down from that ( several elms with same style differing from global) should be class and pseudoclass.
+Then sprecific things should select by id.
