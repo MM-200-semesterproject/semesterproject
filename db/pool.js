@@ -80,7 +80,7 @@ class StorageHandler {
     }
   }
 
-  async UpdatePres(inp) {
+  async updatePres(inp) {
     const client = new pg.Client(this.credentials);
     let input = inp;
     let result = null;
