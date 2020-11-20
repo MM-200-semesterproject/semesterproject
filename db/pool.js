@@ -1,105 +1,105 @@
-const { Pool } = require('pg');
+const pg = require('pg');
 const encrypt = require('./encryption.js');
 const dbCredentials =
   process.env.DATABASE_URL || require('./localenv').credentials;
 
 //Postgresql Database connection
-const pool = new Pool({
-  connectionString: dbCredentials,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
 
-module.exports = {
-  newUser: function (body) {
-    let input = encrypt.hashCode(body);
-    console.log('hadhed input inside newUser: ' + input);
+class StorageHandler {
+  constructor(credentials) {
+    this.credentials = {
+      connectionString: credentials,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    };
+  }
 
-    pool.query(
-      `INSERT INTO users(Email, Password) VALUES($1, $2) RETURNING id`,
-      [input.user.username, input.user.password],
-      function (err, result) {
-        if (err) {
-          console.log(err);
-          newUserState = false;
-        } else {
-          console.log('row inserted with id: ' + result.rows[0].id);
-          newUserState = true;
-        }
-      }
+  async newUser(body) {
+    const client = new pg.Client(this.credentials);
+    const input = encrypt.hashCode(body);
+    let results = null;
+    console.log(
+      `Pool.js: hadhed input inside newUser: username: ${input.user.username}, password: ${input.user.password}`
     );
-  },
 
-  loadUser: function (inp) {
-    //get username and password 2. validate username, validate username + password, if not return error. else return SELECT * FROM presentations WHERE userid = result.rows[0].id;
-    let input = inp;
     try {
-      pool.query(
-        `SELECT * FROM users WHERE email = $1`,
-        [input.user.username],
-        function (err, result) {
-          console.log('Result loadUser id:' + result.rows[0].id);
-          pool.end();
-        }
+      await client.connect();
+      results = await client.query(
+        'INSERT INTO users(Email, Password) VALUES($1, $2) RETURNING id',
+        [input.user.username, input.user.password]
       );
+      results = results.rows[0].id;
+      console.log(`row inserted with id: ${results}`);
+      client.end();
     } catch (err) {
-      console.log('Error on Load user:' + err);
-      pool.end();
+      console.log(err);
+      client.end();
     }
+  }
 
-    //return [result.id, result.presentations] SELECT * FROM presentations WHERE userid = result.rows[0].id;
-  },
+  async loadUser(inp) {
+    const client = new pg.Client(this.credentials);
+    const input = inp;
+    let results = null;
 
-  createPres: async function (inp) {
+    try {
+      await client.connect();
+      results = await client.query('SELECT * FROM users WHERE email = $1', [
+        input.user.username,
+      ]);
+      results = results.rows[0].id;
+      console.log(`Result loadUser id: ${results}`);
+      client.end();
+    } catch (err) {
+      console.log(`Error on loadUser: ${err}`);
+      client.end();
+    }
+  }
+
+  async createPres(inp) {
+    const client = new pg.Client(this.credentials);
+    const input = inp;
+    let results = null;
+
+    try {
+      await client.connect();
+      results = await client.query(
+        'INSERT INTO presentations(userid, data)VALUES($1,$2) RETURNING presentationid',
+        [input[0], input[1]] //input 1=userid, input 2 = data
+      );
+      results = results.rows[0];
+      console.log(
+        `Column updated with presentations: ${results.data}, presentationID: ${results.presentationid}`
+      );
+      console.log('Client will end now!');
+      client.end();
+    } catch (err) {
+      console.log(`Error on createPress: ${err}`);
+      client.end();
+    }
+  }
+
+  async UpdatePres(inp) {
+    const client = new pg.Client(this.credentials);
     let input = inp;
-    let presentationArray = '';
-    pool.query(
-      `INSERT INTO presentations(userid, data)VALUES($1,$2) RETURNING presentationid`,
-      [input[0], input[1]], //input 1=userid, input 2 = data
+    let result = null;
 
-      function (err, result) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log(
-            'column updated with prsentations: ' +
-              result.rows[0].data +
-              ', presentationid = ' +
-              result.rows[0].presentationid
-          );
-        }
-        console.log('Client will end now!');
+    try {
+      await client.connect();
+      result = await client.query(
+        'UPDATE presentations SET data =$1 WHERE presentationid = $2 RETURNING presentationid',
+        [input[1], input[0]]
+      );
+      results = result.rows[0];
+      console.log(
+        `column updated with presentation: ${results.presentations} for user ${results.userid}`
+      );
+      client.end();
+    } catch (err) {
+      console.log(`Error in UpdatePres: ${err}`);
+    }
+  }
+}
 
-        presentationArray =
-          await[(result.rows[0].presentationid, result.rows[0].data)];
-        pool.end();
-      }
-    );
-    return presentationArray;
-  },
-
-  updatePres: function (inp) {
-    let input = inp;
-    pool.query(
-      `UPDATE presentations SET data =$1 WHERE presentationid = $2 RETURNING presentationid`,
-      [input[1], input[0]],
-      function (err, result) {
-        if (err) {
-          console.log(input[0]);
-          console.log('Error in updatePres: ' + err);
-        } else {
-          console.log(input[1]);
-          console.log(
-            'column updated with presentation: ' +
-              result.rows[0].presentations +
-              'for user' +
-              result.rows[0].userid
-          );
-        }
-        console.log('Client will end now!');
-        pool.end();
-      }
-    );
-  },
-};
+module.exports = new StorageHandler(dbCredentials);
