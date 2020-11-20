@@ -10,29 +10,47 @@
 
 <body>
 
-<header class="header">heihei</header>
 
-<div class="editWrapper">
-    <div class="editMenu">
 
-        <select id="crntPresentation" name="crntPresentation">
+    <!-- Temporary html shell for testing the code. Temporary landing page right into edit mode for slides -->
+    <header class="header">heihei</header>
+
+
+
+
+
+    <div class="editWrapper">
+        <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
+        <div class="editMenu">
+
+            <select id="crntPresentation" name="crntPresentation">
             <option value="untitled1">Untitled 1</option>
         </select><br><br>
 
-        <form id="savePresForm">
-            <input id="inpPresTitle" class="input" type="text" placeholder="Presentation Title"/>
-            <input id="saveNewPres" class="BtnGreen" type="submit" value="Save Presentation"/>
-        </form>
+            <form id="savePresForm">
+                <input id="inpPresTitle" class="input" type="text" placeholder="Presentation Title" />
+                <input id="saveNewPres" class="BtnGreen" type="submit" value="Save Presentation" />
+            </form>
 
-        <h2 class="h2menu">Add Slide</h2>
-        <button id="addTxt" class="BtnGrey">Text</button><br>
-        <button id="addImg" class="BtnGrey">Image</button><br>
-        <button id="addList" class="BtnGrey">List</button><br>
+            <h2 class="h2menu">Add Slide</h2>
+            <button id="addTxt" class="BtnGrey">Text</button><br>
+            <button id="addImg" class="BtnGrey">Image</button><br>
+            <button id="addList" class="BtnGrey">List</button><br>
 
-        <button id="presentMode" class="BtnGreen">Presentation mode</button>
+            <button id="presentMode" class="BtnGreen">Presentation mode</button>
 
 
 
+
+            <div class="editActiveArea">
+                <div id="slideDiv" class="slideDiv">
+                </div>
+                <footer class="editFooter">
+                    <div style="text-align: center;">
+                        <span id="dot" class="dot"></span>
+                        <span id="dot" class="dot"></span>
+                    </div>
+                </footer>
 
     <div class="editActiveArea">
         <div id="slideDiv" class="slideDiv slideShowbody" >
@@ -135,7 +153,6 @@ function loadSlides(num) {  let i;
 
 
 </script>
-
 
 </body>
 
