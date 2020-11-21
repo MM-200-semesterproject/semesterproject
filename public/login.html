@@ -25,6 +25,39 @@
         <button class="btnGreen" type="submit" value="Login">Login</button>
         <button class="btnGrey"><a href="sign-up.html">Sign Up</a></button>
       </form>
+      <div class="responseFromServer"></div>
     </div>
+    <script>
+      const loginForm = document.querySelector('#loginForm');
+      const responseDiv = document.querySelector('.responseFromServer');
+
+      loginForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const inputUsername = document.querySelector('#username').value;
+        const inputPassword = document.querySelector('#password').value;
+
+        const body = {
+          user: {
+            username: inputUsername,
+            password: inputPassword,
+          },
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+
+        fetch('/login', config)
+          .then((resp) => {
+            //location.href = 'editMode.html';
+          })
+          .catch((err) => {
+            responseDiv.textContent = err;
+          });
+      });
+    </script>
   </body>
 </html>

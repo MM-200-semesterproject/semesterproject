@@ -39,6 +39,17 @@ app.post('/signUp', async function (request, response) {
   }
 });
 
+app.post('/login', async function (request, response) {
+  let result = await pool.loadUser(request.body);
+  if (result instanceof Error) {
+    response.status(500).send(result + ' Try again');
+    return;
+  } else {
+    response.status(200);
+    return;
+  }
+});
+
 app.listen(app.get('port'), function () {
   console.log('server running', app.get('port'));
 });
