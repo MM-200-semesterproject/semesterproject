@@ -62,7 +62,7 @@ class StorageHandler {
     return results;
   }
 
-  async loadUser(body) {
+  async loadUserCopy(body) {
     const client = new pg.Client(this.credentials);
     const input = encrypt.hashCode(body);
     let results = null;
