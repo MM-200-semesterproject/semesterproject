@@ -10,6 +10,9 @@ const { loadUser } = require('./db/pool.js');
 
 app.set('port', process.env.PORT || 8080);
 app.use(express.static('public'));
+app.use(
+  express.static(path.join(__dirname, 'public'), { index: 'login.html' })
+);
 app.use(bodyParser.json());
 app.use(express.json());
 
