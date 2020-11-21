@@ -10,8 +10,8 @@ header {
   position: fixed;
   width: 100%;
   display: flex;
-  min-height: fit-content;
-  height: 5%;
+  min-height: 50px;
+  height: 4%;
   background-color: #485153;
   box-shadow: 0 2px 4px #191c1d;
   z-index: 9999;
@@ -30,20 +30,6 @@ h2 {
   color: #ffffff;
   margin-bottom: -4px;
   margin-left: 8px;
-}
-
-.arrowBtn {
-  text-decoration: none;
-  display: flex;
-  flex-wrap: wrap;
-  color: #25363a;
-  justify-content: center;
-  align-content: center;
-  border-radius: 30px;
-  padding: 15px 20px;
-  width: 50px;
-  height: 60px;
-  font-size: 60px;
 }
 
 button {
@@ -82,22 +68,22 @@ select {
   box-shadow: inset 0 0 4px #25363a;
 }
 
-a.arrowBtn {
-  opacity: 0.3;
+button:active {
+  box-shadow: inset 0 0 4px #212324;
 }
 
 .arrowBtn:hover {
   opacity: 1;
 }
-
-button:active {
-  box-shadow: inset 0 0 4px #212324;
+.crntSlide,
+.dot:hover {
+  background-color: #717171;
 }
 
 .editWrapper {
   display: flex;
   align-items: stretch;
-  height: 100vh;
+  height: 100%;
 }
 
 .editMenu {
@@ -132,9 +118,19 @@ button:active {
   color: #25363a;
 }
 
-.crntSlide,
-.dot:hover {
-  background-color: #717171;
+.arrowBtn {
+  text-decoration: none;
+  display: flex;
+  flex-wrap: wrap;
+  color: #25363a;
+  justify-content: center;
+  align-content: center;
+  border-radius: 30px;
+  padding: 15px 20px;
+  width: 50px;
+  height: 60px;
+  font-size: 60px;
+  opacity: 0.3;
 }
 
 .dot {
