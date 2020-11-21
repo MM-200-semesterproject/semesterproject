@@ -52,15 +52,17 @@ class StorageHandler {
       );
       results = results.rows[0].id;
       console.log(`Result loadUser id: ${results}`);
-
       client.end();
     } catch (err) {
+      results = err;
       console.log(`Error on loadUser: ${err}`);
       client.end();
     }
+
+    return results;
   }
 
-  async loadUser(body) {
+  async loadUserCopy(body) {
     const client = new pg.Client(this.credentials);
     const input = encrypt.hashCode(body);
     let results = null;

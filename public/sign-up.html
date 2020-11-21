@@ -30,13 +30,13 @@
     </div>
 
     <script>
-      const signUpForm = document.getElementById('signUpForm');
+      const signUpForm = document.querySelector('#signUpForm');
       const responseDiv = document.querySelector('.responseFromServer');
 
       signUpForm.addEventListener('submit', async function (e) {
         e.preventDefault();
-        const inputUsername = document.getElementById('username').value;
-        const inputPassword = document.getElementById('password').value;
+        const inputUsername = document.querySelector('#username').value;
+        const inputPassword = document.querySelector('#password').value;
         const body = {
           user: {
             username: inputUsername,
