@@ -34,7 +34,7 @@ app.post('/signUp', function (request, response) {
     });
     return;
   } catch (error) {
-    response.send(error + ' Try again');
+    response.status(500).send(error + ' Try again');
     return;
   }
 });
