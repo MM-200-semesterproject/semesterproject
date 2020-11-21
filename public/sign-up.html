@@ -1,27 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create user</title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up to Moreslides</title>
-    <link rel="stylesheet" href="styles/PresentasjonStyle.css" type="text/css">
-</head>
+    <link rel="stylesheet" href="styles/PresentasjonStyle.css" />
+    <script src="js/validation.js" type="module"></script>
+  </head>
 
-<body>
+  <body>
+    <form method="post" id="signUpForm" class="SignUpandLogIn">
+      <input id="username" type="text" name="user[username]" />
+      <input id="password" type="text" name="user[password]" />
+      <input class="BtnGreen" type="submit" value="Signup" />
+    </form>
 
-    <div class="SignUpandLogIn">
-        <h1>Create User</h1>
-        <input id="UserName" type="text" placeholder="UserName" />
-        <br></br>
-        <input id="password" type="text" placeholder="Password" />
-        <br></br>
-        <a href="#" class="BtnGreen">Signup</a>
+    <script>
+      let signUpForm = document.getElementById('signUpForm');
 
-    </div>
-
-</body>
-
-
-
+      signUpForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const inputUsername = document.getElementById('username').value;
+        const inputPassword = document.getElementById('password').value;
+        const body = {
+          user: {
+            username: inputUsername,
+            password: inputPassword,
+          },
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+      });
+    </script>
+  </body>
 </html>
