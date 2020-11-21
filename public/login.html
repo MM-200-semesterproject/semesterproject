@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Moreslides</title>
-    <link rel="stylesheet" href="styles/global.css" type="text/css">
+    <link rel="stylesheet" href="styles/global.css" type="text/css" />
+  </head>
 
-</head>
-
-<body>
-    <div class="loginWrapper">
-        <div class="SignUpandLogIn">
-            <input id="UserName" type="text" placeholder="Username" />
-            <br></br>
-            <input id="password" type="text" placeholder="Password" />
-            <br></br>
-
-            <button class="btnGreen"><a href="#">Login</a></button>
-            <a href="sign-up.html" class="btnGrey">SignUp</a>
-        </div>
+  <body>
+    <div class="signupLoginWrapper">
+      <form method="post" id="loginForm">
+        <input
+          id="username"
+          type="text"
+          name="user[username]"
+          placeholder="Enter E-mail"
+        />
+        <input
+          id="password"
+          type="text"
+          name="user[password]"
+          placeholder="Enter Password"
+        />
+        <button class="btnGreen" type="submit" value="Login">Login</button>
+        <button class="btnGrey"><a href="sign-up.html">Sign Up</a></button>
+      </form>
     </div>
-
-</body>
-
-
-
+  </body>
 </html>

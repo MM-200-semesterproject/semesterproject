@@ -99,9 +99,23 @@ button:active {
   position: relative;
 }
 
-.loginWrapper {
+.signupLoginWrapper {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+}
+
+.signupLoginWrapper form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  justify-self: center;
+  background-color: #25363a;
+  border: none;
+  max-width: 400px;
+  padding: 60px 80px;
+  border-radius: 10px;
+  font-size: 10px;
 }
 
 .editWrapper {
