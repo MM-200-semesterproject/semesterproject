@@ -11,13 +11,25 @@
 
   <body>
     <form method="post" id="signUpForm" class="SignUpandLogIn">
-      <input id="username" type="text" name="user[username]" />
-      <input id="password" type="text" name="user[password]" />
+      <input
+        id="username"
+        type="text"
+        name="user[username]"
+        placeholder="Enter E-mail"
+      />
+      <input
+        id="password"
+        type="text"
+        name="user[password]"
+        placeholder="Enter Password"
+      />
       <input class="BtnGreen" type="submit" value="Signup" />
+      <div class="responseFromServer"></div>
     </form>
 
     <script>
-      let signUpForm = document.getElementById('signUpForm');
+      const signUpForm = document.getElementById('signUpForm');
+      const responseDiv = document.querySelector('.responseFromServer');
 
       signUpForm.addEventListener('submit', async function (e) {
         e.preventDefault();
@@ -36,6 +48,20 @@
           },
           body: JSON.stringify(body),
         };
+        fetch('/signUp', config)
+          .then((resp) => {
+            return resp.json();
+          })
+          .then((info) => {
+            const responseLink = document.createElement('a');
+            responseLink.setAttribute('href', 'login.html');
+            responseLink.textContent = 'User created, click here to log in.';
+            responseDiv.appendChild(responseLink);
+            console.log(info.msg);
+          })
+          .catch((err) => {
+            responseDiv.textContent = err;
+          });
       });
     </script>
   </body>
