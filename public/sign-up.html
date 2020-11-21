@@ -20,24 +20,22 @@
       let signUpForm = document.getElementById('signUpForm');
 
       signUpForm.addEventListener('submit', async function (e) {
-        let inputUsername = document.getElementById('username').value;
-        let inputPassword = document.getElementById('password').value;
-        try {
-          let response = fetch('/signUp', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              user: {
-                username: inputUsername,
-                password: inputPassword,
-              },
-            }),
-          });
-        } catch (err) {
-          outtext.innerHTML = 'Error:' + err;
-        }
+        e.preventDefault();
+        const inputUsername = document.getElementById('username').value;
+        const inputPassword = document.getElementById('password').value;
+        const body = {
+          user: {
+            username: inputUsername,
+            password: inputPassword,
+          },
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
       });
     </script>
   </body>
