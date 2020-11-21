@@ -20,11 +20,6 @@
     <div class="editMenu">
 
     <!-- Temporary html shell for testing the code. Temporary landing page right into edit mode for slides -->
-    <header class="header">heihei</header>
-
-
-
-
 
     <div class="editWrapper">
         <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
@@ -69,14 +64,10 @@
             <span class="dot" onclick="activeSlide(1)"></span>
             <span class="dot" onclick="activeSlide(2)"></span>
             <span class="dot" onclick="activeSlide(3)"></span>
-          </div>
+        </div>
     </div>
     
-
-<script type='module' src="./js/spawningElement.js"></script>
-<script type='module' src="./js/client.js"></script>
-
-<script>
+<script type="text/javascript">
     /*
     TODO:
     addEventListner to buttons
@@ -86,7 +77,7 @@
     
     
     */
-  let presentation = [[{text:"slide a", img:"6789", list: ["8"]}],[{text:"slide 2", img:"img2", list: [""]}],[{text:"slide c", img:"img3", list: [""]}]]
+    let presentation = [{text:"slide a", img:"6789", list: ["8"]},{text:"slide 2", img:"img2", list: [""]},{text:"slide c", img:"img3", list: [""]}];
       let container= document.getElementById("container");
        let showIndex = 1;
        
@@ -135,15 +126,15 @@ function loadPresentation(){
         }
 
       }
-function loadSlides(num) {  let i;
+function loadSlides(num) {
   let slideshow = document.getElementsByClassName("slide");
   let dots = document.getElementsByClassName("dot");
-  if (num > slideshow.length) {showIndex = 1}
-  if (num < 1) {showIndex = slideshow.length}
-  for (i = 0; i < slideshow.length; i++) {
+  if (num > slideshow.length) {showIndex = 1};
+  if (num < 1) {showIndex = slideshow.length};
+  for (let i = 0; i < slideshow.length; i++) {
       slideshow[i].style.display = "none";
   }
- for (i = 0; i < dots.length; i++) {
+ for (let i = 0; i < dots.length; i++) {
      dots[i].className = dots[i].className.replace(" active", "");
   }
   slideshow[showIndex-1].style.display = "block";
