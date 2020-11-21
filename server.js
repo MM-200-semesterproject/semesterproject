@@ -25,16 +25,16 @@ app.post('/presentation', (req, res) => {
   return;
 });
 
-app.post('/signUp', function (request, response) {
+app.post('/signUp', async function (request, response) {
   // Sends object to pool.js-->DB;
-  try {
-    pool.newUser(request.body);
+  let result = await pool.newUser(request.body);
+  if (result instanceof Error) {
+    response.status(500).send(result + ' Try again');
+    return;
+  } else {
     response.status(200).json({
       msg: 'User created',
     });
-    return;
-  } catch (error) {
-    response.status(500).send(error + ' Try again');
     return;
   }
 });
