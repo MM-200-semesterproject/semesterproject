@@ -3,7 +3,6 @@ const encrypt = require('./encryption.js');
 const dbCredentials =
   process.env.DATABASE_URL || require('./localenv').credentials;
 
-//Postgresql Database connection
 
 class StorageHandler {
   constructor(credentials) {

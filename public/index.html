@@ -10,6 +10,7 @@
 
 <body>
 
+<<<<<<< HEAD
 
 
 <div class="editWrapper">
@@ -17,9 +18,24 @@
         <h2>Header</h2>
         Hi this is a text p
     </header>
+=======
+
+<div class="editWrapper">
+    <header class="header">
+        <h1>Header</h1>
+        hi this is a header p-tag
+    </header>
+
+>>>>>>> origin/develop
     <div class="editMenu">
 
-        <select id="crntPresentation" name="crntPresentation">
+    <!-- Temporary html shell for testing the code. Temporary landing page right into edit mode for slides -->
+
+    <div class="editWrapper">
+        <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
+        <div class="editMenu">
+
+            <select id="crntPresentation" name="crntPresentation">
             <option value="untitled1">Untitled 1</option>
         </select><br><br>
 
@@ -33,18 +49,119 @@
         <button id="addTxt" class="btnGrey">Text</button><br>
         <button id="addImg" class="btnGrey">Image</button><br>
         <button id="addList" class="btnGrey">List</button><br>
+<<<<<<< HEAD
 
         <button id="presentMode" class="btnGreen">Presentation mode</button>
     </div>
 
     <div class="editActiveArea">
         <div id="slideDiv" class="slideDiv">
+=======
+
+        <button id="presentMode" class="btnGreen">Presentation mode</button>
+
+            <div class="editActiveArea">
+                <div id="slideDiv" class="slideDiv">
+                </div>
+                <footer class="editFooter">
+                    <div style="text-align: center;">
+                        <span id="dot" class="dot"></span>
+                        <span id="dot" class="dot"></span>
+                    </div>
+                </footer>
+
+    <div class="editActiveArea">
+        <div id="slideDiv" class="slideDiv slideShowbody" >
+<!--TorEven-->
+            <a class="prev" onclick="navigate(-1)">&#8249;</a>
+            <div id = "container" class="slideshow-container"> 
+            </div>
+             <a class="next" onclick="navigate(1)">&#8250;</a>
+        </div>
+        <div style="text-align:center">
+            <span class="dot" onclick="activeSlide(1)"></span>
+            <span class="dot" onclick="activeSlide(2)"></span>
+            <span class="dot" onclick="activeSlide(3)"></span>
+>>>>>>> origin/develop
         </div>
     </div>
+    
+<script type="text/javascript">
+    /*
+    TODO:
+    addEventListner to buttons
+        function that adds a new slide(for example text)
 
-<script type='module' src="js/spawningElement.js"></script>
-<script type='module' src="js/client.js"></script>
+    
+    
+    
+    */
+    let presentation = [{text:"slide a", img:"6789", list: ["8"]},{text:"slide 2", img:"img2", list: [""]},{text:"slide c", img:"img3", list: [""]}];
+      let container= document.getElementById("container");
+       let showIndex = 1;
+       
+       
+      loadPresentation();
+      loadSlides(showIndex);
 
+      //---------------------Funksjoner--------------------------
+
+      function activeSlide(n) {
+  loadSlides(showIndex = n);
+}
+function navigate(num) {
+        
+       loadSlides(showIndex += num);
+}
+    
+function loadPresentation(){
+        
+        
+        for (let slide of presentation){
+
+          let div = document.createElement("div");
+          
+          
+          let html = "";
+          for (let element of slide){    
+            let text = "";
+            
+            text = element.text;
+            console.log(text);
+            let img  =   element.img;
+            let list =   element.list;
+
+           div.classList.add("slide");
+            html = `<h6>${text}</h6>
+                        `;
+              div.innerHTML = html; 
+              
+            console.log(div);
+             container.appendChild(div);
+            
+                        
+          }
+         
+        }
+
+      }
+function loadSlides(num) {
+  let slideshow = document.getElementsByClassName("slide");
+  let dots = document.getElementsByClassName("dot");
+  if (num > slideshow.length) {showIndex = 1};
+  if (num < 1) {showIndex = slideshow.length};
+  for (let i = 0; i < slideshow.length; i++) {
+      slideshow[i].style.display = "none";
+  }
+ for (let i = 0; i < dots.length; i++) {
+     dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slideshow[showIndex-1].style.display = "block";
+ dots[showIndex-1].className += " active";
+}
+
+
+</script>
 
 </body>
 

@@ -67,6 +67,11 @@ input {
   width: 97%;
 }
 .editWrapper {
+<<<<<<< HEAD
+=======
+  display: flex;
+  align-items: stretch;
+>>>>>>> origin/develop
 }
 
 select {
