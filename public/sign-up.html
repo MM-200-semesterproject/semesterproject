@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create user</title>
 
-    <link rel="stylesheet" href="styles/PresentasjonStyle.css" />
+    <link rel="stylesheet" href="styles/global.css" />
     <script src="js/validation.js" type="module"></script>
   </head>
 
@@ -57,6 +57,9 @@
             responseLink.setAttribute('href', 'login.html');
             responseLink.textContent = 'User created, click here to log in.';
             responseDiv.appendChild(responseLink);
+          })
+          .catch((err) => {
+            responseDiv.textContent = err;
           });
       });
     </script>
