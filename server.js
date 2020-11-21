@@ -27,7 +27,9 @@ app.post('/signUp', function (request, response) {
   // Sends object to pool.js-->DB;
   try {
     pool.newUser(request.body);
-    response.status(200).send('User created');
+    response.status(200).json({
+      msg: 'User created',
+    });
     return;
   } catch (error) {
     response.send(error + ' Try again');
