@@ -39,9 +39,6 @@ app.post('/signUp', function (request, response) {
   }
 });
 
-app.get('/create-user', function (request, res) {
-  res.sendFile(path.join(__dirname, 'public', 'sign-up-copy.html'));
-});
 app.listen(app.get('port'), function () {
   console.log('server running', app.get('port'));
 });
