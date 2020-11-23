@@ -60,9 +60,11 @@
 
         fetch('/login', config)
           .then((resp) => {
-            console.log(resp.json());
-            //location.href = 'editMode.html';
-            return resp;
+            if (resp.status === 200) {
+              location.href = 'editMode.html';
+              console.log(resp.status);
+              return resp;
+            }
           })
           .catch((err) => {
             responseDiv.textContent = err;
