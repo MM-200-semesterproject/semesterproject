@@ -37,15 +37,21 @@ app.post('/signUp', async function (request, response) {
   }
 });
 
-app.post('/login', async function (request, response) {
+const auth = async function (request, response, next) {
   let result = await pool.loadUser(request.body);
+  request.result = result;
   if (result instanceof Error) {
-    response.status(500).json(result);
+    response.status(400).json(result);
     return;
   } else {
-    response.status(200).json(result);
-    return;
+    next();
   }
+};
+
+app.use(auth);
+
+app.post('/login', async function (request, response) {
+  console.log('Next succesfull');
 });
 
 app.listen(app.get('port'), function () {

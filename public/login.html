@@ -58,8 +58,7 @@
 
         fetch('/login', config)
           .then((resp) => {
-            console.log(resp.json());
-            //location.href = 'editMode.html';
+            console.log(resp.status);
             return resp;
           })
           .catch((err) => {
