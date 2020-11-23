@@ -1,79 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create user</title>
     <link rel="stylesheet" href="styles/global.css" />
     <script src="js/validation.js" type="module"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap"
-      rel="stylesheet"
-    />
-  </head>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap" rel="stylesheet" />
+</head>
 
-  <body>
+<body>
     <div class="signupLoginWrapper">
-      <form method="post" id="signUpForm" class="SignUpandLogIn">
-        <section class="signupHeading">
-          <img src="svg/logo.svg" alt="More Slides logo" id="signupLogo" />
-          <h1 style="margin: 40px auto 20px; font-size: 28px">
-            Create your new account:
-          </h1>
-        </section>
-        <input
-          id="username"
-          type="text"
-          name="user[username]"
-          placeholder="Enter E-mail"
-        />
-        <input
-          id="password"
-          type="text"
-          name="user[password]"
-          placeholder="Enter Password"
-        />
-        <button class="btnGreen" type="submit" value="Signup">Signup</button>
-        <div class="responseFromServer"></div>
-      </form>
+        <form method="post" id="signUpForm" class="SignUpandLogIn">
+            <section class="signupHeading">
+                <img src="svg/logo.svg" alt="More Slides logo" id="signupLogo" />
+                <h1 style="margin: 40px auto 20px; font-size: 28px">
+                    Create your new account:
+                </h1>
+            </section>
+            <input id="username" type="text" name="user[username]" placeholder="Enter E-mail" />
+            <input id="password" type="text" name="user[password]" placeholder="Enter Password" />
+            <button class="btnGreen" type="submit" value="Signup">Signup</button>
+            <div class="responseFromServer"></div>
+        </form>
     </div>
 
     <script>
-      const signUpForm = document.querySelector('#signUpForm');
-      const responseDiv = document.querySelector('.responseFromServer');
+        const signUpForm = document.querySelector('#signUpForm');
+        const responseDiv = document.querySelector('.responseFromServer');
 
-      signUpForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const inputUsername = document.querySelector('#username').value;
-        const inputPassword = document.querySelector('#password').value;
-        const body = {
-          user: {
-            username: inputUsername,
-            password: inputPassword,
-          },
-        };
-        const config = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body),
-        };
-        fetch('/signUp', config)
-          .then((resp) => {
-            return resp.json();
-          })
-          .then((info) => {
-            const responseLink = document.createElement('a');
-            responseLink.setAttribute('href', 'login.html');
-            responseLink.textContent = 'User created, click here to log in.';
-            responseDiv.appendChild(responseLink);
-          })
-          .catch((err) => {
-            responseDiv.textContent = err;
-          });
-      });
+        signUpForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const inputUsername = document.querySelector('#username').value;
+            const inputPassword = document.querySelector('#password').value;
+            const body = {
+                username: inputUsername,
+                password: inputPassword,
+            };
+            const config = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
+            };
+            fetch('/signUp', config)
+                .then((resp) => {
+                    return resp.json();
+                })
+                .then((info) => {
+                    const responseLink = document.createElement('a');
+                    responseLink.setAttribute('href', 'login.html');
+                    responseLink.textContent = 'User created, click here to log in.';
+                    responseDiv.appendChild(responseLink);
+                })
+                .catch((err) => {
+                    responseDiv.textContent = err;
+                });
+        });
     </script>
-  </body>
+</body>
+
 </html>
