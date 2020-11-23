@@ -58,7 +58,6 @@ class StorageHandler {
       console.log(`Error on loadUser: ${err}`);
       client.end();
     }
-
     return results;
   }
 
