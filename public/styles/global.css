@@ -1,16 +1,19 @@
+* {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+}
+
 body {
   background-color: #e2e2e2;
   margin: 0;
   height: 100vh;
   overflow: hidden;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 header {
-  position: fixed;
   width: 100%;
   display: flex;
-  min-height: 50px;
+  min-height: 40px;
   height: 4%;
   background-color: #485153;
   box-shadow: 0 2px 4px #191c1d;
@@ -23,6 +26,18 @@ h1 {
   font-size: 30px;
   margin-bottom: 40px;
   text-align: center;
+}
+
+h1.monoLogo {
+  font-family: 'Montserrat Subrayada', sans-serif;
+}
+
+h1.logo {
+  font-family: 'Comfortaa', cursive;
+}
+
+span.logoS {
+  font-family: 'Bungee Shade', cursive;
 }
 
 h2 {
@@ -99,9 +114,24 @@ button:active {
   position: relative;
 }
 
-.loginWrapper {
+.signupLoginWrapper {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.signupLoginWrapper form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  justify-self: center;
+  background-color: #25363a;
+  border: none;
+  max-width: 400px;
+  padding: 50px 80px 30px;
+  border-radius: 10px;
+  font-size: 10px;
 }
 
 .editWrapper {
