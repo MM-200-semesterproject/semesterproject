@@ -20,10 +20,13 @@
     <div class="editWrapper">
       <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
       <div class="editMenu">
-        <select id="crntPresentation" name="crntPresentation">
-          <option value="untitled1">Untitled 1</option></select
-        ><br /><br />
+        <br /><br />
         <form id="savePresForm">
+          <select id="crntPresentation" name="crntPresentation">
+            <option value="pres1">pres1</option>
+            <option value="pres2">pres2</option>
+            <option value="pres3">pres3</option>
+          </select>
           <input
             id="inpPresTitle"
             class="input"
@@ -78,8 +81,6 @@
         { text: 'slide b', img: 'img2', list: [''] },
         { text: 'slide c', img: 'img3', list: [''] },
       ];
-
-     
 
       let container = document.getElementById('container');
       let showIndex = 1;
@@ -139,9 +140,8 @@
       function addSlide() {
         let newSlide = { text: 'Test', img: 'Test', list: ['Test'] };
         presentation.push(newSlide);
-        document.getElementById('addTxt').innerHTML =presentation ;
+        document.getElementById('addTxt').innerHTML = presentation;
       }
-     
     </script>
   </body>
 </html>

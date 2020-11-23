@@ -173,7 +173,7 @@ button:active {
 
 #signupLogo {
   width: 120px;
-  margin: -30px auto 50px;
-  margin-right: -35%;
+  /*margin: -30px auto 50px;
+  margin-right: -35%;*/
   opacity: 50%;
 }
