@@ -6,7 +6,7 @@ const pool = require('./db/pool.js');
 //Getting modules instanced
 const app = express();
 const path = require('path');
-const { loadUser } = require('./db/pool.js');
+const { loadUser } = require('./db/pool.js'); //Du trenger ikke denne her, bare bruk pool.loadUser();
 
 app.set('port', process.env.PORT || 8080);
 app.use(express.static('public'));
@@ -17,41 +17,76 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 app.post('/presentation', (req, res) => {
-    let presentation = {
-        elements: req.body,
-    };
+  let presentation = {
+    presentationid: req.body.presentationid,
+    title: req.body.title,
+    slides: req.body.slides,
+  };
+  res.status(200).json(presentation);
+  return;
+});
 
-    res.status(200).json(presentation);
+app.post('/signUp', async function (request, response) {
+  // Sends object to pool.js-->DB;
+  let result = await pool.newUser(request.body);
+  if (result instanceof Error) {
+    response.status(500).json(result);
     return;
+  } else {
+    response.status(200).json(result);
+    return;
+  }
 });
 
-app.post('/signUp', function(request, response) {
-    // Sends object to pool.js-->DB;
-    try {
-        pool.newUser(request.body);
-        response.status(200).send('User created');
-        return;
-    } catch (error) {
-        response.send(error + ' Try again');
-        return;
-    }
-});
+const auth = async function (request, response, next) {
+  let result = await pool.loadUser(request.body);
+  request.result = result;
+  if (result instanceof Error) {
+    response.status(400).json(result);
+    return;
+  } else {
+    next();
+  }
+};
 
-app.post('/log-in', function(request, response) {
-    // Sends object to pool.js-->DB;
-    try {
-        pool.loadUser(request.body);
-        response.status(200).send('logged in');
-        return;
-    } catch (error) {
-        response.send(error + ' Try again');
-        return;
-    }
-});
+app.use(auth);
 
-app.get('/create-user', function(request, res) {
-    res.sendFile(path.join(__dirname, 'public', 'sign-up-copy.html'));
+app.post('/login', async function (request, response) {
+  console.log('next succsesfull');
+  response.status(200).send('hei');
 });
-app.listen(app.get('port'), function() {
-    console.log('server running', app.get('port'));
+//---------------------test av pool.js functions--------------------------
+/*
+let testpresentation = {
+  userid: 40,
+  title: 'PresentationTitle',
+  slides: [
+    {
+      text: 'text1',
+      img:
+        'https://image.shutterstock.com/image-photo/suraj-mukhi-flower-my-great-260nw-1467178388.jpg',
+      list: ['plane', 'boat', 'car'],
+    },
+    {
+      text: 'text2',
+      img:
+        'https://image.shutterstock.com/image-photo/suraj-mukhi-flower-my-great-260nw-1467178388.jpg',
+      list: ['1', '2', '3'],
+    },
+    {
+      text: 'text3',
+      img:
+        'https://image.shutterstock.com/image-photo/suraj-mukhi-flower-my-great-260nw-1467178388.jpg',
+      list: ['variables', 'letters', 'numbers'],
+    },
+  ],
+};
+let testbody = { user: { id: 40 } };
+pool.createPres(testpresentation);
+pool.loadPres(testbody);
+*/
+//---------------------test av pool.js functions ferdig --------------------------
+
+app.listen(app.get('port'), function () {
+  console.log('server running', app.get('port'));
 });

@@ -4,26 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Mode</title>
+    <link rel="stylesheet" type="text/css" href="styles/global.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap"
       rel="stylesheet"
-      type="text/css"
-      href="styles/PresentasjonStyle.css"
     />
   </head>
 
   <body>
+    <header class="header">
+      <img src="svg/logo.svg" alt="More Slides logo" id="headerLogo" />
+    </header>
     <div class="editWrapper">
-      <header class="header">
-        <h1>Header</h1>
-        hi this is a header p-tag
-      </header>
       <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
       <div class="editMenu">
-        <select id="crntPresentation" name="crntPresentation">
-          <option value="untitled1">Untitled 1</option></select
-        ><br /><br />
-
+        <br /><br />
         <form id="savePresForm">
+          <select id="crntPresentation" name="crntPresentation">
+            <option value="pres1">pres1</option>
+            <option value="pres2">pres2</option>
+            <option value="pres3">pres3</option>
+          </select>
           <input
             id="inpPresTitle"
             class="input"
@@ -69,9 +71,10 @@
  */
       let presentation = [
         { text: 'slide a', img: '6789', list: ['8'] },
-        { text: 'slide 2', img: 'img2', list: [''] },
+        { text: 'slide b', img: 'img2', list: [''] },
         { text: 'slide c', img: 'img3', list: [''] },
       ];
+
       let container = document.getElementById('container');
       let showIndex = 1;
 
@@ -92,24 +95,23 @@
           let div = document.createElement('div');
 
           let html = '';
-          for (let element of slide) {
-            let text = '';
+          let text = '';
 
-            text = element.text;
-            console.log(text);
-            let img = element.img;
-            let list = element.list;
+          text = slide.text;
+          console.log(text);
+          let img = slide.img;
+          let list = slide.list;
 
-            div.classList.add('slide');
-            html = `<h6>${text}</h6>
+          div.classList.add('slide');
+          html = `<h6>${text}</h6>
                         `;
-            div.innerHTML = html;
+          div.innerHTML = html;
 
-            console.log(div);
-            container.appendChild(div);
-          }
+          console.log(div);
+          container.appendChild(div);
         }
       }
+
       function loadSlides(num) {
         let slideshow = document.getElementsByClassName('slide');
         let dots = document.getElementsByClassName('dot');
@@ -128,6 +130,22 @@
         slideshow[showIndex - 1].style.display = 'block';
         dots[showIndex - 1].className += ' crntSlide';
       }
+      addTxt.addEventListener('click', function () {
+        let newSlide = { text: 'Test', img: 'Test', list: ['Test'] };
+        presentation.push(newSlide);
+        loadPresentation();
+      });
+      addImg.addEventListener('click', function () {
+        let newSlide = { text: 'Test', img: 'Test', list: ['Test'] };
+        presentation.push(newSlide);
+        loadPresentation();
+      });
+
+      addList.addEventListener('click', function () {
+        let newSlide = { text: 'Test', img: 'Test', list: ['Test'] };
+        presentation.push(newSlide);
+        loadPresentation();
+      });
     </script>
   </body>
 </html>
