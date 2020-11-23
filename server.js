@@ -52,7 +52,7 @@ app.post('/login', async function(request, response) {
     }
 });
 //---------------------test av pool.js functions--------------------------
-
+/*
 let testpresentation = {
     userid: 40,
     title: 'PresentationTitle',
@@ -76,7 +76,7 @@ let testpresentation = {
 let testbody = { user: { id: 40 } };
 pool.createPres(testpresentation);
 pool.loadPres(testbody);
-
+*/
 //---------------------test av pool.js functions ferdig --------------------------
 
 app.listen(app.get('port'), function() {
