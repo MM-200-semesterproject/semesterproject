@@ -22,7 +22,6 @@ app.post('/presentation', (req, res) => {
     title: req.body.title,
     slides: req.body.slides,
   };
-
   res.status(200).json(presentation);
   return;
 });
@@ -39,29 +38,24 @@ app.post('/signUp', async function (request, response) {
   }
 });
 
-app.post('/login', async function (request, response) {
+const auth = async function (request, response, next) {
   let result = await pool.loadUser(request.body);
+  request.result = result;
   if (result instanceof Error) {
-    response.status(500).json(result);
+    response.status(400).json(result);
     return;
   } else {
-    response.status(200).json(result);
-    return;
+    next();
   }
-});
+};
+
+app.use(auth);
 
 app.post('/login', async function (request, response) {
-  let result = await pool.loadUser(request.body);
-  if (result instanceof Error) {
-    response.status(500).send(result + ' Try again');
-    return;
-  } else {
-    response.status(200);
-    return;
-  }
+  console.log('Next succesfull');
 });
 //---------------------test av pool.js functions--------------------------
-
+/*
 let testpresentation = {
   userid: 40,
   title: 'PresentationTitle',
@@ -89,7 +83,7 @@ let testpresentation = {
 let testbody = { user: { id: 40 } };
 pool.createPres(testpresentation);
 pool.loadPres(testbody);
-
+*/
 //---------------------test av pool.js functions ferdig --------------------------
 
 app.listen(app.get('port'), function () {
