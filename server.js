@@ -18,9 +18,10 @@ app.use(express.json());
 
 app.post('/presentation', (req, res) => {
   let presentation = {
-    elements: req.body,
+    presentationid: req.body.presentationid,
+    title: req.body.title,
+    slides: req.body.slides,
   };
-
   res.status(200).json(presentation);
   return;
 });
@@ -53,6 +54,37 @@ app.use(auth);
 app.post('/login', async function (request, response) {
   console.log('Next succesfull');
 });
+//---------------------test av pool.js functions--------------------------
+
+let testpresentation = {
+  userid: 40,
+  title: 'PresentationTitle',
+  slides: [
+    {
+      text: 'text1',
+      img:
+        'https://image.shutterstock.com/image-photo/suraj-mukhi-flower-my-great-260nw-1467178388.jpg',
+      list: ['plane', 'boat', 'car'],
+    },
+    {
+      text: 'text2',
+      img:
+        'https://image.shutterstock.com/image-photo/suraj-mukhi-flower-my-great-260nw-1467178388.jpg',
+      list: ['1', '2', '3'],
+    },
+    {
+      text: 'text3',
+      img:
+        'https://image.shutterstock.com/image-photo/suraj-mukhi-flower-my-great-260nw-1467178388.jpg',
+      list: ['variables', 'letters', 'numbers'],
+    },
+  ],
+};
+let testbody = { user: { id: 40 } };
+pool.createPres(testpresentation);
+pool.loadPres(testbody);
+
+//---------------------test av pool.js functions ferdig --------------------------
 
 app.listen(app.get('port'), function () {
   console.log('server running', app.get('port'));
