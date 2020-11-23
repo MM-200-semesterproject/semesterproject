@@ -29,12 +29,10 @@ app.post('/signUp', async function (request, response) {
   // Sends object to pool.js-->DB;
   let result = await pool.newUser(request.body);
   if (result instanceof Error) {
-    response.status(500).send(result + ' Try again');
+    response.status(500).json(result);
     return;
   } else {
-    response.status(200).json({
-      msg: 'User created',
-    });
+    response.status(200).json(result);
     return;
   }
 });
@@ -42,10 +40,10 @@ app.post('/signUp', async function (request, response) {
 app.post('/login', async function (request, response) {
   let result = await pool.loadUser(request.body);
   if (result instanceof Error) {
-    response.status(500).send(result + ' Try again');
+    response.status(500).json(result);
     return;
   } else {
-    response.status(200);
+    response.status(200).json(result);
     return;
   }
 });
