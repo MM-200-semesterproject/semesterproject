@@ -62,10 +62,13 @@
 
         fetch('/login', config)
           .then((resp) => {
+            console.log(resp.json());
             //location.href = 'editMode.html';
+            return resp;
           })
           .catch((err) => {
             responseDiv.textContent = err;
+            return err;
           });
       });
     </script>
