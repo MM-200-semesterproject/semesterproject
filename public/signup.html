@@ -69,7 +69,6 @@
             responseLink.setAttribute('href', 'login.html');
             responseLink.textContent = 'User created, click here to log in.';
             responseDiv.appendChild(responseLink);
-            console.log(info.msg);
           })
           .catch((err) => {
             responseDiv.textContent = err;
