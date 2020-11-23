@@ -6,7 +6,7 @@ const pool = require('./db/pool.js');
 //Getting modules instanced
 const app = express();
 const path = require('path');
-const { loadUser } = require('./db/pool.js');
+const { loadUser } = require('./db/pool.js'); //Du trenger ikke denne her, bare bruk pool.loadUser();
 
 app.set('port', process.env.PORT || 8080);
 app.use(express.static('public'));
@@ -25,23 +25,31 @@ app.post('/presentation', (req, res) => {
   return;
 });
 
-app.post('/signUp', function (request, response) {
+app.post('/signUp', async function (request, response) {
   // Sends object to pool.js-->DB;
-  try {
-    pool.newUser(request.body);
+  let result = await pool.newUser(request.body);
+  if (result instanceof Error) {
+    response.status(500).send(result + ' Try again');
+    return;
+  } else {
     response.status(200).json({
       msg: 'User created',
     });
     return;
-  } catch (error) {
-    response.send(error + ' Try again');
+  }
+});
+
+app.post('/login', async function (request, response) {
+  let result = await pool.loadUser(request.body);
+  if (result instanceof Error) {
+    response.status(500).send(result + ' Try again');
+    return;
+  } else {
+    response.status(200);
     return;
   }
 });
 
-app.get('/create-user', function (request, res) {
-  res.sendFile(path.join(__dirname, 'public', 'sign-up-copy.html'));
-});
 app.listen(app.get('port'), function () {
   console.log('server running', app.get('port'));
 });
