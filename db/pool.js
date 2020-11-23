@@ -80,6 +80,7 @@ class StorageHandler {
             client.end();
         }
     }
+<<<<<<< HEAD
 
     async loadPres(body) {
         const client = new pg.Client(this.credentials);
@@ -111,6 +112,29 @@ class StorageHandler {
             console.log(`Error on loadPres: ${err}`);
             client.end();
         }
+=======
+    return results;
+  }
+
+  async loadUserCopy(body) {
+    const client = new pg.Client(this.credentials);
+    const input = encrypt.hashCode(body);
+    let results = null;
+
+    try {
+      await client.connect();
+      results = await client.query(
+        'SELECT * FROM users WHERE email = $1 AND password = $2',
+        [input.user.username, input.user.password]
+      );
+      results = results.rows[0].id;
+      console.log(`Result loadUser id: ${results}`);
+
+      client.end();
+    } catch (err) {
+      console.log(`Error on loadUser: ${err}`); //wrong in type login-page?
+      client.end();
+>>>>>>> ea3838963939b9e0f8cbaef6aecd14cafa4a28df
     }
 
     async createPres(inp) {

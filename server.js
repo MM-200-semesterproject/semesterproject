@@ -23,6 +23,7 @@ app.post('/presentation', (req, res) => {
         slides: req.body.slides,
     };
 
+<<<<<<< HEAD
     res.status(200).json(presentation);
     return;
 });
@@ -39,6 +40,33 @@ app.post('/signUp', async function(request, response) {
         });
         return;
     }
+=======
+  res.status(200).json(presentation);
+  return;
+});
+
+app.post('/signUp', async function (request, response) {
+  // Sends object to pool.js-->DB;
+  let result = await pool.newUser(request.body);
+  if (result instanceof Error) {
+    response.status(500).json(result);
+    return;
+  } else {
+    response.status(200).json(result);
+    return;
+  }
+});
+
+app.post('/login', async function (request, response) {
+  let result = await pool.loadUser(request.body);
+  if (result instanceof Error) {
+    response.status(500).json(result);
+    return;
+  } else {
+    response.status(200).json(result);
+    return;
+  }
+>>>>>>> ea3838963939b9e0f8cbaef6aecd14cafa4a28df
 });
 
 app.post('/login', async function(request, response) {
