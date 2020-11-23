@@ -4,16 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create user</title>
-
     <link rel="stylesheet" href="styles/global.css" />
     <script src="js/validation.js" type="module"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
     <div class="signupLoginWrapper">
       <form method="post" id="signUpForm" class="SignUpandLogIn">
-        <img src="svg/logo.svg" alt="More Slides logo" id="signupLogo" />
-        <h1>Create new account:</h1>
+        <section class="signupHeading">
+          <img src="svg/logo.svg" alt="More Slides logo" id="signupLogo" />
+          <h1 style="margin: 40px auto 20px; font-size: 28px">
+            Create your new account:
+          </h1>
+        </section>
         <input
           id="username"
           type="text"
