@@ -119,6 +119,39 @@ class StorageHandler {
     }
   }
 
+  async loadPres(body) {
+    const client = new pg.Client(this.credentials);
+    const input = body;
+
+    let presentationArray = [];
+    let singlePres = '';
+    let results = null;
+
+    try {
+      await client.connect();
+      let results = await client.query(
+        'SELECT COUNT(userid) FROM presentations WHERE userid = $1',
+        [input.user.id]
+      );
+
+      let rowcount = results.rows[0].count;
+
+      results = await client.query(
+        'SELECT * FROM presentations WHERE userid = $1',
+        [input.user.id]
+      );
+      for (let i = 0; i < rowcount; i++) {
+        let row = results.rows[i];
+        presentationArray.push(row);
+      }
+      return presentationArray;
+
+      client.end();
+    } catch (err) {
+      console.log(`Error on loadPres: ${err}`);
+      client.end();
+    }
+  }
   async createPres(inp) {
     const client = new pg.Client(this.credentials);
     const input = inp;
