@@ -52,7 +52,8 @@ const auth = async function (request, response, next) {
 app.use(auth);
 
 app.post('/login', async function (request, response) {
-  console.log('Next succesfull');
+  console.log('next succsesfull');
+  response.status(200).send('hei');
 });
 //---------------------test av pool.js functions--------------------------
 /*
