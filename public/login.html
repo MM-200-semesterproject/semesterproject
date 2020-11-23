@@ -6,8 +6,6 @@
     <title>Login Moreslides</title>
     <link rel="stylesheet" href="styles/global.css" type="text/css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Comfortaa:wght@600&family=Montserrat+Subrayada:wght@700&family=Roboto:wght@100;300;400;900&display=swap"
       rel="stylesheet"
@@ -17,9 +15,7 @@
   <body>
     <div class="signupLoginWrapper">
       <form method="post" id="loginForm">
-        <section style="display: flex">
-          <h1 class="logo">more <span class="logoS">S</span>lides</h1>
-        </section>
+        <img src="svg/logo.svg" alt="More Slides logo" id="loginLogo" />
         <input
           id="username"
           type="text"
@@ -33,7 +29,7 @@
           placeholder="Enter Password"
         />
         <button class="btnGreen" type="submit" value="Login">Login</button>
-        <button class="btnGrey"><a href="sign-up.html">Sign Up</a></button>
+        <button class="btnGrey"><a href="signup.html">Sign Up</a></button>
       </form>
       <div class="responseFromServer"></div>
     </div>
@@ -62,10 +58,13 @@
 
         fetch('/login', config)
           .then((resp) => {
+            console.log(resp.json());
             //location.href = 'editMode.html';
+            return resp;
           })
           .catch((err) => {
             responseDiv.textContent = err;
+            return err;
           });
       });
     </script>
