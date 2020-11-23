@@ -1,52 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Moreslides</title>
     <link rel="stylesheet" href="./styles/global.css" type="text/css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap" rel="stylesheet" />
-</head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
+  <body>
     <div class="signupLoginWrapper">
-        <form method="post" id="loginForm">
-            <img src="svg/logo.svg" alt="More Slides logo" id="loginLogo" />
-            <input id="username" type="text" name="user[username]" placeholder="Enter E-mail" />
-            <input id="password" type="text" name="user[password]" placeholder="Enter Password" />
-            <button id="loginBtn" class="btnGreen" type="submit" value="Login">
+      <form method="post" id="loginForm">
+        <img src="svg/logo.svg" alt="More Slides logo" id="loginLogo" />
+        <input
+          id="username"
+          type="text"
+          name="user[username]"
+          placeholder="Enter E-mail"
+        />
+        <input
+          id="password"
+          type="text"
+          name="user[password]"
+          placeholder="Enter Password"
+        />
+        <button id="loginBtn" class="btnGreen" type="submit" value="Login">
           Login
         </button>
-            <button class="btnGrey"><a href="signup.html">Sign Up</a></button>
-        </form>
-        <div class="responseFromServer"></div>
+        <button class="btnGrey"><a href="signup.html">Sign Up</a></button>
+      </form>
+      <div class="responseFromServer"></div>
     </div>
     <script>
-        const loginForm = document.querySelector('#loginForm');
-        const responseDiv = document.querySelector('.responseFromServer');
+      const loginForm = document.querySelector('#loginForm');
+      const responseDiv = document.querySelector('.responseFromServer');
 
-        loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const inputUsername = document.querySelector('#username').value;
-            const inputPassword = document.querySelector('#password').value;
+      loginForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const inputUsername = document.querySelector('#username').value;
+        const inputPassword = document.querySelector('#password').value;
 
-            const body = {
-                user: {
-                    username: inputUsername,
-                    password: inputPassword,
-                },
-            };
-            const config = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(body),
-            };
+        const body = {
+          user: {
+            username: inputUsername,
+            password: inputPassword,
+          },
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
 
-<<<<<<< HEAD
         fetch('/login', config)
           .then((resp) => {
             console.log(resp.status);
@@ -57,20 +68,6 @@
             return err;
           });
       });
-=======
-            fetch('/login', config)
-                .then((resp) => {
-                    console.log(resp.json());
-                    //location.href = 'editMode.html';
-                    return resp;
-                })
-                .catch((err) => {
-                    responseDiv.textContent = err;
-                    return err;
-                });
-        });
->>>>>>> f06eb2ce9c9f8dc62e4c6e9193d0f5e58def567a
     </script>
-</body>
-
+  </body>
 </html>
