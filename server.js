@@ -11,51 +11,52 @@ const { loadUser } = require('./db/pool.js'); //Du trenger ikke denne her, bare 
 app.set('port', process.env.PORT || 8080);
 app.use(express.static('public'));
 app.use(
-    express.static(path.join(__dirname, 'public'), { index: 'login.html' })
+  express.static(path.join(__dirname, 'public'), { index: 'login.html' })
 );
 app.use(bodyParser.json());
 app.use(express.json());
 
 app.post('/presentation', (req, res) => {
-    let presentation = {
-        presentationid: req.body.presentationid,
-        title: req.body.title,
-        slides: req.body.slides,
-    };
-    res.status(200).json(presentation);
+  let presentation = {
+    presentationid: req.body.presentationid,
+    title: req.body.title,
+    slides: req.body.slides,
+  };
+  res.status(200).json(presentation);
+  return;
+});
+
+app.post('/signUp', async function (request, response) {
+  // Sends object to pool.js-->DB;
+  let result = await pool.newUser(request.body);
+  if (result instanceof Error) {
+    response.status(500).json(result);
     return;
+  } else {
+    response.status(200).json(result);
+    return;
+  }
 });
 
-app.post('/signUp', async function(request, response) {
-    // Sends object to pool.js-->DB;
-    let result = await pool.newUser(request.body);
-    if (result instanceof Error) {
-        response.status(500).json(result);
-        return;
-    } else {
-        response.status(200).json(result);
-        return;
-    }
-});
-
-const auth = async function(request, response, next) {
-    let result = await pool.loadUser(request.body);
-    request.result = result;
-    if (result instanceof Error) {
-        response.status(400).json(result);
-        return;
-    } else {
-        next();
-    }
+const auth = async function (request, response, next) {
+  let result = await pool.loadUser(request.body);
+  request.result = result;
+  if (result instanceof Error) {
+    response.status(400).json(result);
+    return;
+  } else {
+    next();
+  }
 };
 
 app.use(auth);
 
-app.post('/login', async function(request, response) {
-    console.log('next succsesfull');
-    response.status(200).send('hei');
+app.post('/login', async function (request, response) {
+  console.log('next succsesfull');
+  response.status(200).send('hei');
 });
 
-app.listen(app.get('port'), function() {
-    console.log('server running', app.get('port'));
+app.listen(app.get('port'), function () {
+  console.log('server running', app.get('port'));
 });
+//test
