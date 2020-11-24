@@ -98,10 +98,11 @@ input {
   justify-content: space-between;
   align-content: center;
   background-color: #f9f9f9;
+  padding: 4px;
 }
 
 .select {
-  display: flex;
+  display: inline-block;
   overflow: visible;
   width: 100%;
   margin-left: -9px;
@@ -109,11 +110,10 @@ input {
 
 .selectOptions {
   display: none;
-  position: relative;
+  position: absolute;
   background-color: #fff;
-  box-shadow: 0 2px 6px 2px #212324;
+  box-shadow: 0 2px 6px 2px #213033;
   z-index: 10;
-  width: inherit;
 }
 
 .selectOptions a {
