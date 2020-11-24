@@ -6,6 +6,7 @@ const pool = require('./db/pool.js');
 //Getting modules instanced
 const app = express();
 const path = require('path');
+const { ppid } = require('process');
 
 app.set('port', process.env.PORT || 8080);
 app.use(express.static('public'));
@@ -42,22 +43,20 @@ app.post('/signUp', async function (request, response) {
   }
 });
 
-// const auth = async function (request, response, next) { //Ikke slett, skal brukes senere
-//   let result = await pool.loadUser(request.body);
-//   request.result = result;
-//   if (result instanceof Error) {
-//     response.status(400).json(result);
-//     return;
-//   } else {
-//     next();
-//   }
-// };
-
-// app.use(auth);
-
 app.post('/login', async function (request, response) {
-  console.log('next succsesfull');
-  response.status(200).send('hei');
+  let result = await pool.loadUser(request.body);
+  request.result = result;
+  if (result instanceof Error) {
+    response.status(400).json(result);
+    return;
+  } else {
+    response.status(200).json(result);
+    return;
+  }
+});
+
+app.get('/editMode', async function (request, response) {
+  console.log('editmode');
 });
 
 app.listen(app.get('port'), function () {

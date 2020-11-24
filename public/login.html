@@ -64,17 +64,19 @@
 
         fetch('/login', config)
           .then((resp) => {
-            if (resp.status === 200) {
-              location.href = 'editMode.html';
-              console.log(resp.status);
-            } else {
-              responseDiv.textContent =
-                'Invalid e-mail or password, try again.';
+            if (resp.status !== 200) {
+              throw new Error('Incorrect e-mail or password, try again.');
             }
-            return resp;
+            return resp.json();
+          })
+          .then((resp) => {
+            const accessData = JSON.stringify(resp);
+            localStorage.setItem('accessData', accessData);
+            location.href = 'editMode.html';
           })
           .catch((err) => {
-            responseDiv.textContent = err;
+            responseDiv.textContent = '';
+            responseDiv.textContent = err.message;
             return err;
           });
       });
