@@ -30,7 +30,7 @@ app.post('/signUp', async function (request, response) {
   // Sends object to pool.js-->DB;
   let result = await pool.newUser(request.body);
   if (result instanceof Error) {
-    response.status(500).json(result);
+    response.status(result.statusCode).json(result.message);
     return;
   } else {
     response.status(200).json(result);
