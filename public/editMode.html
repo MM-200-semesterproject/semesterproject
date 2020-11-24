@@ -52,6 +52,7 @@
           <button id="savePres" class="btnGreen" type="submit" value="submit">
             Save Presentation
           </button>
+
           <button id="createPres" class="btnGreen" type="submit" value="submit">
             Create New Presentation
           </button>
@@ -97,6 +98,7 @@
     addEventListner to buttons
         function that adds a new slide(for example text)
  */
+
       let presentation = [
         { text: 'Title 1', },
         { text: 'Title 2',  },
@@ -112,6 +114,42 @@
       createNavigationDots();
 
       //---------------------Funksjoner--------------------------
+      const savePresForm = document.querySelector('#savePresForm');
+
+      savePresForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const title = document.querySelector('#inpPresTitle').value;
+
+        const body = {
+          title: title,
+          slides: presentation,
+          presentationid: '',
+          userid: '1',
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+
+        fetch('/savePresentation', config)
+          .then((resp) => {
+            if (resp.status === 200) {
+              location.href = 'editMode.html';
+              console.log(resp.status);
+            } else {
+              responseDiv.textContent = ' try again.';
+            }
+            return resp;
+          })
+          .catch((err) => {
+            responseDiv.textContent = err;
+            return err;
+          });
+      });
+
       function activeSlide(n) {
         loadSlides((showIndex = n));
       }

@@ -6,7 +6,6 @@ const pool = require('./db/pool.js');
 //Getting modules instanced
 const app = express();
 const path = require('path');
-const { loadUser } = require('./db/pool.js'); //Du trenger ikke denne her, bare bruk pool.loadUser();
 
 app.set('port', process.env.PORT || 8080);
 app.use(express.static('public'));
@@ -34,7 +33,8 @@ app.post('/signUp', async function (request, response) {
       response.status(500).json(result);
       return;
     }
-    response.status(result.statusCode).json(result.message);
+    response.statusMessage = result.message;
+    response.status(result.statusCode).end();
     return;
   } else {
     response.status(200).json(result);
@@ -42,18 +42,18 @@ app.post('/signUp', async function (request, response) {
   }
 });
 
-const auth = async function (request, response, next) {
-  let result = await pool.loadUser(request.body);
-  request.result = result;
-  if (result instanceof Error) {
-    response.status(400).json(result);
-    return;
-  } else {
-    next();
-  }
-};
+// const auth = async function (request, response, next) { //Ikke slett, skal brukes senere
+//   let result = await pool.loadUser(request.body);
+//   request.result = result;
+//   if (result instanceof Error) {
+//     response.status(400).json(result);
+//     return;
+//   } else {
+//     next();
+//   }
+// };
 
-app.use(auth);
+// app.use(auth);
 
 app.post('/login', async function (request, response) {
   console.log('next succsesfull');
