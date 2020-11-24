@@ -70,24 +70,83 @@
     </div>
 
     <script type="text/javascript">
-      /*
-    TODO:
-    addEventListner to buttons
-        function that adds a new slide(for example text)
- */
-      let presentation = [
-        { text: 'slide a', img: '6789', list: ['8'] },
-        { text: 'slide b', img: 'img2', list: [''] },
-        { text: 'slide c', img: 'img3', list: [''] },
+      /* This will be a try for a cutsom dropdown menu -Frida
+           let selectBtn = document.getElementsByClassName('selectBtn');
+           let options = document.getElementsByClassName('options');
+
+           options.addEventListener
+
+
+         //-------------------------------- end of testcode Frida ---------
+           /*
+         TODO:
+         addEventListner to buttons
+             function that adds a new slide(for example text)
+      */
+
+      class Presentation {
+        constructor(title, slides, userid) {
+          this.title = title;
+          this.slides = slides;
+          this.userid = userid;
+        }
+      }
+
+      let userid = 155;
+      let firstPresentationArr = [
+        { text: 'Title 1' },
+        { text: 'Title 2' },
+        { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
+        { list: [1, 2, 3, 4, 5] },
       ];
+
+      presentation = new Presentation('MyTitle', firstPresentationArr, userid);
 
       let container = document.getElementById('container');
       let showIndex = 1;
 
-      loadPresentation();
+      loadPresentation(presentation.slides);
       loadSlides(showIndex);
       addSlide();
       //---------------------Funksjoner--------------------------
+      const savePresForm = document.querySelector('#savePresForm');
+
+      //GET load presentations if localstorage != empty
+      //UNDER CONSTRUCTION CAROLINE
+      savePresForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const title = document.querySelector('#inpPresTitle').value;
+
+        const body = {
+          title: presentation.title,
+          slides: presentation.slides,
+          presentationid: '',
+          userid: userid, //bytt ut med localstorage.get(userid);
+        };
+
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+
+        fetch('/create-presentation', config)
+          .then((resp) => {
+            if (resp.status === 200) {
+              location.href = 'editMode.html';
+              console.log(resp.status);
+            } else {
+              responseDiv.textContent = 'something went wrong';
+            }
+            return resp;
+          })
+          .catch((err) => {
+            responseDiv.textContent = err;
+            return err;
+          });
+      });
 
       function activeSlide(n) {
         loadSlides((showIndex = n));
@@ -96,21 +155,49 @@
         loadSlides((showIndex += num));
       }
 
-      function loadPresentation() {
-        for (let slide of presentation) {
+      function createNavigationDots() {
+        let navDots = document.getElementById('navDots');
+        navDots.innerHTML = '';
+        for (let i = 1; i <= presentation.slides.length; i++) {
+          let span = document.createElement('span');
+          span.classList.add('dot');
+          span.addEventListener('click', function (evt) {
+            activeSlide(i);
+          });
+          navDots.appendChild(span);
+        }
+      }
+
+      function loadPresentation(arr) {
+        container.innerHTML = '';
+        for (let slide of arr) {
           let div = document.createElement('div');
 
           let html = '';
           let text = '';
+          let img = '';
+          let list = '';
 
-          text = slide.text;
-          console.log(text);
-          let img = slide.img;
-          let list = slide.list;
-
+          if (slide.text) {
+            text = '<h6>' + slide.text + '</h6>';
+          }
+          if (slide.img) {
+            img = '<img src=' + slide.img + '>';
+          }
+          if (slide.list) {
+            let innerOl = '';
+            for (let element of slide.list) {
+              let listElement = '<li>' + element + '</li>';
+              innerOl += listElement;
+            }
+            list = '<ul>' + innerOl + '</ul>';
+          }
           div.classList.add('slide');
-          html = `<h6>${text}</h6>
-                        `;
+          html = `${text}
+                       ${img}
+                       ${list}
+
+                             `;
           div.innerHTML = html;
 
           console.log(div);
@@ -136,11 +223,31 @@
         slideshow[showIndex - 1].style.display = 'block';
         dots[showIndex - 1].className += ' crntSlide';
       }
-      function addSlide() {
-        let newSlide = { text: 'Test', img: 'Test', list: ['Test'] };
-        presentation.push(newSlide);
-        document.getElementById('addTxt').innerHTML = presentation;
-      }
+
+      //-------------create slides with button----------------------------------------
+      addTxt.addEventListener('click', function () {
+        let newSlide = { text: 'Test1' };
+        presentation.slides.push(newSlide);
+        loadPresentation(presentation.slides);
+        createNavigationDots();
+        activeSlide(presentation.slides.length);
+      });
+
+      addImg.addEventListener('click', function () {
+        let newSlide = { img: 'Bilder/eggBilde.jpg' };
+        presentation.slides.push(newSlide);
+        loadPresentation(presentation.slides);
+        createNavigationDots();
+        activeSlide(presentation.slides.length);
+      });
+
+      addList.addEventListener('click', function () {
+        let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
+        presentation.slides.push(newSlide);
+        loadPresentation(presentation.slides);
+        createNavigationDots();
+        activeSlide(presentation.slides.length);
+      });
     </script>
   </body>
 </html>
