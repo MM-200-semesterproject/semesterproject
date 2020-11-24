@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create user</title>
     <link rel="stylesheet" href="styles/global.css" />
-    <script src="js/validation.js" type="module"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap"
@@ -77,8 +76,8 @@
                 'Username taken. Try again, or click here to log in.';
               responseDiv.textContent = '';
               responseDiv.appendChild(responseLink);
-            } else {
-              responseDiv.textContent = `An error has accured. Error code: ${info.status}`;
+            } else if (info.status === 401) {
+              responseDiv.textContent = info.statusText;
             }
           })
           .catch((err) => {
