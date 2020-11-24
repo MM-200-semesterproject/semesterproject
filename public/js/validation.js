@@ -1,41 +1,32 @@
-let email = "joistein@nuia.no";
-
-
-
 let regex = {
-        email: /^[^\s]+@[^\s]+\.[^\s]+$/,
-        password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/ //Minimum eight characters, minimum one letter and one number:
-    }
-    //validation(email, password);
+  email: /^[^\s]+@[^\s]+\.[^\s]+$/,
+  password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, //Minimum eight characters, minimum one letter and one number:
+};
+//validation(email, password);
 
 //console.log(tst);
 
 function validation(email, password) {
+  let testEmail = regex.email.test(email);
+  let testPassword = regex.password.test(password);
+  console.log(testPassword);
 
-    let testEmail = regex.email.test(email);
-    let testPassword = regex.password.test(password);
-    console.log(testPassword);
+  if (testEmail) {
+    console.log('email is validated');
 
-    if (testEmail) {
-        console.log("email is validated");
+    let userCheck = pool.checkUsers(email);
+    console.log('userCheck:' + userCheck);
 
-        let userCheck = pool.checkUsers(email);
-        console.log("userCheck:" + userCheck);
-
-        if (testPassword) {
-            console.log("password is validated");
-
-
-        } else {
-            console.log("password is not valid");
-        }
-
-        return
+    if (testPassword) {
+      console.log('password is validated');
     } else {
-        return false;
-
+      console.log('password is not valid');
     }
 
+    return;
+  } else {
+    return false;
+  }
 }
 
 /*
