@@ -4,31 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Mode</title>
+    <link rel="stylesheet" type="text/css" href="styles/global.css" />
     <link
       rel="stylesheet"
       type="text/css"
       href="styles/PresentasjonStyle.css"
     />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Comfortaa:wght@600&family=Montserrat+Subrayada:wght@700&family=Roboto:wght@100;300;400;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap"
       rel="stylesheet"
     />
   </head>
 
   <body>
     <header class="header">
-      <h1 class="monoLogo">moreSlides</h1>
+      <img src="svg/logo.svg" alt="More Slides logo" id="headerLogo" />
     </header>
     <div class="editWrapper">
       <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
       <div class="editMenu">
-        <select id="crntPresentation" name="crntPresentation">
-          <option value="untitled1">Untitled 1</option></select
-        ><br /><br />
-        <h1 class="monoLogo">moreSlides</h1>
+        <br /><br />
         <form id="savePresForm">
+          <select id="crntPresentation" name="crntPresentation">
+            <option value="pres1">pres1</option>
+            <option value="pres2">pres2</option>
+            <option value="pres3">pres3</option>
+          </select>
           <input
             id="inpPresTitle"
             class="input"
@@ -53,17 +55,15 @@
 
       <div class="editActiveArea">
         <div id="slideDiv" class="slideDiv slideShowbody">
-          <!--TorEven-->
           <a class="prev" onclick="navigate(-1)">&#8249;</a>
           <div
             id="container"
             class="slideshow-container"
             contenteditable="true"
-            img src ="public/eggBilde.jpg"
           ></div>
           <a class="next" onclick="navigate(1)">&#8250;</a>
         </div>
-        <div style="text-align: center">
+        <div id="navDots" style="text-align: center">
           <span class="dot" onclick="activeSlide(1)"></span>
           <span class="dot" onclick="activeSlide(2)"></span>
           <span class="dot" onclick="activeSlide(3)"></span>
@@ -73,9 +73,10 @@
 
     <script type="text/javascript">
       let presentation = [
-        { text: 'slide a', img: 'img1', list: [''] },
-        { text: 'slide b', img: 'img2', list: [''] },
-        { text: 'slide c', img: 'img3', list: [''] },
+        { text: 'Title 1', img: '', list: [''] },
+        { text: 'Title 2', img: '', list: [''] },
+        { text: 'Title 3', img: '' },
+        { text: 'Title 4', img: '', list: [1,2,3,4,5]},
       ];
 
       let container = document.getElementById('container');
@@ -83,6 +84,7 @@
 
       loadPresentation(presentation);
       loadSlides(showIndex);
+      createNavigationDots();
 
       //---------------------Funksjoner--------------------------
       function activeSlide(n) {
@@ -92,6 +94,21 @@
         loadSlides((showIndex += num));
       }
 
+      function createNavigationDots() {
+        let navDots = document.getElementById('navDots');
+        navDots.innerHTML = '';
+        for (let i = 1; i <= presentation.length; i++) {
+          let span = document.createElement('span');
+          span.classList.add('dot');
+          span.addEventListener('click', function (evt) {
+            activeSlide(i);
+          });
+
+          navDots.appendChild(span);
+          console.log(span);
+        }
+      }
+
       function loadPresentation(arr) {
         container.innerHTML = '';
         for (let slide of arr) {
@@ -99,13 +116,25 @@
 
           let html = '';
           let text = '';
+          let img = '';
+          let list = '';
+          let ol = document.createElement("ol");
 
-          text = slide.text;
-          let img = slide.img;
-          let list = slide.list;
+          if (slide.text) {
+            text = '<h6>' + slide.text + '</h6>';
+          }
+          if (slide.img) {
+            img = '<img src=' + slide.img + '>';
+          }
+          if (slide.list) {
+            list = '<li' + slide.list + '>';
+          }
+          list = slide.list;
 
           div.classList.add('slide');
-          html = `<h6>${text}</h6>
+          html = `${text}
+
+                ${img}
                         `;
           div.innerHTML = html;
           container.appendChild(div);
@@ -132,22 +161,27 @@
         //-------------create slides with button----------------------------------------
       }
       addTxt.addEventListener('click', function () {
-        let newSlide = { text: 'Test1', img: 'Test', list: ['Test'] };
+        let newSlide = { text: 'Test1' };
         presentation.push(newSlide);
         loadPresentation(presentation);
+        createNavigationDots();
+        activeSlide(presentation.length);
       });
 
       addImg.addEventListener('click', function () {
-        let newSlide = { text: 'Test2', img: 'Test', list: ['Test'] };
+        let newSlide = { img: 'Bilder/eggBilde.jpg' };
         presentation.push(newSlide);
-        
         loadPresentation(presentation);
+        createNavigationDots();
+        activeSlide(presentation.length);
       });
 
       addList.addEventListener('click', function () {
-        let newSlide = { text: 'Testtxt', img: 'Testimg', list: ['Testlist'] };
+        let newSlide = { list: ['Testlist'] };
         presentation.push(newSlide);
         loadPresentation(presentation);
+        createNavigationDots();
+        activeSlide(presentation.length);
       });
     </script>
   </body>
