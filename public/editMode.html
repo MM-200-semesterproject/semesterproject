@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Mode</title>
-    <link rel="stylesheet" type="text/css" href="styles/global.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="styles/PresentasjonStyle.css"
+    />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
@@ -40,15 +44,9 @@
         </form>
 
         <h2>Add Slide</h2>
-        <button id="addTxt" class="btnGrey" onclick="addSlide('text', '', '')">
-          Text</button
-        ><br />
-        <button id="addImg" class="btnGrey" onclick="addSlide('', 'img', '')">
-          Image</button
-        ><br />
-        <button id="addList" class="btnGrey" onclick="addSlide('', '', 'list')">
-          List</button
-        ><br />
+        <button id="addTxt" class="btnGrey">Text</button><br />
+        <button id="addImg" class="btnGrey">Image</button><br />
+        <button id="addList" class="btnGrey">List</button><br />
 
         <button id="presentMode" class="btnGreen">Presentation mode</button>
       </div>
@@ -57,7 +55,12 @@
         <div id="slideDiv" class="slideDiv slideShowbody">
           <!--TorEven-->
           <a class="prev" onclick="navigate(-1)">&#8249;</a>
-          <div id="container" class="slideshow-container"></div>
+          <div
+            id="container"
+            class="slideshow-container"
+            contenteditable="true"
+            img src ="public/eggBilde.jpg"
+          ></div>
           <a class="next" onclick="navigate(1)">&#8250;</a>
         </div>
         <div style="text-align: center">
@@ -69,27 +72,19 @@
     </div>
 
     <script type="text/javascript">
-      /*
-    TODO:
-    addEventListner to buttons
-        function that adds a new slide(for example text)
- */
       let presentation = [
-        { text: 'slide a', img: '6789', list: ['8'] },
+        { text: 'slide a', img: 'img1', list: [''] },
         { text: 'slide b', img: 'img2', list: [''] },
         { text: 'slide c', img: 'img3', list: [''] },
       ];
 
-     
-
       let container = document.getElementById('container');
       let showIndex = 1;
 
-      loadPresentation();
+      loadPresentation(presentation);
       loadSlides(showIndex);
-      addSlide();
-      //---------------------Funksjoner--------------------------
 
+      //---------------------Funksjoner--------------------------
       function activeSlide(n) {
         loadSlides((showIndex = n));
       }
@@ -97,15 +92,15 @@
         loadSlides((showIndex += num));
       }
 
-      function loadPresentation() {
-        for (let slide of presentation) {
+      function loadPresentation(arr) {
+        container.innerHTML = '';
+        for (let slide of arr) {
           let div = document.createElement('div');
 
           let html = '';
           let text = '';
 
           text = slide.text;
-          console.log(text);
           let img = slide.img;
           let list = slide.list;
 
@@ -113,8 +108,6 @@
           html = `<h6>${text}</h6>
                         `;
           div.innerHTML = html;
-
-          console.log(div);
           container.appendChild(div);
         }
       }
@@ -136,13 +129,26 @@
         }
         slideshow[showIndex - 1].style.display = 'block';
         dots[showIndex - 1].className += ' crntSlide';
+        //-------------create slides with button----------------------------------------
       }
-      function addSlide() {
-        let newSlide = { text: 'Test', img: 'Test', list: ['Test'] };
+      addTxt.addEventListener('click', function () {
+        let newSlide = { text: 'Test1', img: 'Test', list: ['Test'] };
         presentation.push(newSlide);
-        document.getElementById('addTxt').innerHTML =presentation ;
-      }
-     
+        loadPresentation(presentation);
+      });
+
+      addImg.addEventListener('click', function () {
+        let newSlide = { text: 'Test2', img: 'Test', list: ['Test'] };
+        presentation.push(newSlide);
+        
+        loadPresentation(presentation);
+      });
+
+      addList.addEventListener('click', function () {
+        let newSlide = { text: 'Testtxt', img: 'Testimg', list: ['Testlist'] };
+        presentation.push(newSlide);
+        loadPresentation(presentation);
+      });
     </script>
   </body>
 </html>
