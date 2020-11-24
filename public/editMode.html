@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Mode</title>
     <link rel="stylesheet" type="text/css" href="styles/global.css" />
-    <link
+    <!--<link
       rel="stylesheet"
       type="text/css"
       href="styles/PresentasjonStyle.css"
-    />
+    />-->
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap"
@@ -26,13 +26,6 @@
       <div class="editMenu">
         <br /><br />
         <form id="savePresForm">
-          <section class="dropdown">
-            <select id="presSelect" name="presSelect">
-              <option value="pres1">pres1</option>
-              <option value="pres2">pres2</option>
-              <option value="pres3">pres3</option>
-            </select>
-          </section>
           <section class="select">
             <button class="selectBtn" id="selectBtn">
               placeholder<span class="dropdownArw" id="dropdownArw"></span>
@@ -67,7 +60,7 @@
       </div>
 
       <div class="editActiveArea">
-        <div id="slideDiv" class="slideDiv slideShowbody">
+        <div id="slideDiv" class="slideShowbody">
           <a class="prev" onclick="navigate(-1)">&#8249;</a>
           <div
             id="container"
@@ -100,10 +93,10 @@
  */
 
       let presentation = [
-        { text: 'Title 1', },
-        { text: 'Title 2',  },
+        { text: 'Title 1' },
+        { text: 'Title 2' },
         { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
-        { list: [1,2,3,4,5]},
+        { list: [1, 2, 3, 4, 5] },
       ];
 
       let container = document.getElementById('container');
@@ -178,29 +171,30 @@
           let html = '';
           let text = '';
           let img = '';
-          let list= '';
+          let list = '';
 
           if (slide.text) {
             text = '<h6>' + slide.text + '</h6>';
           }
           if (slide.img) {
-            img = '<img src=' + slide.img + '>';
+            img =
+              '<img src=' +
+              slide.img +
+              ' style="max-width: 100%; max-height: 100%">';
           }
-         
+
           if (slide.list) {
             let innerOl = '';
-             for (let element of slide.list){
-              let listElement = '<li>'+element+'</li>';
+            for (let element of slide.list) {
+              let listElement = '<li>' + element + '</li>';
               innerOl += listElement;
-              }
-            list ='<ul>'+innerOl+'</ul>';
-                     
-        }
+            }
+            list = '<ul>' + innerOl + '</ul>';
+          }
           div.classList.add('slide');
           html = `${text}
                   ${img}
                   ${list}
-                
                         `;
           div.innerHTML = html;
           container.appendChild(div);
@@ -243,7 +237,7 @@
       });
 
       addList.addEventListener('click', function () {
-        let newSlide = { list: ['a','b','c','d','e'] };
+        let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
         presentation.push(newSlide);
         loadPresentation(presentation);
         createNavigationDots();
