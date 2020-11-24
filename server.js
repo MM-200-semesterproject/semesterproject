@@ -59,6 +59,24 @@ app.get('/editMode', async function (request, response) {
   console.log('editmode');
 });
 
+app.post('/create-presentation', async function (request, response) {
+  //on "create presentation" in editMode.html
+  console.log('I am inside /create-presentation in server.js');
+  response.status(200).send('hei from create-presentation in server.js');
+});
+
+app.post('/update-presentation', async function (request, response) {
+  //on "save presentation" in editMode.html
+  console.log('I am inside /update-presentation in server.js');
+  response.status(200).send('hei from update-presentation in server.js');
+});
+
+app.post('/delete-presentation', async function (request, response) {
+  //on "save presentation" in editMode.html
+  console.log('I am inside /delete-presentation in server.js');
+  response.status(200).send('hei from delete-presentation in server.js');
+});
+
 app.listen(app.get('port'), function () {
   console.log('server running', app.get('port'));
 });
