@@ -187,8 +187,18 @@ form .responseFromServer {
   margin: 20px 0 0;
 }
 
-.signupLoginWrapper button:disabled {
-  background-color: #4e9263;
+.btnGreen:disabled {
+  background-color: #305c3e;
+  opacity: 60%;
+}
+
+.btnGrey:disabled {
+  background-color: #87898a;
+  opacity: 60%;
+}
+
+button:disabled:hover {
+  box-shadow: none;
 }
 
 .signupLoginWrapper form {
