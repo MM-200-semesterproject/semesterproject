@@ -93,8 +93,11 @@ class StorageHandler {
         'SELECT * FROM users WHERE email = $1 AND password = $2',
         [input.username, input.password]
       );
-      results = results.rows[0].id;
-      console.log(`Result loadUser id: ${results}`);
+      results = {
+        id: results.rows[0].id,
+        accessToken: `${input.username}.${input.password}`,
+      };
+      console.log(`Result accesstoken: ${results.accessToken}`);
       client.end();
     } catch (err) {
       results = err;
