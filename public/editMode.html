@@ -52,6 +52,7 @@
           <button id="savePres" class="btnGreen" type="submit" value="submit">
             Save Presentation
           </button>
+
           <button id="createPres" class="btnGreen" type="submit" value="submit">
             Create New Presentation
           </button>
@@ -97,11 +98,12 @@
     addEventListner to buttons
         function that adds a new slide(for example text)
  */
+
       let presentation = [
         { text: 'Title 1', img: '', list: [''] },
         { text: 'Title 2', img: '', list: [''] },
         { text: 'Title 3', img: '' },
-        { text: 'Title 4', img: '', list: [1,2,3,4,5]},
+        { text: 'Title 4', img: '', list: [1, 2, 3, 4, 5] },
       ];
 
       let container = document.getElementById('container');
@@ -112,6 +114,42 @@
       createNavigationDots();
 
       //---------------------Funksjoner--------------------------
+      const savePresForm = document.querySelector('#savePresForm');
+
+      savePresForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const title = document.querySelector('#inpPresTitle').value;
+
+        const body = {
+          title: title,
+          slides: presentation,
+          presentationid: '',
+          userid: '1',
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+
+        fetch('/savePresentation', config)
+          .then((resp) => {
+            if (resp.status === 200) {
+              location.href = 'editMode.html';
+              console.log(resp.status);
+            } else {
+              responseDiv.textContent = ' try again.';
+            }
+            return resp;
+          })
+          .catch((err) => {
+            responseDiv.textContent = err;
+            return err;
+          });
+      });
+
       function activeSlide(n) {
         loadSlides((showIndex = n));
       }
@@ -143,7 +181,7 @@
           let text = '';
           let img = '';
           let list = '';
-          let ol = document.createElement("ol");
+          let ol = document.createElement('ol');
 
           if (slide.text) {
             text = '<h6>' + slide.text + '</h6>';
