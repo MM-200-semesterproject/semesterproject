@@ -64,7 +64,6 @@
           })
           .then((info) => {
             if (info.status === 200) {
-              console.log(info);
               const responseLink = document.createElement('a');
               responseLink.setAttribute('href', 'login.html');
               responseLink.textContent = 'User created, click here to log in.';
@@ -72,7 +71,12 @@
               responseDiv.appendChild(responseLink);
               signUpForm.querySelector('button').disabled = true;
             } else {
-              responseDiv.textContent = 'User already exists.';
+              const responseLink = document.createElement('a');
+              responseLink.setAttribute('href', 'login.html');
+              responseLink.textContent =
+                'Username taken. Try again, or click here to log in.';
+              responseDiv.textContent = '';
+              responseDiv.appendChild(responseLink);
             }
           })
           .catch((err) => {
