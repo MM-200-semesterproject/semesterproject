@@ -26,11 +26,23 @@
       <div class="editMenu">
         <br /><br />
         <form id="savePresForm">
-          <select id="crntPresentation" name="crntPresentation">
-            <option value="pres1">pres1</option>
-            <option value="pres2">pres2</option>
-            <option value="pres3">pres3</option>
-          </select>
+          <section class="dropdown">
+            <select id="presSelect" name="presSelect">
+              <option value="pres1">pres1</option>
+              <option value="pres2">pres2</option>
+              <option value="pres3">pres3</option>
+            </select>
+          </section>
+          <section class="select">
+            <button class="selectBtn" id="selectBtn">
+              placeholder<span class="dropdownArw" id="dropdownArw"></span>
+            </button>
+            <div class="selectOptions">
+              <a id="pres1">pres 1</a>
+              <a id="pres2">pres 2</a>
+              <a id="pres2">pres 2</a>
+            </div>
+          </section>
           <input
             id="inpPresTitle"
             class="input"
@@ -72,6 +84,19 @@
     </div>
 
     <script type="text/javascript">
+      /* This will be a try for a cutsom dropdown menu -Frida
+      let selectBtn = document.getElementsByClassName('selectBtn');
+      let options = document.getElementsByClassName('options');
+
+      options.addEventListener 
+
+
+    //-------------------------------- end of testcode Frida ---------
+      /*
+    TODO:
+    addEventListner to buttons
+        function that adds a new slide(for example text)
+ */
       let presentation = [
         { text: 'Title 1', img: '', list: [''] },
         { text: 'Title 2', img: '', list: [''] },
