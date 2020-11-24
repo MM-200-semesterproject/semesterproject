@@ -55,7 +55,7 @@
           <div id="container" class="slideshow-container"></div>
           <a class="next" onclick="navigate(1)">&#8250;</a>
         </div>
-        <div style="text-align: center">
+        <div id="navDots" style="text-align: center">
           <span class="dot" onclick="activeSlide(1)"></span>
           <span class="dot" onclick="activeSlide(2)"></span>
           <span class="dot" onclick="activeSlide(3)"></span>
@@ -73,6 +73,7 @@
         { text: 'slide a', img: '6789', list: ['8'] },
         { text: 'slide b', img: 'img2', list: [''] },
         { text: 'slide c', img: 'img3', list: [''] },
+        { text: 'slide d', img: 'img3', list: [''] },
       ];
 
       let container = document.getElementById('container');
@@ -80,6 +81,7 @@
 
       loadPresentation();
       loadSlides(showIndex);
+      ceateNavigationDots();
 
       //---------------------Funksjoner--------------------------
 
@@ -88,6 +90,21 @@
       }
       function navigate(num) {
         loadSlides((showIndex += num));
+      }
+
+      function ceateNavigationDots() {
+        let navDots = document.getElementById('navDots');
+        navDots.innerHTML = '';
+        for (let i = 1; i <= presentation.length; i++) {
+          let span = document.createElement('span');
+          span.classList.add('dot');
+          span.addEventListener('click', function (evt) {
+            activeSlide(i);
+          });
+
+          navDots.appendChild(span);
+          console.log(span);
+        }
       }
 
       function loadPresentation() {
