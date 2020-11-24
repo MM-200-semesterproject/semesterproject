@@ -18,9 +18,10 @@ app.use(express.json());
 
 app.post('/presentation', (req, res) => {
   let presentation = {
-    elements: req.body,
+    presentationid: req.body.presentationid,
+    title: req.body.title,
+    slides: req.body.slides,
   };
-
   res.status(200).json(presentation);
   return;
 });
@@ -29,25 +30,30 @@ app.post('/signUp', async function (request, response) {
   // Sends object to pool.js-->DB;
   let result = await pool.newUser(request.body);
   if (result instanceof Error) {
-    response.status(500).send(result + ' Try again');
+    response.status(500).json(result);
     return;
   } else {
-    response.status(200).json({
-      msg: 'User created',
-    });
+    response.status(200).json(result);
     return;
   }
 });
 
-app.post('/login', async function (request, response) {
+const auth = async function (request, response, next) {
   let result = await pool.loadUser(request.body);
+  request.result = result;
   if (result instanceof Error) {
-    response.status(500).send(result + ' Try again');
+    response.status(400).json(result);
     return;
   } else {
-    response.status(200);
-    return;
+    next();
   }
+};
+
+app.use(auth);
+
+app.post('/login', async function (request, response) {
+  console.log('next succsesfull');
+  response.status(200).send('hei');
 });
 
 app.listen(app.get('port'), function () {
