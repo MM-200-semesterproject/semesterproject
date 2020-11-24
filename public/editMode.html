@@ -60,11 +60,14 @@
       </div>
 
       <div class="editActiveArea">
-        <div id="slideDiv" class="slideShowbody">
-          <a class="prev" onclick="navigate(-1)">&#8249;</a>
-          <div id="container" class="slideshow-container"></div>
-          <a class="next" onclick="navigate(1)">&#8250;</a>
+        <div class="aspectRatio">
+          <div id="slideDiv" class="slideShowbody">
+            <a class="prev" onclick="navigate(-1)">&#8249;</a>
+            <div id="container" class="slideContent"></div>
+            <a class="next" onclick="navigate(1)">&#8250;</a>
+          </div>
         </div>
+
         <div style="text-align: center">
           <span class="dot" onclick="activeSlide(1)"></span>
           <span class="dot" onclick="activeSlide(2)"></span>
