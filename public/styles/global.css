@@ -77,13 +77,6 @@ input {
   box-shadow: inset 0 0 4px #212324;
   width: 100%;
   color: #333e41;
-}
-
-select:focus {
-  color: pink;
-}
-option {
-  background-color: tomato;
 }*/
 
 .selectBtn {
@@ -96,8 +89,7 @@ option {
 
 .select {
   display: flex;
-  flex: 1;
-  overflow: auto;
+  overflow: visible;
   width: 100%;
   margin-left: -9px;
 }
@@ -193,6 +185,10 @@ form .responseFromServer {
 .signupLoginWrapper button {
   width: 40%;
   margin: 20px 0 0;
+}
+
+.signupLoginWrapper button:disabled {
+  background-color: #4e9263;
 }
 
 .signupLoginWrapper form {
