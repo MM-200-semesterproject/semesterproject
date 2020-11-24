@@ -35,6 +35,14 @@ h2 {
   margin-left: 8px;
 }
 
+h6 {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  font-size: 80px;
+  font-weight: 500;
+}
+
 button {
   border: none;
   padding: 15px 20px;
@@ -136,10 +144,6 @@ input:nth-of-type(1) {
   margin-bottom: 10px;
 }
 
-.arrowBtn:hover {
-  opacity: 1;
-}
-
 .dot:hover {
   background-color: #717171;
 }
@@ -170,7 +174,7 @@ input:nth-of-type(1) {
 .editActiveArea {
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 100%;
 }
 
 form .responseFromServer {
@@ -211,11 +215,6 @@ form .responseFromServer {
   flex-direction: column;
 }
 
-.editWrapper {
-  display: flex;
-  align-items: stretch;
-}
-
 .btnGreen {
   background-color: #4e9263;
   color: white;
@@ -233,32 +232,71 @@ form .responseFromServer {
   background-color: #87898a;
 }
 
-.arrowBtn {
-  text-decoration: none;
+.aspectRatio {
+  width: 100%;
+  padding-top: 56.25%;
+  position: relative;
+}
+.slideShowbody {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  width: 80%;
+  height: 80%;
+  margin: auto 10%;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px #444849;
+  overflow: hidden;
   display: flex;
-  flex-wrap: wrap;
-  color: #25363a;
   justify-content: center;
   align-content: center;
-  border-radius: 30px;
-  padding: 15px 20px;
-  width: 100px;
-  height: 60px;
-  font-size: 60px;
-  opacity: 0.3;
 }
 
-.slideShowbody {
-  max-width: 50vh;
-  margin: 0 auto;
-  padding: 2vh;
-  font-family: sans-serif;
+.slideContent {
+  width: 100%;
+}
+
+.prev,
+.next {
+  position: absolute;
   display: flex;
-  flex-direction: column;
-  min-width: 1280px;
-  min-height: 720px;
-  background-color: #ffffff;
-  border: 1px solid black;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: inherit;
+  color: #505557;
+  font-size: 7vw;
+  height: 100%;
+  width: 10%;
+  z-index: 99;
+  opacity: 0;
+  transition: opacity 0.6s, transform 0.6s;
+  transition-delay: 0.3s;
+}
+
+.prev:hover,
+.next:hover {
+  cursor: pointer;
+  opacity: 70%;
+  transform: scale(1.3);
+}
+
+.prev {
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(226, 226, 226, 1),
+    rgba(226, 226, 226, 0)
+  );
+}
+.next {
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(226, 226, 226, 0),
+    rgba(226, 226, 226, 1)
+  );
 }
 
 .dot {

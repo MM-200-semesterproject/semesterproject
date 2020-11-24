@@ -80,7 +80,7 @@ h3.userAddedText {
   position: relative;
 }
 
-*/
+
 
 .editActiveArea {
   display: flex;
@@ -95,7 +95,7 @@ h3.userAddedText {
   border: 1px solid black;
 }
 
-/*.editFooter {
+.editFooter {
   border: 2px solid black;
   height: 20%;
   width: 100%;
