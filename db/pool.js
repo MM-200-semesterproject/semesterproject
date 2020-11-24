@@ -2,6 +2,7 @@ const pg = require('pg');
 const encrypt = require('./encryption.js');
 const dbCredentials =
   process.env.DATABASE_URL || require('./localenv').credentials;
+const REGEXHandler = require('./validation.js');
 
 class StorageHandler {
   constructor(credentials) {
@@ -35,10 +36,30 @@ class StorageHandler {
     console.log(
       `hashed input inside newUser: username: ${input.username}, password: ${input.password}`
     );
-    let userExists = await this.checkIfUserExists(input.username);
+    const userExists = await this.checkIfUserExists(input.username);
+    const validateEmailAndPassword = REGEXHandler.validate(
+      body.username,
+      body.password
+    );
     if (userExists) {
       results = new Error('User already exists');
       results.statusCode = 403;
+      client.end();
+      return results;
+    }
+
+    if (!validateEmailAndPassword.email) {
+      results = new Error('Provide correct e-mail address.');
+      results.statusCode = 401;
+      client.end();
+      return results;
+    }
+
+    if (!validateEmailAndPassword.password) {
+      results = new Error(
+        'The password has to be at least 8 characters long and include at least one capital letter and one number'
+      );
+      results.statusCode = 401;
       client.end();
       return results;
     }
