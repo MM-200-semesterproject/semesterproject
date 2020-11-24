@@ -98,10 +98,10 @@
         function that adds a new slide(for example text)
  */
       let presentation = [
-        { text: 'Title 1', img: '', list: [''] },
-        { text: 'Title 2', img: '', list: [''] },
-        { text: 'Title 3', img: '' },
-        { text: 'Title 4', img: '', list: [1,2,3,4,5]},
+        { text: 'Title 1', },
+        { text: 'Title 2',  },
+        { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
+        { list: [1,2,3,4,5]},
       ];
 
       let container = document.getElementById('container');
@@ -128,9 +128,7 @@
           span.addEventListener('click', function (evt) {
             activeSlide(i);
           });
-
           navDots.appendChild(span);
-          console.log(span);
         }
       }
 
@@ -142,8 +140,7 @@
           let html = '';
           let text = '';
           let img = '';
-          let list = '';
-          let ol = document.createElement("ol");
+          let list= '';
 
           if (slide.text) {
             text = '<h6>' + slide.text + '</h6>';
@@ -151,15 +148,21 @@
           if (slide.img) {
             img = '<img src=' + slide.img + '>';
           }
+         
           if (slide.list) {
-            list = '<li' + slide.list + '>';
-          }
-          list = slide.list;
-
+            let innerOl = '';
+             for (let element of slide.list){
+              let listElement = '<li>'+element+'</li>';
+              innerOl += listElement;
+              }
+            list ='<ul>'+innerOl+'</ul>';
+                     
+        }
           div.classList.add('slide');
           html = `${text}
-
-                ${img}
+                  ${img}
+                  ${list}
+                
                         `;
           div.innerHTML = html;
           container.appendChild(div);
@@ -202,7 +205,7 @@
       });
 
       addList.addEventListener('click', function () {
-        let newSlide = { list: ['Testlist'] };
+        let newSlide = { list: ['a','b','c','d','e'] };
         presentation.push(newSlide);
         loadPresentation(presentation);
         createNavigationDots();
