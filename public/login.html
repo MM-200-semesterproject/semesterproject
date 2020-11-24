@@ -1,63 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Moreslides</title>
     <link rel="stylesheet" href="./styles/global.css" type="text/css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap" rel="stylesheet" />
-</head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
+  <body>
     <div class="signupLoginWrapper">
-        <form method="post" id="loginForm">
-            <img src="svg/logo.svg" alt="More Slides logo" id="loginLogo" />
-            <input id="username" type="text" name="user[username]" placeholder="Enter E-mail" />
-            <input id="password" type="text" name="user[password]" placeholder="Enter Password" />
-            <button id="loginBtn" class="btnGreen" type="submit" value="Login">
+      <form method="post" id="loginForm">
+        <img src="svg/logo.svg" alt="More Slides logo" id="loginLogo" />
+        <input
+          id="username"
+          type="text"
+          name="user[username]"
+          placeholder="Enter E-mail"
+        />
+        <input
+          id="password"
+          type="text"
+          name="user[password]"
+          placeholder="Enter Password"
+        />
+        <button id="loginBtn" class="btnGreen" type="submit" value="Login">
           Login
         </button>
-            <button class="btnGrey"><a href="signup.html">Sign Up</a></button>
-        </form>
+        <button class="btnGrey"><a href="signup.html">Sign Up</a></button>
         <div class="responseFromServer"></div>
+      </form>
     </div>
     <script>
-        const loginForm = document.querySelector('#loginForm');
-        const responseDiv = document.querySelector('.responseFromServer');
+      const loginForm = document.querySelector('#loginForm');
+      const responseDiv = document.querySelector('.responseFromServer');
 
-        loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const inputUsername = document.querySelector('#username').value;
-            const inputPassword = document.querySelector('#password').value;
+      loginForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const inputUsername = document.querySelector('#username').value;
+        const inputPassword = document.querySelector('#password').value;
 
-            const body = {
-                username: inputUsername,
-                password: inputPassword,
-            };
-            const config = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(body),
-            };
+        const body = {
+          username: inputUsername,
+          password: inputPassword,
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
 
-            fetch('/login', config)
-                .then((resp) => {
-                    if (resp.status === 200) {
-                        location.href = 'editMode.html';
-                        console.log(resp.status);
-                        return resp;
-                    }
-                })
-                .catch((err) => {
-                    responseDiv.textContent = err;
-                    return err;
-                });
-        });
+        fetch('/login', config)
+          .then((resp) => {
+            if (resp.status === 200) {
+              location.href = 'editMode.html';
+              console.log(resp.status);
+            } else {
+              responseDiv.textContent =
+                'Invalid e-mail or password, try again.';
+            }
+            return resp;
+          })
+          .catch((err) => {
+            responseDiv.textContent = err;
+            return err;
+          });
+      });
     </script>
-</body>
-
+  </body>
 </html>
