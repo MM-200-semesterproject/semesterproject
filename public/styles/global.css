@@ -47,6 +47,19 @@ button {
   border-radius: 10px;
 }
 
+button:active {
+  box-shadow: inset 0 1px 4px 2px #212324;
+}
+
+button:disabled {
+  opacity: 60%;
+  cursor: unset;
+}
+
+button:disabled:active {
+  box-shadow: none;
+}
+
 a {
   text-decoration: inherit;
   color: inherit;
@@ -137,10 +150,6 @@ input:nth-of-type(1) {
   margin-bottom: 10px;
 }
 
-button:active {
-  box-shadow: inset 0 0 4px #212324;
-}
-
 .arrowBtn:hover {
   opacity: 1;
 }
@@ -187,20 +196,6 @@ form .responseFromServer {
   margin: 20px 0 0;
 }
 
-.btnGreen:disabled {
-  background-color: #305c3e;
-  opacity: 60%;
-}
-
-.btnGrey:disabled {
-  background-color: #87898a;
-  opacity: 60%;
-}
-
-button:disabled:hover {
-  box-shadow: none;
-}
-
 .signupLoginWrapper form {
   display: flex;
   flex-wrap: wrap;
@@ -232,6 +227,14 @@ button:disabled:hover {
 .btnGrey {
   background-color: #e2e2e2;
   color: #25363a;
+}
+
+.btnGreen:disabled {
+  background-color: #305c3e;
+}
+
+.btnGrey:disabled {
+  background-color: #87898a;
 }
 
 .arrowBtn {
