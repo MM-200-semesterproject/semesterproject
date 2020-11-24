@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Mode</title>
     <link rel="stylesheet" type="text/css" href="styles/global.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="styles/PresentasjonStyle.css"
+    />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap"
@@ -62,9 +67,12 @@
 
       <div class="editActiveArea">
         <div id="slideDiv" class="slideDiv slideShowbody">
-          <!--TorEven-->
           <a class="prev" onclick="navigate(-1)">&#8249;</a>
-          <div id="container" class="slideshow-container"></div>
+          <div
+            id="container"
+            class="slideshow-container"
+            contenteditable="true"
+          ></div>
           <a class="next" onclick="navigate(1)">&#8250;</a>
         </div>
         <div id="navDots" style="text-align: center">
@@ -90,21 +98,20 @@
         function that adds a new slide(for example text)
  */
       let presentation = [
-        { text: 'slide a', img: '6789', list: ['8'] },
-        { text: 'slide b', img: 'img2', list: [''] },
-        { text: 'slide c', img: 'img3', list: [''] },
-        { text: 'slide d', img: 'img3', list: [''] },
+        { text: 'Title 1', img: '', list: [''] },
+        { text: 'Title 2', img: '', list: [''] },
+        { text: 'Title 3', img: '' },
+        { text: 'Title 4', img: '', list: [1,2,3,4,5]},
       ];
 
       let container = document.getElementById('container');
       let showIndex = 1;
 
-      loadPresentation();
+      loadPresentation(presentation);
       loadSlides(showIndex);
-      ceateNavigationDots();
+      createNavigationDots();
 
       //---------------------Funksjoner--------------------------
-
       function activeSlide(n) {
         loadSlides((showIndex = n));
       }
@@ -112,7 +119,7 @@
         loadSlides((showIndex += num));
       }
 
-      function ceateNavigationDots() {
+      function createNavigationDots() {
         let navDots = document.getElementById('navDots');
         navDots.innerHTML = '';
         for (let i = 1; i <= presentation.length; i++) {
@@ -127,24 +134,34 @@
         }
       }
 
-      function loadPresentation() {
-        for (let slide of presentation) {
+      function loadPresentation(arr) {
+        container.innerHTML = '';
+        for (let slide of arr) {
           let div = document.createElement('div');
 
           let html = '';
           let text = '';
+          let img = '';
+          let list = '';
+          let ol = document.createElement("ol");
 
-          text = slide.text;
-          console.log(text);
-          let img = slide.img;
-          let list = slide.list;
+          if (slide.text) {
+            text = '<h6>' + slide.text + '</h6>';
+          }
+          if (slide.img) {
+            img = '<img src=' + slide.img + '>';
+          }
+          if (slide.list) {
+            list = '<li' + slide.list + '>';
+          }
+          list = slide.list;
 
           div.classList.add('slide');
-          html = `<h6>${text}</h6>
+          html = `${text}
+
+                ${img}
                         `;
           div.innerHTML = html;
-
-          console.log(div);
           container.appendChild(div);
         }
       }
@@ -166,22 +183,30 @@
         }
         slideshow[showIndex - 1].style.display = 'block';
         dots[showIndex - 1].className += ' crntSlide';
+        //-------------create slides with button----------------------------------------
       }
       addTxt.addEventListener('click', function () {
-        let newSlide = { text: 'Test', img: 'Test', list: ['Test'] };
+        let newSlide = { text: 'Test1' };
         presentation.push(newSlide);
-        loadPresentation();
+        loadPresentation(presentation);
+        createNavigationDots();
+        activeSlide(presentation.length);
       });
+
       addImg.addEventListener('click', function () {
-        let newSlide = { text: 'Test', img: 'Test', list: ['Test'] };
+        let newSlide = { img: 'Bilder/eggBilde.jpg' };
         presentation.push(newSlide);
-        loadPresentation();
+        loadPresentation(presentation);
+        createNavigationDots();
+        activeSlide(presentation.length);
       });
 
       addList.addEventListener('click', function () {
-        let newSlide = { text: 'Test', img: 'Test', list: ['Test'] };
+        let newSlide = { list: ['Testlist'] };
         presentation.push(newSlide);
-        loadPresentation();
+        loadPresentation(presentation);
+        createNavigationDots();
+        activeSlide(presentation.length);
       });
     </script>
   </body>
