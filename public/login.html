@@ -21,25 +21,29 @@
           type="text"
           name="user[username]"
           placeholder="Enter E-mail"
-          required
         />
         <input
           id="password"
           type="text"
           name="user[password]"
           placeholder="Enter Password"
-          required
         />
         <button id="loginBtn" class="btnGreen" type="submit" value="Login">
           Login
         </button>
-        <button class="btnGrey"><a href="signup.html">Sign Up</a></button>
+        <button class="btnGrey" type="button">
+          <a href="signup.html">Sign Up</a>
+        </button>
         <div class="responseFromServer"></div>
       </form>
     </div>
     <script>
       const loginForm = document.querySelector('#loginForm');
       const responseDiv = document.querySelector('.responseFromServer');
+
+      document.querySelector('.btnGrey').addEventListener('click', () => {
+        location.href = 'signup.html';
+      });
 
       loginForm.addEventListener('submit', async function (e) {
         e.preventDefault();
