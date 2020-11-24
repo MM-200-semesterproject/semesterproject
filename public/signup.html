@@ -64,7 +64,6 @@
           })
           .then((info) => {
             if (info.status === 200) {
-              console.log(info);
               const responseLink = document.createElement('a');
               responseLink.setAttribute('href', 'login.html');
               responseLink.textContent = 'User created, click here to log in.';
