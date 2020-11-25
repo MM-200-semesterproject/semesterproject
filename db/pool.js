@@ -82,9 +82,9 @@ class StorageHandler {
     return results;
   }
 
-  async loadUser(body) {
+  async loadUser(body, accessToken) {
     const client = new pg.Client(this.credentials);
-    const input = encrypt.hashCode(body);
+    const input = accessToken ? encrypt.hashCode(body) : body;
     let results = null;
 
     try {
@@ -93,16 +93,21 @@ class StorageHandler {
         'SELECT * FROM users WHERE email = $1 AND password = $2',
         [input.username, input.password]
       );
-      results = {
-        id: results.rows[0].id,
-        accessToken: `${input.username}.${input.password}`,
-      };
-      console.log(`Result accesstoken: ${results.accessToken}`);
+      results = results.rows[0].id;
       client.end();
     } catch (err) {
       results = err;
       console.log(`Error on loadUser: ${err}`);
       client.end();
+      return results;
+    }
+
+    if (accessToken) {
+      console.log('accessToken');
+      return {
+        id: results,
+        accessToken: `${input.username}.${input.password}`,
+      };
     }
 
     return results;
