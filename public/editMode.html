@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="styles/global.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Limelight&family=Roboto:wght@100;400;500;900&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -56,12 +56,48 @@
           List</button
         ><br />
 
+        <section class="select">
+          <button class="selectBtn" id="themeBtn">
+            Choose a theme<span class="dropdownArw" id="dropdownArw"></span>
+          </button>
+          <div class="selectOptions">
+            <a
+              class="themeOption"
+              id="default"
+              style="
+                box-shadow: inset 0 0 0 2px #cadce0, inset 0 0 0 4px #15414b;
+                background-color: #cadce0;
+              "
+              >Minimalist</a
+            >
+            <a
+              class="themeOption"
+              id="sakura"
+              style="
+                background-color: #ffc5cf;
+                font-family: 'Courier New', Courier, monospace;
+              "
+              >Sakura</a
+            >
+            <a
+              class="themeOption"
+              id="geometric"
+              style="
+                font-family: 'Limelight', cursive;
+                background-color: #1b202c;
+                color: #ffc65c;
+              "
+              >Geometric</a
+            >
+          </div>
+        </section>
+
         <button id="presentMode" class="btnGreen">Presentation mode</button>
       </div>
 
       <div class="editActiveArea">
         <div class="aspectRatio">
-          <div id="slideDiv" class="slideShowbody">
+          <div id="slideDiv" class="slideShowbodyDefault">
             <a class="prev" onclick="navigate(-1)">&#8249;</a>
             <div id="container" class="slideContent"></div>
             <a class="next" onclick="navigate(1)">&#8250;</a>
@@ -84,19 +120,27 @@
     </div>
 
     <script type="text/javascript">
-      /* This will be a try for a cutsom dropdown menu -Frida
-           let selectBtn = document.getElementsByClassName('selectBtn');
-           let options = document.getElementsByClassName('options');
-
-           options.addEventListener
-
-
-         //-------------------------------- end of testcode Frida ---------
-           /*
+      /*
          TODO:
          addEventListner to buttons
              function that adds a new slide(for example text)
       */
+      //---------------------Functionality Themes----------------
+
+      let slideDiv = document.querySelector('#slideDiv');
+      let themeOptions = document.querySelectorAll('.themeOption');
+
+      themeOptions.forEach((element) => {
+        element.onclick = (e) => {
+          if (e.target.id === 'default') {
+            slideDiv.className = 'slideShowbodyDefault';
+          } else if (e.target.id === 'sakura') {
+            slideDiv.className = 'slideShowbodySakura';
+          } else if (e.target.id === 'geometric') {
+            slideDiv.className = 'slideShowbodyGeometric';
+          }
+        };
+      });
 
       class Presentation {
         constructor(title, slides, userid) {
@@ -122,6 +166,7 @@
       loadPresentation(presentation.slides);
       loadSlides(showIndex);
       addSlide();
+
       //---------------------Funksjoner--------------------------
       const savePresForm = document.querySelector('#savePresForm');
 
@@ -223,8 +268,7 @@
           div.classList.add('slide');
           html = `${text}
                   ${img}
-                  ${list}
-                        `;
+                  ${list}`;
           div.innerHTML = html;
 
           console.log(div);
