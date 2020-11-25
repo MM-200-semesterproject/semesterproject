@@ -186,14 +186,14 @@ class StorageHandler {
       await client.connect();
       let results = await client.query(
         'SELECT COUNT(userid) FROM presentations WHERE userid = $1',
-        [input.userid]
+        [input.id]
       );
 
       let rowcount = results.rows[0].count;
 
       results = await client.query(
         'SELECT * FROM presentations WHERE userid = $1',
-        [input.userid]
+        [input.id]
       );
       for (let i = 0; i < rowcount; i++) {
         let row = results.rows[i];
@@ -219,7 +219,7 @@ class StorageHandler {
       await client.connect();
       results = await client.query(
         'INSERT INTO presentations(userid, title, data)VALUES($1,$2, $3) RETURNING presentationid',
-        [input.userid, input.title, input.slides]
+        [input.id, input.title, input.slides]
       );
 
       results = results.rows[0];
