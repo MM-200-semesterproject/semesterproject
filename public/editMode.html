@@ -121,7 +121,6 @@
          addEventListner to buttons
              function that adds a new slide(for example text)
       */
-<<<<<<< HEAD
       //---------------------Functionality Themes----------------
 
       let slideDiv = document.querySelector('#slideDiv');
@@ -138,7 +137,6 @@
           }
         };
       });
-=======
       //-------- Global variables------------------------
       let addTxt = document.getElementById('addTxt');
       let addImg = document.getElementById('addImg');
@@ -171,6 +169,7 @@
         };
         fetch('/login', config)
           .then((resp) => {
+            console.log(config.body.username, config.body.password);
             if (resp.status !== 200) {
               throw new Error(
                 'Incorrect access credentials. Try to log in again.'
@@ -189,7 +188,6 @@
             return err;
           });
       }
->>>>>>> 46cd7f5a5ba668537ce07786588c272f85f3d9ed
 
       class Presentation {
         constructor(title, slides, userid) {
@@ -214,12 +212,7 @@
 
       loadPresentation(presentation.slides);
       loadSlides(showIndex);
-<<<<<<< HEAD
-      addSlide();
-
-=======
       // addSlide();
->>>>>>> 46cd7f5a5ba668537ce07786588c272f85f3d9ed
       //---------------------Funksjoner--------------------------
       const savePresForm = document.querySelector('#savePresForm');
 
