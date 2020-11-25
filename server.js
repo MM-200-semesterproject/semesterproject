@@ -44,8 +44,16 @@ app.post('/signUp', async function (request, response) {
 });
 
 app.post('/login', async function (request, response) {
-  let result = await pool.loadUser(request.body);
-  request.result = result;
+  let result = null;
+  if (request.body.returnAccessToken) {
+    const userCredentials = {
+      username: request.body.username,
+      password: request.body.password,
+    };
+    result = await pool.loadUser(userCredentials, true);
+  } else {
+    result = await pool.loadUser(request.body);
+  }
   if (result instanceof Error) {
     response.status(400).json(result);
     return;

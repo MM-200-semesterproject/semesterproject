@@ -47,7 +47,7 @@
 
         <h2>Add Slide</h2>
         <button id="addTxt" class="btnGrey">Text</button><br />
-        <input  type="file" name="filename" id="addImg" class="btnGrey" ><br />
+        <button id="addImg" class="btnGrey">Image</button><br />
         <button id="addList" class="btnGrey">List</button><br />
 
         <button id="presentMode" class="btnGreen">Presentation mode</button>
@@ -62,11 +62,20 @@
           </div>
         </div>
 
-        <div style="text-align: center">
+        <div id="navDots" style="text-align: center">
           <span class="dot" onclick="activeSlide(1)"></span>
           <span class="dot" onclick="activeSlide(2)"></span>
           <span class="dot" onclick="activeSlide(3)"></span>
         </div>
+      </div>
+    </div>
+
+    <div class="disableTotalScreen">
+      <div class="alert">
+        <p class="alertText">
+          You are not logged in, please log in to continue your editing.
+        </p>
+        <button id="alertBtn" class="btnGreen alertButton">Log in</button>
       </div>
     </div>
 
@@ -84,6 +93,56 @@
          addEventListner to buttons
              function that adds a new slide(for example text)
       */
+      //-------- Global variables------------------------
+      let addTxt = document.getElementById('addTxt');
+      let addImg = document.getElementById('addImg');
+      let addList = document.getElementById('addList');
+
+      const alertDiv = document.querySelector('.disableTotalScreen');
+      const alertDivButton = document.querySelector('.alertButton');
+      const alertDivText = document.querySelector('.alertText');
+      let accessData = localStorage.getItem('accessData')
+        ? JSON.parse(localStorage.getItem('accessData'))
+        : false;
+
+      //funksjoner
+      alertDivButton.onclick = () => (location.href = 'login.html');
+
+      if (!accessData) {
+        alertDiv.style.display = 'block';
+      } else {
+        const inputArray = accessData.accessToken.split('.');
+        const body = {
+          username: inputArray[0],
+          password: inputArray[1],
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+        fetch('/login', config)
+          .then((resp) => {
+            if (resp.status !== 200) {
+              throw new Error(
+                'Incorrect access credentials. Try to log in again.'
+              );
+            }
+            return resp.json();
+          })
+          .then((resp) => {
+            console.log('User verified');
+            return resp;
+          })
+          .catch((err) => {
+            alertDivText.textContent = '';
+            alertDivText.textContent = err.message;
+            alertDiv.style.display = 'block';
+            return err;
+          });
+      }
 
       class Presentation {
         constructor(title, slides, userid) {
@@ -108,7 +167,7 @@
 
       loadPresentation(presentation.slides);
       loadSlides(showIndex);
-      addSlide();
+      // addSlide();
       //---------------------Funksjoner--------------------------
       const savePresForm = document.querySelector('#savePresForm');
 
@@ -153,14 +212,13 @@
             if (input.files && input.files[0]) {
                 let reader = new FileReader();
 
-                reader.onload = function (evnt) {
-                    $('addImg')
-                        .attr('src', evnt.target.result);
-                };
+          reader.onload = function (evnt) {
+            $('addImg').attr('src', evnt.target.result);
+          };
 
-                reader.readAsDataURL(input.files[0]);
-            }
+          reader.readAsDataURL(input.files[0]);
         }
+      }
       function activeSlide(n) {
         loadSlides((showIndex = n));
       }
@@ -237,7 +295,7 @@
         }
         slideshow[showIndex - 1].style.display = 'block';
         dots[showIndex - 1].className += ' crntSlide';
-        
+
         //-------------create slides with button----------------------------------------
       }
 
