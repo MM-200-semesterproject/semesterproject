@@ -33,9 +33,7 @@ class StorageHandler {
     const client = new pg.Client(this.credentials);
     const input = encrypt.hashCode(body);
     let results = null;
-    console.log(
-      `hashed input inside newUser: username: ${input.username}, password: ${input.password}`
-    );
+
     const userExists = await this.checkIfUserExists(input.username);
     const validateEmailAndPassword = REGEXHandler.validate(
       body.username,
@@ -82,18 +80,37 @@ class StorageHandler {
     return results;
   }
 
-  async loadUser(body, accessToken) {
+  async loadUser(body, createAccessToken) {
     const client = new pg.Client(this.credentials);
-    const input = accessToken ? encrypt.hashCode(body) : body;
+    const input = createAccessToken ? encrypt.hashCode(body) : body;
     let results = null;
+    let token = null;
+
+    if (createAccessToken) {
+      token = '';
+      let tempname = String(input.username);
+      let randomize = Math.random() * 1000000000000000;
+      randomize = randomize.toString(32).substring(3);
+      for (let i = 0; i <= randomize.length; i++) {
+        token += randomize.charAt(i).concat(tempname.charAt(i + 3));
+      }
+    }
 
     try {
       await client.connect();
-      results = await client.query(
-        'SELECT * FROM users WHERE email = $1 AND password = $2',
-        [input.username, input.password]
-      );
-      results = results.rows[0].id;
+      if (createAccessToken) {
+        results = await client.query(
+          'UPDATE users SET accesstoken = $1 WHERE email = $2 AND password = $3 RETURNING id,accesstoken',
+          [token, input.username, input.password]
+        );
+      } else {
+        results = await client.query(
+          'SELECT * FROM users WHERE id = $1 AND accesstoken = $2',
+          [input.id, input.accesstoken]
+        );
+      }
+      results = results.rows[0];
+
       client.end();
     } catch (err) {
       results = err;
@@ -101,14 +118,6 @@ class StorageHandler {
       client.end();
       return results;
     }
-
-    if (accessToken) {
-      return {
-        id: results,
-        accessToken: `${input.username}.${input.password}`,
-      };
-    }
-
     return results;
   }
 

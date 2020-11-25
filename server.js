@@ -55,6 +55,7 @@ app.post('/login', async function (request, response) {
     result = await pool.loadUser(request.body);
   }
   if (result instanceof Error) {
+    console.log(result);
     response.status(400).json(result);
     return;
   } else {
