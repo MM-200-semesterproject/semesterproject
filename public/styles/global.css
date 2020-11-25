@@ -269,7 +269,7 @@ form .responseFromServer {
   bottom: 0;
   width: 80%;
   height: 80%;
-  margin: auto 10%;
+  margin: auto 10% 4%;
   background-color: #fff;
   box-shadow: 0 4px 10px #444849, inset 0 0 0 1vw #cadce0,
     inset 1.4vw 1.4vw 0 0 #15414b, inset 0.3vw 0.3vw 1vw 2vw #cadce0;
@@ -287,7 +287,7 @@ form .responseFromServer {
   bottom: 0;
   width: 80%;
   height: 80%;
-  margin: auto 10%;
+  margin: auto 10% 4%;
   box-shadow: 0 4px 10px #444849, inset 0 0 0 1vw #ffc5cf,
     inset 0 0 0 1.5vw #fff;
   overflow: hidden;
@@ -308,7 +308,7 @@ form .responseFromServer {
   bottom: 0;
   width: 80%;
   height: 80%;
-  margin: auto 10%;
+  margin: auto 10% 4%;
   box-shadow: 0 4px 10px #444849;
   overflow: hidden;
   display: flex;
@@ -379,7 +379,7 @@ form .responseFromServer {
   cursor: pointer;
   height: 15px;
   width: 15px;
-  margin: -20px 2px 0;
+  margin: 2px;
   background-color: #bbb;
   border-radius: 50%;
   display: inline-block;
