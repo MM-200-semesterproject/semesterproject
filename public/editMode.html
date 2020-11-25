@@ -46,21 +46,9 @@
         </form>
 
         <h2>Add Slide</h2>
-<<<<<<< HEAD
         <button id="addTxt" class="btnGrey">Text</button><br />
         <input  type="file" name="filename" id="addImg" class="btnGrey" ><br />
         <button id="addList" class="btnGrey">List</button><br />
-=======
-        <button id="addTxt" class="btnGrey" onclick="addSlide('text', '', '')">
-          Text</button
-        ><br />
-        <button id="addImg" class="btnGrey" onclick="addSlide('', 'img', '')">
-          Image</button
-        ><br />
-        <button id="addList" class="btnGrey" onclick="addSlide('', '', 'list')">
-          List</button
-        ><br />
->>>>>>> 915f766d07bf5bd37fd8bc11ba9511ec9b379c67
 
         <button id="presentMode" class="btnGreen">Presentation mode</button>
       </div>
@@ -163,7 +151,7 @@
       //----------------prøver å laste opp bilde til sliden-----------------------------
       function readImgUrl(input) {
             if (input.files && input.files[0]) {
-                var reader = new FileReader();
+                let reader = new FileReader();
 
                 reader.onload = function (evnt) {
                     $('addImg')
@@ -227,7 +215,7 @@
                         `;
           div.innerHTML = html;
 
-          console.log(div);
+         
           container.appendChild(div);
         }
       }
@@ -268,7 +256,7 @@
         loadPresentation(presentation.slides);
         createNavigationDots();
         activeSlide(presentation.length);
-  
+        readImgUrl();
       });
 
       addList.addEventListener('click', function () {
@@ -277,8 +265,8 @@
         loadPresentation(presentation);
         createNavigationDots();
         activeSlide(presentation.length);
-        //-------------------ahhhh yeeeee--------påkaler bildeurltingen---------------------------
-        readImgUrl();
+      
+       
       });
     </script>
   </body>
