@@ -71,6 +71,7 @@
               responseDiv.textContent = '';
               responseDiv.appendChild(responseLink);
               signUpForm.querySelector('button').disabled = true;
+              return;
             } else if (info.status === 403) {
               const responseLink = document.createElement('a');
               responseLink.setAttribute('href', 'login.html');
@@ -78,8 +79,11 @@
                 'Username taken. Try again, or click here to log in.';
               responseDiv.textContent = '';
               responseDiv.appendChild(responseLink);
+              return;
             } else if (info.status === 401) {
               responseDiv.textContent = info.statusText;
+            } else {
+              responseDiv.textContent = `Error has occured, error code: ${info.status}`;
             }
           })
           .catch((err) => {

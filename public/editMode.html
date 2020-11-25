@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Mode</title>
     <link rel="stylesheet" type="text/css" href="styles/global.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="styles/PresentasjonStyle.css"
-    />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap"
@@ -26,13 +21,6 @@
       <div class="editMenu">
         <br /><br />
         <form id="savePresForm">
-          <section class="dropdown">
-            <select id="presSelect" name="presSelect">
-              <option value="pres1">pres1</option>
-              <option value="pres2">pres2</option>
-              <option value="pres3">pres3</option>
-            </select>
-          </section>
           <section class="select">
             <button class="selectBtn" id="selectBtn">
               placeholder<span class="dropdownArw" id="dropdownArw"></span>
@@ -52,31 +40,41 @@
           <button id="savePres" class="btnGreen" type="submit" value="submit">
             Save Presentation
           </button>
-
           <button id="createPres" class="btnGreen" type="submit" value="submit">
             Create New Presentation
           </button>
         </form>
 
         <h2>Add Slide</h2>
+<<<<<<< HEAD
         <button id="addTxt" class="btnGrey">Text</button><br />
         <input  type="file" name="filename" id="addImg" class="btnGrey" ><br />
         <button id="addList" class="btnGrey">List</button><br />
+=======
+        <button id="addTxt" class="btnGrey" onclick="addSlide('text', '', '')">
+          Text</button
+        ><br />
+        <button id="addImg" class="btnGrey" onclick="addSlide('', 'img', '')">
+          Image</button
+        ><br />
+        <button id="addList" class="btnGrey" onclick="addSlide('', '', 'list')">
+          List</button
+        ><br />
+>>>>>>> 915f766d07bf5bd37fd8bc11ba9511ec9b379c67
 
         <button id="presentMode" class="btnGreen">Presentation mode</button>
       </div>
 
       <div class="editActiveArea">
-        <div id="slideDiv" class="slideDiv slideShowbody">
-          <a class="prev" onclick="navigate(-1)">&#8249;</a>
-          <div
-            id="container"
-            class="slideshow-container"
-            contenteditable="true"
-          ></div>
-          <a class="next" onclick="navigate(1)">&#8250;</a>
+        <div class="aspectRatio">
+          <div id="slideDiv" class="slideShowbody">
+            <a class="prev" onclick="navigate(-1)">&#8249;</a>
+            <div id="container" class="slideContent"></div>
+            <a class="next" onclick="navigate(1)">&#8250;</a>
+          </div>
         </div>
-        <div id="navDots" style="text-align: center">
+
+        <div style="text-align: center">
           <span class="dot" onclick="activeSlide(1)"></span>
           <span class="dot" onclick="activeSlide(2)"></span>
           <span class="dot" onclick="activeSlide(3)"></span>
@@ -86,46 +84,59 @@
 
     <script type="text/javascript">
       /* This will be a try for a cutsom dropdown menu -Frida
-      let selectBtn = document.getElementsByClassName('selectBtn');
-      let options = document.getElementsByClassName('options');
+           let selectBtn = document.getElementsByClassName('selectBtn');
+           let options = document.getElementsByClassName('options');
 
-      options.addEventListener 
+           options.addEventListener
 
 
-    //-------------------------------- end of testcode Frida ---------
-      /*
-    TODO:
-    addEventListner to buttons
-        function that adds a new slide(for example text)
- */
+         //-------------------------------- end of testcode Frida ---------
+           /*
+         TODO:
+         addEventListner to buttons
+             function that adds a new slide(for example text)
+      */
 
-      let presentation = [
-        { text: 'Title 1', },
-        { text: 'Title 2', img: "https://data.whicdn.com/images/20292906/original.jpg"  },
+      class Presentation {
+        constructor(title, slides, userid) {
+          this.title = title;
+          this.slides = slides;
+          this.userid = userid;
+        }
+      }
+
+      let userid = 155;
+      let firstPresentationArr = [
+        { text: 'Title 1' },
+        { text: 'Title 2' },
         { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
-        { list: [1,2,3,4,5]},
+        { list: [1, 2, 3, 4, 5] },
       ];
+
+      presentation = new Presentation('MyTitle', firstPresentationArr, userid);
 
       let container = document.getElementById('container');
       let showIndex = 1;
 
-      loadPresentation(presentation);
+      loadPresentation(presentation.slides);
       loadSlides(showIndex);
-      createNavigationDots();
-
+      addSlide();
       //---------------------Funksjoner--------------------------
       const savePresForm = document.querySelector('#savePresForm');
 
+      //GET load presentations if localstorage != empty
+      //UNDER CONSTRUCTION CAROLINE
       savePresForm.addEventListener('submit', async function (e) {
         e.preventDefault();
         const title = document.querySelector('#inpPresTitle').value;
 
         const body = {
-          title: title,
-          slides: presentation,
+          title: presentation.title,
+          slides: presentation.slides,
           presentationid: '',
-          userid: '1',
+          userid: userid, //bytt ut med localstorage.get(userid);
         };
+
         const config = {
           method: 'POST',
           headers: {
@@ -134,13 +145,13 @@
           body: JSON.stringify(body),
         };
 
-        fetch('/savePresentation', config)
+        fetch('/create-presentation', config)
           .then((resp) => {
             if (resp.status === 200) {
               location.href = 'editMode.html';
               console.log(resp.status);
             } else {
-              responseDiv.textContent = ' try again.';
+              responseDiv.textContent = 'something went wrong';
             }
             return resp;
           })
@@ -172,7 +183,7 @@
       function createNavigationDots() {
         let navDots = document.getElementById('navDots');
         navDots.innerHTML = '';
-        for (let i = 1; i <= presentation.length; i++) {
+        for (let i = 1; i <= presentation.slides.length; i++) {
           let span = document.createElement('span');
           span.classList.add('dot');
           span.addEventListener('click', function (evt) {
@@ -190,31 +201,33 @@
           let html = '';
           let text = '';
           let img = '';
-          let list= '';
+          let list = '';
 
           if (slide.text) {
             text = '<h6>' + slide.text + '</h6>';
           }
           if (slide.img) {
-            img = '<img src=' + slide.img + '>';
+            img =
+              '<img src=' +
+              slide.img +
+              ' style="max-width: 100%; max-height: 100%">';
           }
-         
           if (slide.list) {
             let innerOl = '';
-             for (let element of slide.list){
-              let listElement = '<li>'+element+'</li>';
+            for (let element of slide.list) {
+              let listElement = '<li>' + element + '</li>';
               innerOl += listElement;
-              }
-            list ='<ul>'+innerOl+'</ul>';
-                     
-        }
+            }
+            list = '<ul>' + innerOl + '</ul>';
+          }
           div.classList.add('slide');
           html = `${text}
                   ${img}
                   ${list}
-                
                         `;
           div.innerHTML = html;
+
+          console.log(div);
           container.appendChild(div);
         }
       }
@@ -239,25 +252,27 @@
         
         //-------------create slides with button----------------------------------------
       }
+
+      //-------------create slides with button----------------------------------------
       addTxt.addEventListener('click', function () {
         let newSlide = { text: 'Test1' };
-        presentation.push(newSlide);
-        loadPresentation(presentation);
+        presentation.slides.push(newSlide);
+        loadPresentation(presentation.slides);
         createNavigationDots();
-        activeSlide(presentation.length);
+        activeSlide(presentation.slides.length);
       });
 
       addImg.addEventListener('click', function () {
         let newSlide = { img: 'Bilder/eggBilde.jpg' };
-        presentation.push(newSlide);
-        loadPresentation(presentation);
+        presentation.slides.push(newSlide);
+        loadPresentation(presentation.slides);
         createNavigationDots();
         activeSlide(presentation.length);
   
       });
 
       addList.addEventListener('click', function () {
-        let newSlide = { list: ['a','b','c','d','e'] };
+        let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
         presentation.push(newSlide);
         loadPresentation(presentation);
         createNavigationDots();
