@@ -103,7 +103,6 @@ class StorageHandler {
     }
 
     if (accessToken) {
-      console.log('accessToken');
       return {
         id: results,
         accessToken: `${input.username}.${input.password}`,
