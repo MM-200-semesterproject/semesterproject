@@ -155,10 +155,10 @@
       if (!accessData) {
         alertDiv.style.display = 'block';
       } else {
-        const inputArray = accessData.accessToken.split('.');
+        const inputArray = [accessData.id, accessData.accesstoken];
         const body = {
-          username: inputArray[0],
-          password: inputArray[1],
+          id: inputArray[0],
+          accesstoken: inputArray[1],
         };
         const config = {
           method: 'POST',
