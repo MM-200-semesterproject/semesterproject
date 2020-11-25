@@ -47,7 +47,7 @@
 
         <h2>Add Slide</h2>
         <button id="addTxt" class="btnGrey">Text</button><br />
-        <button id="addImg" class="btnGrey">Image</button><br />
+        <input id="addImg" class="btnGrey" type="file" accept="image/*"onchange="loadFile(event)"  ><br />
         <button id="addList" class="btnGrey">List</button><br />
 
         <button id="presentMode" class="btnGreen">Presentation mode</button>
@@ -156,8 +156,8 @@
       let firstPresentationArr = [
         { text: 'Title 1' },
         { text: 'Title 2' },
-        { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
-        { list: [1, 2, 3, 4, 5] },
+        { text: 'Title Image', img: 'Bilder/eggBilde.jpg' },
+        { text: 'List 1', list: [1, 2, 3, 4, 5] },
       ];
 
       presentation = new Presentation('MyTitle', firstPresentationArr, userid);
@@ -208,17 +208,7 @@
           });
       });
       //----------------prøver å laste opp bilde til sliden-----------------------------
-      function readImgUrl(input) {
-            if (input.files && input.files[0]) {
-                let reader = new FileReader();
-
-          reader.onload = function (evnt) {
-            $('addImg').attr('src', evnt.target.result);
-          };
-
-          reader.readAsDataURL(input.files[0]);
-        }
-      }
+      
       function activeSlide(n) {
         loadSlides((showIndex = n));
       }
@@ -296,7 +286,7 @@
         slideshow[showIndex - 1].style.display = 'block';
         dots[showIndex - 1].className += ' crntSlide';
 
-        //-------------create slides with button----------------------------------------
+    
       }
 
       //-------------create slides with button----------------------------------------
@@ -307,22 +297,29 @@
         createNavigationDots();
         activeSlide(presentation.slides.length);
       });
+      
+      let loadFile = function(event){
+        let image= document.getElementById(container.slideContent);
+        image.src = URL.createObjectURL(event.target.files[0]);
+      };
 
       addImg.addEventListener('click', function () {
-        let newSlide = { img: 'Bilder/eggBilde.jpg' };
+        let newSlide = {text:"Image", img: loadFile };
         presentation.slides.push(newSlide);
         loadPresentation(presentation.slides);
+        console.log(loadFile);
         createNavigationDots();
-        activeSlide(presentation.length);
-        readImgUrl();
+        activeSlide(presentation.slides.length);
+        
+       
       });
 
       addList.addEventListener('click', function () {
         let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
         presentation.push(newSlide);
-        loadPresentation(presentation);
+        loadPresentation(presentation.slides);
         createNavigationDots();
-        activeSlide(presentation.length);
+        activeSlide(presentation.slides.length);
       
        
       });
