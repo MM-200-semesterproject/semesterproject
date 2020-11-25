@@ -44,7 +44,7 @@ app.post('/signUp', async function (request, response) {
 });
 
 app.post('/login', async function (request, response) {
-  let result = await pool.loadUser(request.body);
+  let result = await pool.loadUser(request.body, true);
   request.result = result;
   if (result instanceof Error) {
     response.status(400).json(result);
