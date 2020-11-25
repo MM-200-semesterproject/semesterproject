@@ -20,7 +20,7 @@
       <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
       <div class="editMenu">
         <br /><br />
-        <form id="savePresForm">
+        <div>
           <section class="select">
             <button class="selectBtn" id="selectBtn">
               placeholder<span class="dropdownArw" id="dropdownArw"></span>
@@ -43,9 +43,9 @@
           <button id="createPres" class="btnGreen" type="submit" value="submit">
             Create New Presentation
           </button>
-        </form>
+        </div>
 
-        <h2>Add Slide</h2>
+        <h2>Add Slide with:</h2>
         <button id="addTxt" class="btnGrey">Text</button><br />
         <button id="addImg" class="btnGrey">Image</button><br />
         <button id="addList" class="btnGrey">List</button><br />
@@ -116,15 +116,7 @@
     </div>
 
     <script type="text/javascript">
-      /*
-         TODO:
-         addEventListner to buttons
-             function that adds a new slide(for example text)
-      */
       //---------------------Functionality Themes----------------
-
-      console.log('test');
-
       let slideDiv = document.querySelector('#slideDiv');
       let themeOptions = document.querySelectorAll('.themeOption');
 
@@ -140,9 +132,29 @@
         };
       });
       //-------- Global variables------------------------
+      class Presentation {
+        constructor(title, slides, theme) {
+          this.title = title;
+          this.slides = slides;
+          this.theme = theme;
+        }
+      }
+
+      let firstPresentationArr = [
+        { text: 'Title 1' },
+        { text: 'Title 2' },
+        { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
+        { list: [1, 2, 3, 4, 5] },
+      ];
+
+      presentation = new Presentation('MyTitle', firstPresentationArr);
+
+      let container = document.getElementById('container');
+      let showIndex = 1;
       let addTxt = document.getElementById('addTxt');
       let addImg = document.getElementById('addImg');
       let addList = document.getElementById('addList');
+      let createPresBtn = document.getElementById('createPres');
 
       const alertDiv = document.querySelector('.disableTotalScreen');
       const alertDivButton = document.querySelector('.alertButton');
@@ -150,6 +162,9 @@
       let accessData = localStorage.getItem('accessData')
         ? JSON.parse(localStorage.getItem('accessData'))
         : false;
+
+      //----config-----
+      let body = null;
 
       //funksjoner
       alertDivButton.onclick = () => (location.href = 'login.html');
@@ -162,6 +177,7 @@
           id: inputArray[0],
           accesstoken: inputArray[1],
         };
+
         const config = {
           method: 'POST',
           headers: {
@@ -181,6 +197,7 @@
           })
           .then((resp) => {
             console.log('User verified');
+
             return resp;
           })
           .catch((err) => {
@@ -191,46 +208,21 @@
           });
       }
 
-      class Presentation {
-        constructor(title, slides, userid) {
-          this.title = title;
-          this.slides = slides;
-          this.userid = userid;
-        }
-      }
+      //loadpres and put arr in localstorage in presentationArray;
 
-      let userid = 155;
-      let firstPresentationArr = [
-        { text: 'Title 1' },
-        { text: 'Title 2' },
-        { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
-        { list: [1, 2, 3, 4, 5] },
-      ];
-
-      presentation = new Presentation('MyTitle', firstPresentationArr, userid);
-
-      let container = document.getElementById('container');
-      let showIndex = 1;
-
-      loadPresentation(presentation.slides);
-      loadSlides(showIndex);
-      // addSlide();
-      //---------------------Funksjoner--------------------------
-      const savePresForm = document.querySelector('#savePresForm');
-
-      //GET load presentations if localstorage != empty
-      //UNDER CONSTRUCTION CAROLINE
-      savePresForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const title = document.querySelector('#inpPresTitle').value;
-
+      createPresBtn.addEventListener('click', function () {
+        const inputArray = [
+          accessData.id,
+          accessData.accesstoken,
+          presentation.title,
+          presentation.slides,
+        ];
         const body = {
-          title: presentation.title,
-          slides: presentation.slides,
-          presentationid: '',
-          userid: userid, //bytt ut med localstorage.get(userid);
+          id: inputArray[0],
+          accesstoken: inputArray[1],
+          title: inputArray[2],
+          slides: inputArray[3],
         };
-
         const config = {
           method: 'POST',
           headers: {
@@ -241,19 +233,27 @@
 
         fetch('/create-presentation', config)
           .then((resp) => {
-            if (resp.status === 200) {
-              location.href = 'editMode.html';
-              console.log(resp.status);
-            } else {
-              responseDiv.textContent = 'something went wrong';
+            if (resp.status !== 200) {
+              throw new Error('COULD NOT CREATE');
             }
+            return resp.json();
+          })
+          .then((resp) => {
+            console.log('Presentation created');
             return resp;
           })
           .catch((err) => {
-            responseDiv.textContent = err;
+            alertDivText.textContent = '';
+            alertDivText.textContent = err.message;
+            alertDiv.style.display = 'block';
             return err;
           });
       });
+
+      loadPresentation(presentation.slides);
+      loadSlides(showIndex);
+      //---------------------Funksjoner--------------------------
+
       //----------------prøver å laste opp bilde til sliden-----------------------------
       function readImgUrl(input) {
         if (input.files && input.files[0]) {
@@ -341,11 +341,10 @@
         }
         slideshow[showIndex - 1].style.display = 'block';
         dots[showIndex - 1].className += ' crntSlide';
-
-        //-------------create slides with button----------------------------------------
       }
 
       //-------------create slides with button----------------------------------------
+
       addTxt.addEventListener('click', function () {
         let newSlide = { text: 'Test1' };
         presentation.slides.push(newSlide);
@@ -359,15 +358,15 @@
         presentation.slides.push(newSlide);
         loadPresentation(presentation.slides);
         createNavigationDots();
-        activeSlide(presentation.length);
+        activeSlide(presentation.slides.length);
       });
 
       addList.addEventListener('click', function () {
         let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
-        presentation.push(newSlide);
-        loadPresentation(presentation);
+        presentation.slides.push(newSlide);
+        loadPresentation(presentation.slides);
         createNavigationDots();
-        activeSlide(presentation.length);
+        activeSlide(presentation.slides.length);
         //-------------------ahhhh yeeeee--------påkaler bildeurltingen---------------------------
         readImgUrl();
       });
