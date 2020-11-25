@@ -78,8 +78,10 @@
 
     <div class="disableTotalScreen">
       <div class="alert">
-        You are not logged in, please log in to continue your editing.
-        <br /><br /><button id="alertBtn" class="btnGreen">Log in</button>
+        <p class="alertText">
+          You are not logged in, please log in to continue your editing.
+        </p>
+        <button id="alertBtn" class="btnGreen alertButton">Log in</button>
       </div>
     </div>
 
@@ -97,6 +99,50 @@
          addEventListner to buttons
              function that adds a new slide(for example text)
       */
+      const alertDiv = document.querySelector('.disableTotalScreen');
+      const alertDivButton = document.querySelector('.alertButton');
+      const alertDivText = document.querySelector('.alertText');
+      let accessData = localStorage.getItem('accessData')
+        ? JSON.parse(localStorage.getItem('accessData'))
+        : false;
+
+      alertDivButton.onclick = () => (location.href = 'login.html');
+
+      if (!accessData) {
+        alertDiv.style.display = 'block';
+      } else {
+        const inputArray = accessData.accessToken.split('.');
+        const body = {
+          username: inputArray[0],
+          password: inputArray[1],
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+        fetch('/login', config)
+          .then((resp) => {
+            if (resp.status !== 200) {
+              throw new Error(
+                'Incorrect access credentials. Try to log in again.'
+              );
+            }
+            return resp.json();
+          })
+          .then((resp) => {
+            console.log('User verified');
+            return resp;
+          })
+          .catch((err) => {
+            alertDivText.textContent = '';
+            alertDivText.textContent = err.message;
+            alertDiv.style.display = 'block';
+            return err;
+          });
+      }
 
       class Presentation {
         constructor(title, slides, userid) {

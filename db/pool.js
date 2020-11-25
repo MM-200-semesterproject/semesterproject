@@ -84,7 +84,7 @@ class StorageHandler {
 
   async loadUser(body, accessToken) {
     const client = new pg.Client(this.credentials);
-    const input = encrypt.hashCode(body);
+    const input = accessToken ? encrypt.hashCode(body) : body;
     let results = null;
 
     try {
