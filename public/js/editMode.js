@@ -1,4 +1,4 @@
-//Global var---------------------
+//Classes ----------------------------
 class Presentation {
   constructor(title, slides, theme) {
     this.title = title;
@@ -14,6 +14,7 @@ let firstPresentationArr = [
   { list: [1, 2, 3, 4, 5] },
 ];
 
+//Global var---------------------
 presentation = new Presentation('MyTitle', firstPresentationArr);
 
 let container = document.getElementById('container');
@@ -35,10 +36,16 @@ let accessData = localStorage.getItem('accessData')
   ? JSON.parse(localStorage.getItem('accessData'))
   : false;
 
-//----config-----
 let body = null;
 
-//---------------------Functionality Themes----------------
+//---------------------Funksjoner----------------
+window.addEventListener('keydown', (e) => {
+  if (e.key == 'ArrowLeft') {
+    navigate(-1);
+  } else if (e.key == 'ArrowRight') {
+    navigate(1);
+  }
+});
 
 themeOptions.forEach((element) => {
   element.onclick = (e) => {
@@ -149,8 +156,6 @@ createPresBtn.addEventListener('click', function () {
     });
 });
 
-loadPresentation(presentation.slides);
-loadSlides(showIndex);
 //---------------------Funksjoner--------------------------
 
 function activeSlide(n) {
@@ -242,3 +247,7 @@ addList.addEventListener('click', function () {
   createNavigationDots();
   activeSlide(presentation.slides.length);
 });
+
+//Called on window load -------------------------
+loadPresentation(presentation.slides);
+loadSlides(showIndex);
