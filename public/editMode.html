@@ -320,7 +320,7 @@
           let list = '';
 
           if (slide.text) {
-            text = '<h6>' + slide.text + '</h6>';
+            text = '<h6 contenteditable=true >' + slide.text + '</h6>';
           }
           if (slide.img) {
             img = '<img src=' + slide.img + ' >';
@@ -331,7 +331,7 @@
               let listElement = '<li>' + element + '</li>';
               innerOl += listElement;
             }
-            list = '<ul>' + innerOl + '</ul>';
+            list = '<ul contenteditable=true >' + innerOl + '</ul>';
           }
           div.classList.add('slide');
           html = `${text}
