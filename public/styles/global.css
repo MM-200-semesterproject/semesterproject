@@ -21,7 +21,7 @@ header {
   background-color: #485153;
   box-shadow: 0 2px 4px #191c1d;
   z-index: 9999;
-  text-justify: auto;
+  justify-content: space-between;
 }
 
 h1 {
@@ -39,10 +39,7 @@ h2 {
 }
 
 h6 {
-  display: flex;
-  justify-content: center;
-  align-self: center;
-  font-size: 80px;
+  font-size: 100px;
   font-weight: 500;
 }
 
@@ -100,7 +97,6 @@ input {
 }
 
 .selectOptions {
-  opacity: 0;
   position: absolute;
   top: 100%;
   left: 0;
@@ -108,10 +104,11 @@ input {
   box-shadow: 0 2px 6px 2px #213033;
   z-index: 10;
   width: 100%;
-  display: none;
+  opacity: 0;
   overflow: hidden;
   text-align: left;
-  transition: opacity 0.3s, text-shadow 0.3s;
+  visibility: collapse;
+  transition: visibility 0.3s, opacity 0.3s, text-shadow 0.3s;
   transition-delay: 0.2s;
 }
 
@@ -141,7 +138,7 @@ input {
 
 .selectBtn:hover .selectOptions,
 .selectOptions:hover {
-  display: block;
+  visibility: visible;
   opacity: 1;
 }
 
@@ -267,8 +264,8 @@ form .responseFromServer {
   height: 80%;
   margin: auto 10% 4%;
   background-color: #fff;
-  box-shadow: 0 4px 10px #444849, inset 0 0 0 1vw #cadce0,
-    inset 1.4vw 1.4vw 0 0 #15414b, inset 0.3vw 0.3vw 1vw 2vw #cadce0;
+  box-shadow: 0 4px 10px #444849, inset -0.4vw -0.4vw 0 0 #15414b,
+    inset -0.3vw -0.3vw 0 0.8vw #cadce0, inset -0.2vw -0.2vw 0 1.1vw #15414b;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -323,6 +320,7 @@ form .responseFromServer {
 
 .slideContent {
   width: 100%;
+  height: 100%;
   font-family: inherit;
   display: flex;
   justify-content: center;
@@ -331,6 +329,18 @@ form .responseFromServer {
 
 .slideContent :not(img) {
   font-family: inherit;
+}
+
+.slide {
+  margin: auto;
+  height: inherit;
+  justify-content: center;
+}
+
+.slide img {
+  max-width: 90%;
+  max-height: 80%;
+  align-self: center;
 }
 
 .prev,
@@ -424,4 +434,31 @@ form .responseFromServer {
   margin-top: -10%;
   margin-left: -30%;
   opacity: 50%;
+}
+
+#userIcon {
+  width: 38px;
+  height: 38px;
+  margin: auto;
+  border-radius: 50%;
+  margin-right: 20px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 28px;
+  justify-content: center;
+  align-content: center;
+  background-color: #e77793;
+  box-shadow: inset 2px -2px 10px 1px #5d1426;
+}
+
+#userIcon div {
+  width: 230px;
+  left: -192px;
+  top: 50px;
+  font-size: 20px;
+  text-shadow: none;
+}
+
+#deleteUser {
+  color: #940000;
 }
