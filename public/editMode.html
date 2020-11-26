@@ -15,6 +15,13 @@
   <body>
     <header class="header">
       <img src="svg/logo.svg" alt="More Slides logo" id="headerLogo" />
+      <button class="selectBtn" id="userIcon">
+        U
+        <div class="selectOptions">
+          <p id="updatePassword">Update password</p>
+          <p id="deleteUser">Delete user</p>
+        </div>
+      </button>
     </header>
     <div class="editWrapper">
       <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
@@ -75,6 +82,7 @@
                 font-family: 'Limelight', cursive;
                 background-color: #1b202c;
                 color: #ffc65c;
+                text-shadow: none;
               "
             >
               Geometric
@@ -140,7 +148,7 @@
       let slideDiv = document.querySelector('#slideDiv');
       let themeOptions = document.querySelectorAll('.themeOption');
 
-      let presList = document.querySelectorAll('.selectOption');
+      let presList = document.querySelectorAll('.presOption');
 
       const alertDiv = document.querySelector('.disableTotalScreen');
       const alertDivButton = document.querySelector('.alertButton');
