@@ -172,7 +172,7 @@ function createNavigationDots() {
     navDots.appendChild(span);
   }
 }
-
+// usikker på denne --------------------------------------------------------------
 function loadPresentation(arr) {
   container.innerHTML = '';
   for (let slide of arr) {
@@ -207,6 +207,7 @@ function loadPresentation(arr) {
     container.appendChild(div);
   }
 }
+//------------------------------------------------------den jeg er usikker på slutter her-------
 function loadSlides(num) {
   let slideshow = document.getElementsByClassName('slide');
   let dots = document.getElementsByClassName('dot');
