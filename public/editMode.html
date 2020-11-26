@@ -240,7 +240,9 @@
         fetch('/create-presentation', config)
           .then((resp) => {
             if (resp.status !== 200) {
-              throw new Error('COULD NOT CREATE');
+              throw new Error(
+                'Could not create a presentation with current login credentials. Try to log in.'
+              );
             }
             return resp.json();
           })
