@@ -310,7 +310,7 @@
           let list = '';
 
           if (slide.text) {
-            text = '<h6>' + slide.text + '</h6>';
+            text = '<h6 contenteditable=true >' + slide.text + '</h6>';
           }
           if (slide.img) {
             img = '<img src=' + slide.img + ' >';
@@ -321,7 +321,7 @@
               let listElement = '<li>' + element + '</li>';
               innerOl += listElement;
             }
-            list = '<ul>' + innerOl + '</ul>';
+            list = '<ul contenteditable=true >' + innerOl + '</ul>';
           }
           div.classList.add('slide');
           html = `${text}
@@ -348,7 +348,7 @@
         for (let i = 0; i < dots.length; i++) {
           dots[i].className = dots[i].className.replace(' crntSlide', '');
         }
-        slideshow[showIndex - 1].style.display = 'block';
+        slideshow[showIndex - 1].style.display = 'flex';
         console.log(dots);
         dots[showIndex - 1].className += ' crntSlide';
       }
