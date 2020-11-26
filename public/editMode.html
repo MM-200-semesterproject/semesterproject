@@ -146,6 +146,8 @@
 
       let presList = document.querySelector('#presList');
 
+      const updatePasswordBtn = document.querySelector('#updatePassword');
+      const deleteUserBtn = document.querySelector('#deleteUser');
       const alertDiv = document.querySelector('.disableTotalScreen');
       const alertDivButton = document.querySelector('.alertButton');
       const alertDivText = document.querySelector('.alertText');
@@ -177,6 +179,10 @@
       if (!accessData) {
         alertDiv.style.display = 'block';
       } else {
+        checkUser();
+      }
+
+      function checkUser() {
         const inputArray = [accessData.id, accessData.accesstoken];
         const body = {
           id: inputArray[0],
@@ -200,8 +206,6 @@
             return resp.json();
           })
           .then((resp) => {
-            console.log('User verified');
-
             return resp;
           })
           .catch((err) => {
@@ -245,6 +249,8 @@
             return resp.json();
           })
           .then((resp) => {
+            console.clear();
+            console.log(config.body);
             console.log('Presentation created');
             loadPresentations();
             return resp;
@@ -406,7 +412,6 @@
           .then((resp) => {
             const presentationArray = JSON.stringify(resp);
             localStorage.setItem('presentations', presentationArray);
-            console.log(resp);
             return resp;
           })
           .catch((err) => {
@@ -421,7 +426,6 @@
         presList.innerHTML = '';
         console.log(presList);
         for (let part of array) {
-          console.log(part);
           let p = document.createElement('p');
           p.id = part.presentationid;
           p.classList.add('presOption');
