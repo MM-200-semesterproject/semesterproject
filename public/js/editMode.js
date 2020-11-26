@@ -1,4 +1,4 @@
-//Global var---------------------
+//Klasser---------------------
 class Presentation {
   constructor(title, slides, theme) {
     this.title = title;
@@ -6,7 +6,7 @@ class Presentation {
     this.theme = theme;
   }
 }
-
+//Global var---------------------
 let firstPresentationArr = [
   { text: 'Title 1' },
   { text: 'Title 2' },
@@ -35,7 +35,6 @@ let accessData = localStorage.getItem('accessData')
   ? JSON.parse(localStorage.getItem('accessData'))
   : false;
 
-//----config-----
 let body = null;
 
 //---------------------Functionality Themes----------------
@@ -172,42 +171,7 @@ function createNavigationDots() {
     navDots.appendChild(span);
   }
 }
-// usikker på denne --------------------------------------------------------------
-function loadPresentation(arr) {
-  container.innerHTML = '';
-  for (let slide of arr) {
-    let div = document.createElement('div');
 
-    let html = '';
-    let text = '';
-    let img = '';
-    let list = '';
-
-    if (slide.text) {
-      text = '<h6>' + slide.text + '</h6>';
-    }
-    //----------mulig at deete skal endres
-    // if (slide.img) {
-    // img = '<img src=' + slide.img + ' >';
-    //  }
-    if (slide.list) {
-      let innerOl = '';
-      for (let element of slide.list) {
-        let listElement = '<li>' + element + '</li>';
-        innerOl += listElement;
-      }
-      list = '<ul>' + innerOl + '</ul>';
-    }
-    div.classList.add('slide');
-    html = `${text}
-              ${img}
-              ${list}`;
-    div.innerHTML = html;
-
-    container.appendChild(div);
-  }
-}
-//------------------------------------------------------den jeg er usikker på slutter her-------
 function loadSlides(num) {
   let slideshow = document.getElementsByClassName('slide');
   let dots = document.getElementsByClassName('dot');
