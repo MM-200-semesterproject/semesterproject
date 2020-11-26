@@ -185,23 +185,29 @@ class StorageHandler {
 
     try {
       await client.connect();
-      let results = await client.query(
-        'SELECT COUNT(userid) FROM presentations WHERE userid = $1',
-        [input.id]
-      );
-
-      let rowcount = results.rows[0].count;
-
       results = await client.query(
-        'SELECT * FROM presentations WHERE userid = $1',
-        [input.id]
+        'SELECT id FROM users WHERE accesstoken = $1',
+        [input.accesstoken]
       );
-      for (let i = 0; i < rowcount; i++) {
-        let row = results.rows[i];
-        presentationArray.push(row);
-      }
-      results = presentationArray;
 
+      if (input.id == results.rows[0].id) {
+        results = await client.query(
+          'SELECT COUNT(userid) FROM presentations WHERE userid = $1',
+          [input.id]
+        );
+
+        let rowcount = results.rows[0].count;
+        results = await client.query(
+          'SELECT * FROM presentations WHERE userid = $1',
+          [input.id]
+        );
+
+        for (let i = 0; i < rowcount; i++) {
+          let row = results.rows[i];
+          presentationArray.push(row);
+        }
+      }
+      results = { arr: presentationArray };
       client.end();
     } catch (err) {
       console.log(`Error on loadPres: ${err}`);
@@ -224,6 +230,7 @@ class StorageHandler {
       );
 
       results = results.rows[0];
+
       console.log(`Row created with presentationID: ${results.presentationid}`);
       console.log('Client will end now!');
       client.end();

@@ -16,16 +16,6 @@ app.use(
 app.use(bodyParser.json());
 app.use(express.json());
 
-app.post('/presentation', (req, res) => {
-  let presentation = {
-    presentationid: req.body.presentationid,
-    title: req.body.title,
-    slides: req.body.slides,
-  };
-  res.status(200).json(presentation);
-  return;
-});
-
 app.post('/signUp', async function (request, response) {
   // Sends object to pool.js-->DB;
   let result = await pool.newUser(request.body);
@@ -65,7 +55,6 @@ app.post('/login', async function (request, response) {
 
 app.post('/load-presentations', async function (request, response) {
   let result = null;
-  console.log(request.body);
   result = await pool.loadPres(request.body);
   if (result instanceof Error) {
     console.log(result);
