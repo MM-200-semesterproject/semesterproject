@@ -287,8 +287,6 @@
       }
       //---------------------Funksjoner--------------------------
 
-      //----------------prøver å laste opp bilde til sliden-----------------------------
-
       function activeSlide(n) {
         loadSlides((showIndex = n));
       }
@@ -363,7 +361,7 @@
         console.log(dots);
         dots[showIndex - 1].className += ' crntSlide';
       }
-
+      //---------------------funksjon til å laste opp bilde---------------------------
       function imgFile() {
         let addImg = document.getElementById('addImg').files[0];
         let reader = new FileReader();
