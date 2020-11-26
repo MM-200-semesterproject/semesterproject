@@ -10,7 +10,7 @@ class Presentation {
 let firstPresentationArr = [
   { text: 'Title 1' },
   { text: 'Title 2' },
-  { img: 'Bilder/eggBilde.jpg' },
+  { img: '../Bilder/eggBilde.jpg' },
   { list: [1, 2, 3, 4, 5] },
 ];
 
@@ -28,6 +28,9 @@ let createPresBtn = document.getElementById('createPres');
 let slideDiv = document.querySelector('#slideDiv');
 let themeOptions = document.querySelectorAll('.themeOption');
 let presList = document.querySelectorAll('.selectOption');
+const editMenu = document.querySelector('.editMenu');
+const header = document.querySelector('.header');
+let presModeBtn = document.querySelector('#presentMode');
 
 const alertDiv = document.querySelector('.disableTotalScreen');
 const alertDivButton = document.querySelector('.alertButton');
@@ -44,6 +47,12 @@ window.addEventListener('keydown', (e) => {
     navigate(-1);
   } else if (e.key == 'ArrowRight') {
     navigate(1);
+  }
+  if (e.key == 'Escape') {
+    if (editMenu.style.display === 'none') {
+    }
+    editMenu.style.display === 'flex';
+    console.log('heisann escape works');
   }
 });
 
