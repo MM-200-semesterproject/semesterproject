@@ -57,10 +57,10 @@ app.post('/load-presentations', async function (request, response) {
   let result = null;
   result = await pool.loadPres(request.body);
   if (result instanceof Error) {
-    console.log(result);
     response.status(400).json(result);
     return;
   } else {
+    console.log(result);
     response.status(200).json(result);
     return;
   }

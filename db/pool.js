@@ -1,3 +1,4 @@
+const { json } = require('body-parser');
 const pg = require('pg');
 const encrypt = require('./encryption.js');
 const dbCredentials =
@@ -110,8 +111,6 @@ class StorageHandler {
         );
       }
       results = results.rows[0] || new Error('Wrong user credentials');
-      console.log(results);
-
       client.end();
     } catch (err) {
       results = err;
