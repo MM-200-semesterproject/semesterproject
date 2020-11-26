@@ -21,22 +21,16 @@
       <div class="editMenu">
         <br /><br />
         <div>
-          <section class="select">
-            <button class="selectBtn" id="selectBtn">
-              placeholder<span class="dropdownArw" id="dropdownArw"></span>
-            </button>
+          <button class="selectBtn" id="selectBtn">
+            placeholder<span class="dropdownArw" id="dropdownArw"></span>
             <div class="selectOptions">
-              <a id="pres1">pres 1</a>
-              <a id="pres2">pres 2</a>
-              <a id="pres2">pres 2</a>
+              <p id="pres1">pres 1</p>
+              <p id="pres2">pres 2</p>
+              <p id="pres2">pres 2</p>
             </div>
-          </section>
-          <input
-            id="inpPresTitle"
-            class="input"
-            type="text"
-            placeholder="Presentation Title"
-          />
+            <!--Use top: ; to position the list underneath button when done.-->
+          </button>
+
           <button id="savePres" class="btnGreen" type="submit" value="submit">
             Save Presentation
           </button>
@@ -50,30 +44,30 @@
         <button id="addImg" class="btnGrey">Image</button><br />
         <button id="addList" class="btnGrey">List</button><br />
 
-        <section class="select">
-          <button class="selectBtn" id="themeBtn">
-            Choose a theme<span class="dropdownArw" id="dropdownArw"></span>
-          </button>
+        <button class="selectBtn" id="themeBtn">
+          Choose a theme<span class="dropdownArw" id="dropdownArw"></span>
           <div class="selectOptions">
-            <a
+            <p
               class="themeOption"
               id="default"
               style="
                 box-shadow: inset 0 0 0 2px #cadce0, inset 0 0 0 4px #15414b;
                 background-color: #cadce0;
               "
-              >Minimalist</a
             >
-            <a
+              Minimalist
+            </p>
+            <p
               class="themeOption"
               id="sakura"
               style="
                 background-color: #ffc5cf;
                 font-family: 'Courier New', Courier, monospace;
               "
-              >Sakura</a
             >
-            <a
+              Sakura
+            </p>
+            <p
               class="themeOption"
               id="geometric"
               style="
@@ -81,10 +75,11 @@
                 background-color: #1b202c;
                 color: #ffc65c;
               "
-              >Geometric</a
             >
+              Geometric
+            </p>
           </div>
-        </section>
+        </button>
 
         <button id="presentMode" class="btnGreen">Presentation mode</button>
       </div>
@@ -116,21 +111,6 @@
     </div>
 
     <script type="text/javascript">
-      //---------------------Functionality Themes----------------
-      let slideDiv = document.querySelector('#slideDiv');
-      let themeOptions = document.querySelectorAll('.themeOption');
-
-      themeOptions.forEach((element) => {
-        element.onclick = (e) => {
-          if (e.target.id === 'default') {
-            slideDiv.className = 'slideShowbodyDefault';
-          } else if (e.target.id === 'sakura') {
-            slideDiv.className = 'slideShowbodySakura';
-          } else if (e.target.id === 'geometric') {
-            slideDiv.className = 'slideShowbodyGeometric';
-          }
-        };
-      });
       //-------- Global variables------------------------
       class Presentation {
         constructor(title, slides, theme) {
@@ -156,6 +136,11 @@
       let addList = document.getElementById('addList');
       let createPresBtn = document.getElementById('createPres');
 
+      let slideDiv = document.querySelector('#slideDiv');
+      let themeOptions = document.querySelectorAll('.themeOption');
+
+      let presList = document.querySelectorAll('.selectOptions');
+
       const alertDiv = document.querySelector('.disableTotalScreen');
       const alertDivButton = document.querySelector('.alertButton');
       const alertDivText = document.querySelector('.alertText');
@@ -165,6 +150,27 @@
 
       //----config-----
       let body = null;
+
+      //---------------------Functionality Themes----------------
+
+      themeOptions.forEach((element) => {
+        element.onclick = (e) => {
+          if (e.target.id === 'default') {
+            slideDiv.className = 'slideShowbodyDefault';
+          } else if (e.target.id === 'sakura') {
+            slideDiv.className = 'slideShowbodySakura';
+          } else if (e.target.id === 'geometric') {
+            slideDiv.className = 'slideShowbodyGeometric';
+          }
+        };
+      });
+
+      presList.forEach((element) => {
+        element.onclick = (e) => {
+          //Code to fetch the presentation connected to this title and load these slides
+          //also add this as the current text on this button
+        };
+      });
 
       //funksjoner
       alertDivButton.onclick = () => (location.href = 'login.html');

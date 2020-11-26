@@ -2,16 +2,6 @@
   font-family: 'Roboto', sans-serif;
   font-weight: 100;
 }
-/*
-html {
-  background-image: linear-gradient(
-    90deg,
-    #25363ab3,
-    #25363a 15%,
-    #25363a 85%,
-    #25363ab3
-  );
-}*/
 
 body {
   background-color: #e2e2e2;
@@ -104,48 +94,54 @@ input {
   justify-content: space-between;
   align-content: center;
   background-color: #f9f9f9;
-  padding: 4px;
-}
-
-.select {
-  display: flex;
-  overflow: visible;
-  width: 100%;
+  padding: 5px;
+  margin: 4px auto;
+  position: relative;
 }
 
 .selectOptions {
   opacity: 0;
   position: absolute;
+  top: 100%;
+  left: 0;
   background-color: #fff;
   box-shadow: 0 2px 6px 2px #213033;
   z-index: 10;
-  width: inherit;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  display: none;
   overflow: hidden;
+  text-align: left;
   transition: opacity 0.3s, text-shadow 0.3s;
   transition-delay: 0.2s;
 }
 
-.selectOptions a {
+.selectOptions p {
   color: #212324;
-  padding: 10px 4px;
+  padding: 10px;
+  margin: 0;
   text-decoration: none;
   cursor: pointer;
   background-color: #fff;
+  width: 100%;
 }
 
-.selectOptions a:hover {
+.selectOptions p:hover {
   text-shadow: 0 5px 5px#a5a5a5;
   transform: scale(1.25);
   transform-origin: top left;
 }
 
-.select:hover .selectBtn {
+.selectOptions p:last-child:hover {
+  transform-origin: bottom left;
+}
+
+.selectBtn:hover {
   box-shadow: inset 0 0 10px 6px #e2e2e2;
 }
 
-.select:hover .selectOptions {
+.selectBtn:hover .selectOptions,
+.selectOptions:hover {
+  display: block;
   opacity: 1;
 }
 
