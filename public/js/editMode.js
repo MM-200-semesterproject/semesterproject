@@ -13,8 +13,6 @@ let firstPresentationArr = [
   { img: 'Bilder/eggBilde.jpg' },
   { list: [1, 2, 3, 4, 5] },
 ];
-
-//Global var---------------------
 presentation = new Presentation('MyTitle', firstPresentationArr);
 
 let container = document.getElementById('container');
@@ -67,14 +65,11 @@ presList.forEach((element) => {
     console.log(e.target);
     let chosenPresId = presentation.id;
     let chosenPresTitle = presentation.title;
-
     let displayTitle = document.querySelector('#presTitleDisplay');
-
     displayTitle.innerHTML = 0; //This will be a condition using e.target.id === to chosenPresId and will return this press title
   };
 });
 
-//funksjoner
 alertDivButton.onclick = () => (location.href = 'login.html');
 
 if (!accessData) {
@@ -113,8 +108,6 @@ if (!accessData) {
       return err;
     });
 }
-
-//loadpres and put arr in localstorage in presentationArray;
 
 createPresBtn.addEventListener('click', function () {
   const inputArray = [
@@ -155,8 +148,6 @@ createPresBtn.addEventListener('click', function () {
       return err;
     });
 });
-
-//---------------------Funksjoner--------------------------
 
 function activeSlide(n) {
   loadSlides((showIndex = n));
@@ -213,6 +204,6 @@ addList.addEventListener('click', function () {
   activeSlide(presentation.slides.length);
 });
 
-//Called on window load -------------------------
+//påkaller funksjoner og sånnt -------------------------
 loadPresentation(presentation.slides);
 loadSlides(showIndex);
