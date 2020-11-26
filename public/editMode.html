@@ -31,11 +31,7 @@
           <button class="selectBtn" id="selectBtn">
             <span id="presTitleDisplay"></span
             ><span class="dropdownArw" id="dropdownArw"></span>
-            <div class="selectOptions">
-              <p id="pres1" class="presOption">pres 1</p>
-              <p id="pres2" class="presOption">pres 2</p>
-              <p id="pres2" class="presOption">pres 2</p>
-            </div>
+            <div id="presList" class="selectOptions"></div>
             <!--Use top: ; to position the list underneath button when done.-->
           </button>
 
@@ -106,9 +102,7 @@
         </div>
 
         <div id="navDots" style="text-align: center">
-          <span class="dot" onclick="activeSlide(1)"></span>
-          <span class="dot" onclick="activeSlide(2)"></span>
-          <span class="dot" onclick="activeSlide(3)"></span>
+          <span id="dot"></span>
         </div>
       </div>
     </div>
@@ -133,9 +127,8 @@
       }
 
       let firstPresentationArr = [
-        { text: 'Title 1' },
-        { text: 'Title 2' },
-        { img: 'Bilder/eggBilde.jpg' },
+        { text: 'My presentation' },
+        { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
         { list: [1, 2, 3, 4, 5] },
       ];
 
@@ -151,7 +144,7 @@
       let slideDiv = document.querySelector('#slideDiv');
       let themeOptions = document.querySelectorAll('.themeOption');
 
-      let presList = document.querySelectorAll('.presOption');
+      let presList = document.querySelector('#presList');
 
       const alertDiv = document.querySelector('.disableTotalScreen');
       const alertDivButton = document.querySelector('.alertButton');
@@ -160,8 +153,9 @@
         ? JSON.parse(localStorage.getItem('accessData'))
         : false;
 
-      //----config-----
-      let body = null;
+      let presentationArray = localStorage.getItem('presentations')
+        ? JSON.parse(localStorage.getItem('presentations'))
+        : false;
 
       //---------------------Functionality Themes----------------
 
@@ -174,21 +168,6 @@
           } else if (e.target.id === 'geometric') {
             slideDiv.className = 'slideShowbodyGeometric';
           }
-        };
-      });
-
-      presList.forEach((element) => {
-        //an element will be <p id="presentationID">presentation.title</P>
-        element.onclick = (e) => {
-          //Code to fetch the presentation connected to this title and load these slides
-          //also add this as the current text on this button
-          console.log(e.target);
-          let chosenPresId = presentation.id;
-          let chosenPresTitle = presentation.title;
-
-          let displayTitle = document.querySelector('#presTitleDisplay');
-
-          displayTitle.innerHTML = 0; //This will be a condition using e.target.id === to chosenPresId and will return this press title
         };
       });
 
@@ -213,7 +192,6 @@
         };
         fetch('/login', config)
           .then((resp) => {
-            console.log(config.body.username, config.body.password);
             if (resp.status !== 200) {
               throw new Error(
                 'Incorrect access credentials. Try to log in again.'
@@ -266,6 +244,7 @@
           })
           .then((resp) => {
             console.log('Presentation created');
+            loadPresentations();
             return resp;
           })
           .catch((err) => {
@@ -276,8 +255,27 @@
           });
       });
 
-      loadPresentation(presentation.slides);
-      loadSlides(showIndex);
+      loadPresentations(); //fetch
+
+      function cleanData(array) {
+        //let clean = object.data.replace(/\\/g, '');
+        //object.data = clean;
+
+        for (let object of array) {
+          console.log(object.data);
+        }
+      }
+
+      if (presentationArray) {
+        cleanData(presentationArray.arr);
+
+        createPresList(presentationArray.arr);
+        loadPresentation(presentationArray.arr[0].data);
+        loadSlides(showIndex);
+      } else {
+        loadPresentation(presentation.slides);
+        loadSlides(showIndex);
+      }
       //---------------------Funksjoner--------------------------
 
       //----------------prøver å laste opp bilde til sliden-----------------------------
@@ -303,6 +301,7 @@
       }
 
       function loadPresentation(arr) {
+        createNavigationDots();
         container.innerHTML = '';
         for (let slide of arr) {
           let div = document.createElement('div');
@@ -352,6 +351,7 @@
           dots[i].className = dots[i].className.replace(' crntSlide', '');
         }
         slideshow[showIndex - 1].style.display = 'block';
+        console.log(dots);
         dots[showIndex - 1].className += ' crntSlide';
       }
 
@@ -362,9 +362,65 @@
           let image = document.createElement('img');
           image.src = e.target.result;
           document.body.appendChild(image);
-          console.log(e.target.result)
+          console.log(e.target.result);
         };
         reader.readAsDataURL(addImg);
+      }
+
+      function loadPresentations() {
+        //from DB
+        const inputArray = [accessData.id, accessData.accesstoken];
+        const body = {
+          id: inputArray[0],
+          accesstoken: inputArray[1],
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+
+        fetch('/load-presentations', config)
+          .then((resp) => {
+            if (resp.status !== 200) {
+              throw new Error('Could not Load presentations');
+            }
+            return resp.json();
+          })
+          .then((resp) => {
+            const presentationArray = JSON.stringify(resp);
+            localStorage.setItem('presentations', presentationArray);
+            console.log(resp);
+            return resp;
+          })
+          .catch((err) => {
+            alertDivText.textContent = '';
+            alertDivText.textContent = err.message;
+            alertDiv.style.display = 'block';
+            return err;
+          });
+      }
+
+      function createPresList(array) {
+        presList.innerHTML = '';
+        console.log(presList);
+        for (let part of array) {
+          console.log(part);
+          let p = document.createElement('p');
+          p.id = part.presentationid;
+          p.classList.add('presOption');
+          p.title = part.title;
+          p.innerHTML = part.title;
+          p.addEventListener('click', function () {
+            let displayTitle = document.querySelector('#presTitleDisplay');
+            displayTitle.innerHTML = p.title;
+          });
+
+          console.log(p);
+          presList.appendChild(p);
+        }
       }
 
       //-------------create slides with button----------------------------------------
@@ -378,7 +434,7 @@
       });
 
       displayImg.addEventListener('click', function () {
-        let newSlide = {img: (src = '') };
+        let newSlide = { img: (src = '') };
         presentation.slides.push(newSlide);
         loadPresentation(presentation.slides);
         createNavigationDots();
