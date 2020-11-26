@@ -109,7 +109,8 @@ class StorageHandler {
           [input.id, input.accesstoken]
         );
       }
-      results = results.rows[0];
+      results = results.rows[0] || new Error('Wrong user credentials');
+      console.log(results);
 
       client.end();
     } catch (err) {

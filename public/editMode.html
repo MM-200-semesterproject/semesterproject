@@ -356,9 +356,21 @@
           let image = document.createElement('img');
           image.src = e.target.result;
           document.body.appendChild(image);
-          console.log(e.target.result)
+          console.log(e.target.result);
         };
         reader.readAsDataURL(addImg);
+      }
+      function getImgURL(img) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        console.log(canvas.toDataURL());
+
+        return canvas.toDataURL();
       }
 
       //-------------create slides with button----------------------------------------
@@ -372,7 +384,7 @@
       });
 
       displayImg.addEventListener('click', function () {
-        let newSlide = {img: (src = '') };
+        let newSlide = { img: (src = '') };
         presentation.slides.push(newSlide);
         loadPresentation(presentation.slides);
         createNavigationDots();
