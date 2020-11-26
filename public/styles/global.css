@@ -324,6 +324,9 @@ form .responseFromServer {
 .slideContent {
   width: 100%;
   font-family: inherit;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 
 .slideContent :not(img) {

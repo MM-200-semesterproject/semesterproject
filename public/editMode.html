@@ -22,11 +22,12 @@
         <br /><br />
         <div>
           <button class="selectBtn" id="selectBtn">
-            placeholder<span class="dropdownArw" id="dropdownArw"></span>
+            <span id="presTitleDisplay"></span
+            ><span class="dropdownArw" id="dropdownArw"></span>
             <div class="selectOptions">
-              <p id="pres1">pres 1</p>
-              <p id="pres2">pres 2</p>
-              <p id="pres2">pres 2</p>
+              <p id="pres1" class="presOption">pres 1</p>
+              <p id="pres2" class="presOption">pres 2</p>
+              <p id="pres2" class="presOption">pres 2</p>
             </div>
             <!--Use top: ; to position the list underneath button when done.-->
           </button>
@@ -40,9 +41,12 @@
         </div>
 
         <h2>Add Slide with:</h2>
-        <button id="addTxt" class="btnGrey">Text</button><br />
-        <button id="addImg" class="btnGrey">Image</button><br />
-        <button id="addList" class="btnGrey">List</button><br />
+        <button id="addTxt" class="btnGrey">Add Text Slide</button><br />
+        <input type="file" name="filename" id="addImg" class="btnGrey" />
+        <button type="button" id="displayImg" onclick="imgFile()">
+          Add Image Slide</button
+        ><br />
+        <button id="addList" class="btnGrey">Add List Slide</button><br />
 
         <button class="selectBtn" id="themeBtn">
           Choose a theme<span class="dropdownArw" id="dropdownArw"></span>
@@ -123,7 +127,7 @@
       let firstPresentationArr = [
         { text: 'Title 1' },
         { text: 'Title 2' },
-        { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
+        { img: 'Bilder/eggBilde.jpg' },
         { list: [1, 2, 3, 4, 5] },
       ];
 
@@ -139,7 +143,7 @@
       let slideDiv = document.querySelector('#slideDiv');
       let themeOptions = document.querySelectorAll('.themeOption');
 
-      let presList = document.querySelectorAll('.selectOptions');
+      let presList = document.querySelectorAll('.selectOption');
 
       const alertDiv = document.querySelector('.disableTotalScreen');
       const alertDivButton = document.querySelector('.alertButton');
@@ -166,9 +170,17 @@
       });
 
       presList.forEach((element) => {
+        //an element will be <p id="presentationID">presentation.title</P>
         element.onclick = (e) => {
           //Code to fetch the presentation connected to this title and load these slides
           //also add this as the current text on this button
+          console.log(e.target);
+          let chosenPresId = presentation.id;
+          let chosenPresTitle = presentation.title;
+
+          let displayTitle = document.querySelector('#presTitleDisplay');
+
+          displayTitle.innerHTML = 0; //This will be a condition using e.target.id === to chosenPresId and will return this press title
         };
       });
 
@@ -263,17 +275,7 @@
       //---------------------Funksjoner--------------------------
 
       //----------------prøver å laste opp bilde til sliden-----------------------------
-      function readImgUrl(input) {
-        if (input.files && input.files[0]) {
-          var reader = new FileReader();
 
-          reader.onload = function (evnt) {
-            $('addImg').attr('src', evnt.target.result);
-          };
-
-          reader.readAsDataURL(input.files[0]);
-        }
-      }
       function activeSlide(n) {
         loadSlides((showIndex = n));
       }
@@ -308,10 +310,7 @@
             text = '<h6>' + slide.text + '</h6>';
           }
           if (slide.img) {
-            img =
-              '<img src=' +
-              slide.img +
-              ' style="max-width: 100%; max-height: 100%">';
+            img = '<img src=' + slide.img + ' >';
           }
           if (slide.list) {
             let innerOl = '';
@@ -327,7 +326,6 @@
                   ${list}`;
           div.innerHTML = html;
 
-          console.log(div);
           container.appendChild(div);
         }
       }
@@ -351,6 +349,18 @@
         dots[showIndex - 1].className += ' crntSlide';
       }
 
+      function imgFile() {
+        let addImg = document.getElementById('addImg').files[0];
+        let reader = new FileReader();
+        reader.onload = function (e) {
+          let image = document.createElement('img');
+          image.src = e.target.result;
+          document.body.appendChild(image);
+          console.log(e.target.result)
+        };
+        reader.readAsDataURL(addImg);
+      }
+
       //-------------create slides with button----------------------------------------
 
       addTxt.addEventListener('click', function () {
@@ -361,8 +371,8 @@
         activeSlide(presentation.slides.length);
       });
 
-      addImg.addEventListener('click', function () {
-        let newSlide = { img: 'Bilder/eggBilde.jpg' };
+      displayImg.addEventListener('click', function () {
+        let newSlide = {img: (src = '') };
         presentation.slides.push(newSlide);
         loadPresentation(presentation.slides);
         createNavigationDots();
@@ -375,8 +385,6 @@
         loadPresentation(presentation.slides);
         createNavigationDots();
         activeSlide(presentation.slides.length);
-        //-------------------ahhhh yeeeee--------påkaler bildeurltingen---------------------------
-        readImgUrl();
       });
     </script>
   </body>
