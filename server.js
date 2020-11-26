@@ -55,6 +55,7 @@ app.post('/login', async function (request, response) {
     result = await pool.loadUser(request.body);
   }
   if (result instanceof Error) {
+    console.log(result);
     response.status(400).json(result);
     return;
   } else {
@@ -63,14 +64,30 @@ app.post('/login', async function (request, response) {
   }
 });
 
-app.get('/editMode', async function (request, response) {
-  console.log('editmode');
+app.post('/load-presentations', async function (request, response) {
+  let result = null;
+  console.log(request.body);
+  result = await pool.loadPres(request.body);
+  if (result instanceof Error) {
+    console.log(result);
+    response.status(400).json(result);
+    return;
+  } else {
+    response.status(200).json(result);
+    return;
+  }
 });
 
 app.post('/create-presentation', async function (request, response) {
-  //on "create presentation" in editMode.html
-  console.log('I am inside /create-presentation in server.js');
-  response.status(200).send('hei from create-presentation in server.js');
+  let result = null;
+  result = await pool.createPres(request.body);
+  if (result instanceof Error) {
+    response.status(400).json(result);
+    return;
+  } else {
+    response.status(200).json(result);
+    return;
+  }
 });
 
 app.post('/update-presentation', async function (request, response) {
