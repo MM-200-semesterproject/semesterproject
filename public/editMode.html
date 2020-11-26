@@ -351,7 +351,7 @@
         for (let i = 0; i < dots.length; i++) {
           dots[i].className = dots[i].className.replace(' crntSlide', '');
         }
-        slideshow[showIndex - 1].style.display = 'block';
+        slideshow[showIndex - 1].style.display = 'flex';
         dots[showIndex - 1].className += ' crntSlide';
       }
 
@@ -362,7 +362,7 @@
           let image = document.createElement('img');
           image.src = e.target.result;
           document.body.appendChild(image);
-          console.log(e.target.result)
+          console.log(e.target.result);
         };
         reader.readAsDataURL(addImg);
       }
@@ -378,7 +378,7 @@
       });
 
       displayImg.addEventListener('click', function () {
-        let newSlide = {img: (src = '') };
+        let newSlide = { img: (src = '') };
         presentation.slides.push(newSlide);
         loadPresentation(presentation.slides);
         createNavigationDots();

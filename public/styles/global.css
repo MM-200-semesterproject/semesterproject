@@ -39,10 +39,7 @@ h2 {
 }
 
 h6 {
-  display: flex;
-  justify-content: center;
-  align-self: center;
-  font-size: 80px;
+  font-size: 100px;
   font-weight: 500;
 }
 
@@ -267,8 +264,8 @@ form .responseFromServer {
   height: 80%;
   margin: auto 10% 4%;
   background-color: #fff;
-  box-shadow: 0 4px 10px #444849, inset 0 0 0 1vw #cadce0,
-    inset 1.4vw 1.4vw 0 0 #15414b, inset 0.3vw 0.3vw 1vw 2vw #cadce0;
+  box-shadow: 0 4px 10px #444849, inset -0.4vw -0.4vw 0 0 #15414b,
+    inset -0.3vw -0.3vw 0 0.8vw #cadce0, inset -0.2vw -0.2vw 0 1.1vw #15414b;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -323,6 +320,7 @@ form .responseFromServer {
 
 .slideContent {
   width: 100%;
+  height: 100%;
   font-family: inherit;
   display: flex;
   justify-content: center;
@@ -334,6 +332,15 @@ form .responseFromServer {
 }
 
 .slide {
+  margin: auto;
+  height: inherit;
+  justify-content: center;
+}
+
+.slide img {
+  max-width: 90%;
+  max-height: 80%;
+  align-self: center;
 }
 
 .prev,
