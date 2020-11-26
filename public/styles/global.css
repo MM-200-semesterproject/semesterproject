@@ -40,7 +40,8 @@ h2 {
 
 h6 {
   font-size: 100px;
-  font-weight: 500;
+  font-weight: 300;
+  margin: auto;
 }
 
 button {
@@ -316,6 +317,11 @@ form .responseFromServer {
   font-family: 'Limelight', cursive;
 }
 
+.slideShowbodyDefault img,
+.slideShowbodySakura img {
+  border: 1px solid #444849;
+}
+
 /* -----Themes END ------------------*/
 
 .slideContent {
@@ -333,14 +339,21 @@ form .responseFromServer {
 
 .slide {
   margin: auto;
-  height: inherit;
+  height: 100%;
   justify-content: center;
+  flex-direction: column;
+  text-align: center;
 }
 
+h6:not(:only-child) {
+  font-size: 50px;
+  margin: 0 auto;
+}
 .slide img {
   max-width: 90%;
   max-height: 80%;
   align-self: center;
+  height: inherit;
 }
 
 .prev,
