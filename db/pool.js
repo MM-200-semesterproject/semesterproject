@@ -106,7 +106,7 @@ class StorageHandler {
         );
       } else {
         results = await client.query(
-          'SELECT * FROM users WHERE id = $1 AND accesstoken = $2',
+          'SELECT id, accesstoken FROM users WHERE id = $1 AND accesstoken = $2',
           [input.id, input.accesstoken]
         );
       }
@@ -204,6 +204,7 @@ class StorageHandler {
 
         for (let i = 0; i < rowcount; i++) {
           let row = results.rows[i];
+          row.data = JSON.parse(results.rows[i].data);
           presentationArray.push(row);
         }
       }
@@ -220,13 +221,14 @@ class StorageHandler {
   async createPres(inp) {
     const client = new pg.Client(this.credentials);
     const input = inp;
+    const slides = JSON.stringify(input.slides);
     let results = null;
 
     try {
       await client.connect();
       results = await client.query(
         'INSERT INTO presentations(userid, title, data)VALUES($1,$2, $3) RETURNING presentationid',
-        [input.id, input.title, input.slides]
+        [input.id, input.title, slides]
       );
 
       results = results.rows[0];
