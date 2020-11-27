@@ -120,10 +120,49 @@ class StorageHandler {
     return results;
   }
 
+  async updateUser(body) {
+    const client = new pg.Client(this.credentials);
+    const userid = body.id;
+    const oldPassword = encrypt.singleHash(body.oldPassword);
+    let newPassword = REGEXHandler.validate('noEmail', body.newPassword);
+    let results = null;
+
+    if (!newPassword.password) {
+      //Check if the new password is a valid password
+      results = new Error(
+        'The password has to be at least 8 characters long and include at least one capital letter and one number'
+      );
+      client.end();
+      return results;
+    }
+
+    newPassword = encrypt.singleHash(body.newPassword);
+
+    console.log([newPassword, userid, oldPassword]);
+
+    try {
+      await client.connect();
+
+      results = await client.query(
+        'UPDATE users SET password = $1 WHERE id = $2 AND password = $3 RETURNING id',
+        [newPassword, userid, oldPassword]
+      );
+
+      console.log(results);
+      results = results.rows[0].id || new Error('Wrong password');
+      client.end();
+    } catch (err) {
+      console.log(`updateUser: ${err}`);
+      results = err;
+      client.end();
+    }
+    return results;
+  }
+
   async deleteUser(body) {
     const client = new pg.Client(this.credentials);
     const accessToken = body.accesstoken;
-    let password = encrypt.singleHash(body.password);
+    const password = encrypt.singleHash(body.password);
     let results = null;
 
     try {

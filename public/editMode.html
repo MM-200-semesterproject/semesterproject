@@ -239,6 +239,58 @@
         };
       });
 
+      updatePasswordBtn.addEventListener('click', function () {
+        const insideAlertDiv = document.querySelector('.alert');
+        const oldPassword = document.createElement('input');
+        const newPassword = document.createElement('input');
+        oldPassword.setAttribute('type', 'password');
+        oldPassword.setAttribute('placeholder', 'Enter OLD password');
+        newPassword.setAttribute('type', 'password');
+        newPassword.setAttribute('placeholder', 'Enter NEW password');
+        alertDiv.style.display = 'block';
+        alertDivButton.textContent = 'CONFIRM';
+        alertDivText.textContent =
+          'Please enter your new and old password to confirm.';
+
+        insideAlertDiv.insertBefore(oldPassword, alertDivButton);
+        insideAlertDiv.insertBefore(newPassword, alertDivButton);
+
+        alertDivButton.onclick = () => {
+          console.log('yo dude');
+          const inputArray = [accessData.id, accessData.accesstoken];
+          const body = {
+            id: inputArray[0],
+            oldPassword: oldPassword.value,
+            newPassword: newPassword.value,
+          };
+          console.log(body);
+          const config = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+          };
+
+          fetch('/updateUser', config)
+            .then((resp) => {
+              if (resp.status !== 200) {
+                throw new Error(resp.statusText);
+              }
+              return resp.json();
+            })
+            .then((resp) => {
+              location.href = '/';
+              return resp;
+            })
+            .catch((err) => {
+              alertDivText.textContent = err;
+              alertDiv.style.display = 'block';
+              return err;
+            });
+        };
+      });
+
       function checkUser() {
         const inputArray = [accessData.id, accessData.accesstoken];
         const body = {
