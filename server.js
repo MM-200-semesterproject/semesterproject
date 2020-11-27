@@ -93,6 +93,7 @@ app.post('/load-presentations', async function (request, response) {
 
 app.post('/create-presentation', async function (request, response) {
   let result = null;
+  console.log(request.body);
   result = await pool.createPres(request.body);
   if (result instanceof Error) {
     response.status(400).json(result);
