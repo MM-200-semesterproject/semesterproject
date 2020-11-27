@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Mode</title>
+    <link rel="stylesheet" type="text/css" href="styles/global.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Limelight&family=Roboto:wght@100;400;500;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header class="header">
+      <img src="svg/logo.svg" alt="More Slides logo" id="headerLogo" />
+
+      <button id="loginBtn" class="btnGreen">Log in</button>
+    </header>
+
+    <div class="editWrapper">
+      <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
+      <div class="editMenu">
+        <br /><br />
+        other Publised presentations: list
+      </div>
+
+      <div class="editActiveArea">
+        <div class="aspectRatio">
+          <div id="slideDiv" class="slideShowbodyDefault">
+            <a class="prev" onclick="navigate(-1)">&#8249;</a>
+            <div id="container" class="slideContent"></div>
+            <a class="next" onclick="navigate(1)">&#8250;</a>
+          </div>
+        </div>
+
+        <div id="navDots" style="text-align: center">
+          <span id="dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      //-------- Global variables------------------------
+
+      class Presentation {
+        constructor(title, slides, theme) {
+          this.title = title;
+          this.data = slides;
+          this.theme = theme;
+        }
+      }
+
+      let presentationArray = [];
+
+      let firstPresentationArr = [
+        { text: 'Text 1' },
+        { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
+        { list: [1, 2, 3, 4, 5] },
+      ];
+
+      defaultPresentation = new Presentation(
+        'MyTitle',
+        firstPresentationArr,
+        'Minimalist'
+      );
+
+      presentationArray.push(defaultPresentation);
+
+      let container = document.getElementById('container');
+      let showIndex = 0;
+      let addTxt = document.getElementById('addTxt');
+      let addImg = document.getElementById('addImg');
+      let addList = document.getElementById('addList');
+      let createPresBtn = document.getElementById('createPres');
+
+      let slideDiv = document.querySelector('#slideDiv');
+      let themeOptions = document.querySelectorAll('.themeOption');
+
+      let presList = document.querySelector('#presList');
+      let displayTitle = document.querySelector('#presTitleDisplay');
+
+      const alertDiv = document.querySelector('.disableTotalScreen');
+      const alertDivButton = document.querySelector('.alertButton');
+      const alertDivText = document.querySelector('.alertText');
+      let accessData = localStorage.getItem('accessData')
+        ? JSON.parse(localStorage.getItem('accessData'))
+        : false;
+
+      let presentationObject = localStorage.getItem('presentations')
+        ? JSON.parse(localStorage.getItem('presentations'))
+        : false;
+
+      //---------------------Functionality Themes----------------
+
+      themeOptions.forEach((element) => {
+        element.onclick = (e) => {
+          if (e.target.id === 'default') {
+            slideDiv.className = 'slideShowbodyDefault';
+          } else if (e.target.id === 'sakura') {
+            slideDiv.className = 'slideShowbodySakura';
+          } else if (e.target.id === 'geometric') {
+            slideDiv.className = 'slideShowbodyGeometric';
+          }
+        };
+      });
+
+      //funksjoner
+      alertDivButton.onclick = () => (location.href = 'login.html');
+
+      if (!accessData) {
+        alertDiv.style.display = 'block';
+      } else {
+        const inputArray = [accessData.id, accessData.accesstoken];
+        const body = {
+          id: inputArray[0],
+          accesstoken: inputArray[1],
+        };
+
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+        fetch('/login', config)
+          .then((resp) => {
+            if (resp.status !== 200) {
+              throw new Error(
+                'Incorrect access credentials. Try to log in again.'
+              );
+            }
+            return resp.json();
+          })
+          .then((resp) => {
+            console.log('User verified');
+
+            return resp;
+          })
+          .catch((err) => {
+            alertDivText.textContent = '';
+            alertDivText.textContent = err.message;
+            alertDiv.style.display = 'block';
+            return err;
+          });
+      }
+
+      createPresBtn.addEventListener('click', function () {
+        const inputArray = [
+          accessData.id,
+          accessData.accesstoken,
+          defaultPresentation.title,
+          defaultPresentation.data,
+        ];
+        const body = {
+          id: inputArray[0],
+          accesstoken: inputArray[1],
+          title: inputArray[2],
+          data: inputArray[3],
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+
+        fetch('/create-presentation', config)
+          .then((resp) => {
+            if (resp.status !== 200) {
+              throw new Error('COULD NOT CREATE');
+            }
+            return resp.json();
+          })
+          .then((resp) => {
+            console.log('Presentation created');
+            loadPresentations();
+            return resp;
+          })
+          .catch((err) => {
+            alertDivText.textContent = '';
+            alertDivText.textContent = err.message;
+            alertDiv.style.display = 'block';
+            return err;
+          });
+      });
+
+      loadPresentations(); //fetch
+
+      function cleanData(array) {
+        //let clean = object.data.replace(/\\/g, '');
+        //object.data = clean;
+
+        for (let object of array) {
+          console.log(object.data);
+        }
+      }
+
+      if (presentationObject) {
+        // cleanData(presentationObject.arr);
+
+        console.log(presentationObject.arr);
+        createPresList(presentationObject.arr);
+        loadPresentation(presentationObject.arr[0]);
+        loadSlides(showIndex);
+      } else {
+        createPresList(presentationArray);
+        loadPresentation(presentationArray[0]);
+        loadSlides(showIndex);
+      }
+      //---------------------Funksjoner--------------------------
+
+      //----------------prøver å laste opp bilde til sliden-----------------------------
+
+      function activeSlide(n) {
+        loadSlides((showIndex = n));
+      }
+      function navigate(num) {
+        loadSlides((showIndex += num));
+      }
+
+      function createNavigationDots(numberOfslides) {
+        console.log(numberOfslides);
+        let navDots = document.getElementById('navDots');
+        navDots.innerHTML = '';
+        for (let i = 0; i <= numberOfslides; i++) {
+          let span = document.createElement('span');
+          span.classList.add('dot');
+          span.addEventListener('click', function (evt) {
+            activeSlide(i);
+          });
+          navDots.appendChild(span);
+        }
+      }
+
+      function loadPresentation(currentPres) {
+        console.log('arr:' + currentPres);
+        createNavigationDots(currentPres.data.length);
+        container.innerHTML = '';
+        let titleDiv = document.createElement('div');
+        titleDiv.innerHTML = `<h6>${currentPres.title}</h6>`;
+        titleDiv.classList.add('slide');
+        container.appendChild(titleDiv);
+        for (let slide of currentPres.data) {
+          let div = document.createElement('div');
+
+          let html = '';
+          let text = '';
+          let img = '';
+          let list = '';
+
+          if (slide.text) {
+            text = '<h6 contenteditable=true >' + slide.text + '</h6>';
+          }
+          if (slide.img) {
+            img = '<img src=' + slide.img + ' >';
+          }
+          if (slide.list) {
+            let innerOl = '';
+            for (let element of slide.list) {
+              let listElement = '<li>' + element + '</li>';
+              innerOl += listElement;
+            }
+            list = '<ul contenteditable=true >' + innerOl + '</ul>';
+          }
+          div.classList.add('slide');
+          html = `${text}
+                  ${img}
+                  ${list}`;
+          div.innerHTML = html;
+
+          container.appendChild(div);
+        }
+      }
+
+      function loadSlides(num) {
+        let slideshow = document.getElementsByClassName('slide');
+        let dots = document.getElementsByClassName('dot');
+        if (num > slideshow.length) {
+          showIndex = 0;
+        }
+        if (num < 0) {
+          showIndex = slideshow.length;
+        }
+        for (let i = 0; i < slideshow.length; i++) {
+          slideshow[i].style.display = 'none';
+        }
+        for (let i = 0; i < dots.length; i++) {
+          dots[i].className = dots[i].className.replace(' crntSlide', '');
+        }
+        slideshow[showIndex].style.display = 'flex';
+        dots[showIndex].className += ' crntSlide';
+      }
+
+      function imgFile() {
+        let addImg = document.getElementById('addImg').files[0];
+        let reader = new FileReader();
+        reader.onload = function (e) {
+          let image = document.createElement('img');
+          image.src = e.target.result;
+          document.body.appendChild(image);
+          console.log(e.target.result);
+        };
+        reader.readAsDataURL(addImg);
+      }
+
+      function loadPresentations() {
+        //from DB
+        const inputArray = [accessData.id, accessData.accesstoken];
+        const body = {
+          id: inputArray[0],
+          accesstoken: inputArray[1],
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+
+        fetch('/load-presentations', config)
+          .then((resp) => {
+            if (resp.status !== 200) {
+              throw new Error('Could not Load presentations');
+            }
+            return resp.json();
+          })
+          .then((resp) => {
+            const presentationObject = JSON.stringify(resp);
+            localStorage.setItem('presentations', presentationObject);
+            return resp;
+          })
+          .catch((err) => {
+            alertDivText.textContent = '';
+            alertDivText.textContent = err.message;
+            alertDiv.style.display = 'block';
+            return err;
+          });
+      }
+
+      function createPresList(array) {
+        presList.innerHTML = '';
+        displayTitle.innerHTML = array[0].title;
+        for (let part of array) {
+          let p = document.createElement('p');
+          p.id = part.presentationid;
+          p.classList.add('presOption');
+          p.title = part.title;
+          p.innerHTML = part.title;
+          p.addEventListener('click', function () {
+            displayTitle.innerHTML = p.title;
+          });
+          presList.appendChild(p);
+        }
+      }
+
+      //-------------create slides with button----------------------------------------
+
+      addTxt.addEventListener('click', function () {
+        let newSlide = { text: 'Test1' };
+        presentationArray[0].slides.push(newSlide);
+        console.log(presentationArray[0]);
+        loadPresentation(presentationArray[0]);
+        activeSlide(presentationArray[0].slides.length);
+      });
+
+      displayImg.addEventListener('click', function () {
+        let newSlide = { img: (src = '') };
+        presentationArray[0].slides.push(newSlide);
+        loadPresentation(presentationArray[0]);
+        activeSlide(presentationArray[0].slides.length);
+      });
+
+      addList.addEventListener('click', function () {
+        let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
+        presentationArray[0].slides.push(newSlide);
+        loadPresentation(presentationArray[0]);
+        activeSlide(presentationArray[0].slides.length);
+      });
+    </script>
+  </body>
+</html>
