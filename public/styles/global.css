@@ -114,8 +114,6 @@ input {
   width: 97%;
 }
 
-/* ----- dropdown menu end --------------*/
-
 input:nth-of-type(1) {
   margin-bottom: 10px;
 }
@@ -135,6 +133,40 @@ input:nth-of-type(1) {
   margin-top: -300px;
   padding: 60px 40px;
 }
+
+/* TEST --------- PLEASE IGNORE ----- START*/
+.chooseImg {
+  position: absolute;
+  text-align: center;
+  background-color: #fff;
+  font-size: 28px;
+  font-weight: 300;
+  border-radius: 25px;
+  width: 50vw;
+  height: 30vw;
+  left: 50%;
+  top: 50%;
+  margin-left: -25vw;
+  margin-top: -25vw;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chooseimgsection {
+  display: flex;
+  justify-content: space-between;
+  align-content: space-between;
+  margin: auto;
+  width: 90%;
+}
+
+.chooseimgsection img {
+  width: 30%;
+  border: 1px solid #6e7172;
+  border-radius: 25px;
+}
+/* TEST --------- PLEASE IGNORE ---- END*/
 
 .aspectRatio {
   width: 100%;
@@ -173,6 +205,17 @@ input:nth-of-type(1) {
   top: 0;
   display: none;
 }
+
+/* TEST --------- PLEASE IGNORE ---- START*/
+.disableTotalScreenTest {
+  background-color: rgba(42, 43, 44, 0.3);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  display: none;
+}
+/* TEST --------- PLEASE IGNORE ---- END*/
 
 .dot {
   cursor: pointer;
@@ -251,8 +294,8 @@ input:nth-of-type(1) {
   right: 0;
   background: linear-gradient(
     90deg,
-    rgba(226, 226, 226, 0),
-    rgba(226, 226, 226, 1)
+    rgba(143, 143, 143, 0),
+    rgba(179, 179, 179, 0.6)
   );
 }
 
@@ -260,8 +303,8 @@ input:nth-of-type(1) {
   left: 0;
   background: linear-gradient(
     90deg,
-    rgba(226, 226, 226, 1),
-    rgba(226, 226, 226, 0)
+    rgba(179, 179, 179, 0.6),
+    rgba(143, 143, 143, 0)
   );
 }
 .prev,
@@ -279,6 +322,7 @@ input:nth-of-type(1) {
   opacity: 0;
   transition: opacity 0.6s, transform 0.6s;
   transition-delay: 0.3s;
+  user-select: none;
 }
 
 .prev:hover,
@@ -353,7 +397,7 @@ input:nth-of-type(1) {
   text-align: left;
   visibility: collapse;
   transition: visibility 0.3s, opacity 0.3s, text-shadow 0.3s;
-  transition-delay: 0.2s;
+  transition-delay: 0.3s;
 }
 
 .signupHeading {
