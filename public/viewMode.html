@@ -205,16 +205,10 @@
       }
 
       window.onload = function () {
-        const path = window.location.pathname;
-        let pathArr = path.split('/');
-        console.log(pathArr[pathArr.length]);
+        const param = window.location.search;
+        let findParam = new URLSearchParams(param);
+        console.log(findParam.get('presId'));
 
-        //from DB
-        const inputArray = [accessData.id, accessData.accesstoken];
-        const body = {
-          id: inputArray[0],
-          accesstoken: inputArray[1],
-        };
         const config = {
           method: 'GET',
           headers: {
@@ -222,7 +216,7 @@
           },
         };
 
-        fetch(`/${presentationid}`, config)
+        fetch(`/viewMode:${findParam.get('presId')}`, config)
           .then((resp) => {
             if (resp.status !== 200) {
               throw new Error('Could not Load presentations');
