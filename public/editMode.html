@@ -15,10 +15,14 @@
   <body>
     <header class="header">
       <img src="svg/logo.svg" alt="More Slides logo" id="headerLogo" />
+      <button class="btnGrey editIcon">
+        <img class="appIcon" src="svg/editIcon.svg" />
+      </button>
       <button class="selectBtn" id="userIcon">
         U
         <div class="selectOptions">
           <p id="updatePassword">Update password</p>
+          <p id="logoutUser">Log out</p>
           <p id="deleteUser">Delete user</p>
         </div>
       </button>
@@ -137,21 +141,6 @@
 
       let presentationArray = [];
 
-      let firstPresentationArr = [
-        { text: 'Text 1' },
-        { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
-        { list: [1, 2, 3, 4, 5] },
-      ];
-
-      defaultPresentation = new Presentation(
-        'MyTitle',
-        firstPresentationArr,
-        'Minimalist'
-      );
-
-      presentationArray.push(defaultPresentation);
-      console.log(presentationArray);
-
       let container = document.getElementById('container');
       let showIndex = 0;
       let addTxt = document.getElementById('addTxt');
@@ -167,6 +156,8 @@
       const header = document.querySelector('.header');
       let presModeBtn = document.querySelector('#presentMode');
       let displayTitle = document.querySelector('#presTitleDisplay');
+      let editBtn = document.querySelector('.editIcon');
+      let logoutUser = document.querySelector('#logoutUser');
 
       const updatePasswordBtn = document.querySelector('#updatePassword');
       const deleteUserBtn = document.querySelector('#deleteUser');
@@ -181,13 +172,42 @@
         ? JSON.parse(localStorage.getItem('presentations'))
         : false;
 
+      let firstPresentationArr = [
+        { text: 'Text 1' },
+        { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
+        { list: [1, 2, 3, 4, 5] },
+      ];
+      defaultPresentation = new Presentation(
+        'MyTitle',
+        firstPresentationArr,
+        'Minimalist'
+      );
+
+      if (!presentationObject) {
+        presentationArray.push(defaultPresentation);
+      } else if (
+        presentationObject.arr.length == 0 ||
+        presentationObject == false
+      ) {
+        presentationArray.push(defaultPresentation);
+      } else {
+        for (let i = 0; i < presentationObject.arr.length; i++) {
+          presentationArray.push(presentationObject.arr[i]);
+        }
+      }
       //---------------------Functionality Themes----------------
 
       presModeBtn.onclick = () => {
         editMenu.style.display = 'none';
-        let esc = document.createElement('button');
-        esc.innerHTML = '';
+        editBtn.style.display = 'block';
       };
+
+      editBtn.onclick = () => {
+        editMenu.style.display = 'flex';
+        editBtn.style.display = 'none';
+      };
+
+      logoutUser.onclick = () => (location.href = 'login.html');
 
       window.addEventListener('keydown', (e) => {
         if (e.key == 'ArrowLeft') {
@@ -360,7 +380,7 @@
           accessData.id,
           accessData.accesstoken,
           defaultPresentation.title,
-          defaultPresentation.data,
+          firstPresentationArr,
         ];
         const body = {
           id: inputArray[0],
@@ -402,27 +422,13 @@
 
       loadPresentations(); //fetch
 
-      function cleanData(array) {
-        //let clean = object.data.replace(/\\/g, '');
-        //object.data = clean;
-
-        for (let object of array) {
-          console.log(object.data);
-        }
-      }
-
-      if (!presentationObject) {
-        // cleanData(presentationObject.arr);
-
-        console.log(presentationObject.arr);
-        createPresList(presentationObject.arr);
-        loadPresentation(presentationObject.arr[0]);
-        loadSlides(showIndex);
-      } else {
+      if (presentationArray[0].data != null) {
         createPresList(presentationArray);
+        console.log(presentationArray[0]);
         loadPresentation(presentationArray[0]);
         loadSlides(showIndex);
       }
+
       //---------------------Funksjoner--------------------------
 
       //----------------prøver å laste opp bilde til sliden-----------------------------
@@ -449,7 +455,7 @@
       }
 
       function loadPresentation(currentPres) {
-        console.log('arr:' + currentPres);
+        console.log('arr:' + currentPres.data);
         createNavigationDots(currentPres.data.length);
         container.innerHTML = '';
         let titleDiv = document.createElement('div');
@@ -569,7 +575,7 @@
 
       function createPresList(array) {
         presList.innerHTML = '';
-        displayTitle.innerHTML = array[0].title;
+        displayTitle.innerHTML = array.title;
         for (let part of array) {
           let p = document.createElement('p');
           p.id = part.presentationid;
@@ -587,24 +593,24 @@
 
       addTxt.addEventListener('click', function () {
         let newSlide = { text: 'Test1' };
-        presentationArray[0].slides.push(newSlide);
+        presentationArray[0].data.push(newSlide);
         console.log(presentationArray[0]);
         loadPresentation(presentationArray[0]);
-        activeSlide(presentationArray[0].slides.length);
+        activeSlide(presentationArray[0].data.length);
       });
 
       displayImg.addEventListener('click', function () {
         let newSlide = { img: (src = '') };
         presentationArray[0].slides.push(newSlide);
         loadPresentation(presentationArray[0]);
-        activeSlide(presentationArray[0].slides.length);
+        activeSlide(presentationArray[0].data.length);
       });
 
       addList.addEventListener('click', function () {
         let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
-        presentationArray[0].slides.push(newSlide);
+        presentationArray[0].data.push(newSlide);
         loadPresentation(presentationArray[0]);
-        activeSlide(presentationArray[0].slides.length);
+        activeSlide(presentationArray[0].data.length);
       });
     </script>
   </body>
