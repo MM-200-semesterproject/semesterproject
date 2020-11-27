@@ -459,7 +459,7 @@
         fetch('/load-presentations', config)
           .then((resp) => {
             if (resp.status !== 200) {
-              throw new Error('Could not Load presentations');
+              console.log('Could not Load presentations');
             }
             return resp.json();
           })
