@@ -40,14 +40,16 @@
           <button id="createPres" class="btnGreen" type="submit" value="submit">
             Create New Presentation
           </button>
-          <button class="btnGrey deleteBtn">Delete Presentation</button>
+          <button id="deleteBtn" class="btnGrey deleteBtn">
+            Delete Presentation
+          </button>
         </section>
 
         <section class="menuSection">
           <h2>Add A New Slide:</h2>
           <button id="addTxt" class="btnGrey">Add Text Slide</button>
           <input type="file" name="filename" id="addImg" class="btnGrey" />
-          <button class="btnGrey" id="displayImg" onclick="imgFile()">
+          <button class="btnGrey" id="displayImg" onclick="">
             Add Image Slide
           </button>
           <button id="addList" class="btnGrey">Add List Slide</button>
@@ -148,23 +150,23 @@
 
       let presentationArray = [];
 
-      let container = document.getElementById('container');
+      const container = document.getElementById('container');
       let showIndex = 0;
-      let addTxt = document.getElementById('addTxt');
-      let addImg = document.getElementById('addImg');
-      let addList = document.getElementById('addList');
-      let createPresBtn = document.getElementById('createPres');
-
-      let slideDiv = document.querySelector('#slideDiv');
-      let themeOptions = document.querySelectorAll('.themeOption');
+      const addTxt = document.getElementById('addTxt');
+      const addImg = document.getElementById('addImg');
+      const addList = document.getElementById('addList');
+      const createPresBtn = document.getElementById('createPres');
+      let deletePresBtn = document.querySelector('#deleteBtn');
+      const slideDiv = document.querySelector('#slideDiv');
+      const themeOptions = document.querySelectorAll('.themeOption');
 
       let presList = document.querySelector('#presList');
       const editMenu = document.querySelector('.editMenu');
       const header = document.querySelector('.header');
-      let presModeBtn = document.querySelector('#presentMode');
-      let displayTitle = document.querySelector('#presTitleDisplay');
-      let editBtn = document.querySelector('.editIcon');
-      let logoutUser = document.querySelector('#logoutUser');
+      const presModeBtn = document.querySelector('#presentMode');
+      const displayTitle = document.querySelector('#presTitleDisplay');
+      const editBtn = document.querySelector('.editIcon');
+      const logoutUser = document.querySelector('#logoutUser');
 
       const updatePasswordBtn = document.querySelector('#updatePassword');
       const deleteUserBtn = document.querySelector('#deleteUser');
@@ -190,18 +192,41 @@
         'Minimalist'
       );
 
-      if (!presentationObject || !presentationObject.arr) {
-        presentationArray.push(defaultPresentation);
-      } else if (
-        presentationObject.arr.length == 0 ||
-        presentationObject == false
-      ) {
-        presentationArray.push(defaultPresentation);
-      } else {
-        for (let i = 0; i < presentationObject.arr.length; i++) {
-          presentationArray.push(presentationObject.arr[i]);
+      //updatePresentationArray();
+
+      function updatePresentationArray() {
+        presentationObject = localStorage.getItem('presentations')
+          ? JSON.parse(localStorage.getItem('presentations'))
+          : false;
+
+        if (
+          !presentationObject ||
+          !presentationObject.arr ||
+          presentationObject == false
+        ) {
+          presentationArray = [{ title: 'empty' }];
+          loadPresentations();
+          createPresList();
+        } else if (presentationObject.arr.length == 0) {
+          presentationArray = [{ title: 'empty' }];
+          createPresList();
+          console.log(presentationObject.arr.length, 'in line207');
+        } else if (presentationObject.arr.length > 0) {
+          presentationArray = [];
+          for (let i = 0; i < presentationObject.arr.length; i++) {
+            presentationArray.unshift(presentationObject.arr[i]);
+            console.log(presentationArray[0].presentationid);
+          }
+          loadPresentation(presentationArray[0]);
+          createPresList();
+        } else {
+          console.log(presentationObject);
         }
       }
+
+      loadPresentations();
+      //fetch
+
       //---------------------Functionality Themes----------------
 
       presModeBtn.onclick = () => {
@@ -382,7 +407,9 @@
           });
       }
 
-      createPresBtn.addEventListener('click', function () {
+      createPresBtn.addEventListener('click', createPresentation);
+
+      function createPresentation() {
         const inputArray = [
           accessData.id,
           accessData.accesstoken,
@@ -413,10 +440,8 @@
             return resp.json();
           })
           .then((resp) => {
-            console.clear();
-            console.log(config.body);
-            console.log('Presentation created');
             loadPresentations();
+            console.log('Presentation created');
             return resp;
           })
           .catch((err) => {
@@ -425,16 +450,55 @@
             alertDiv.style.display = 'block';
             return err;
           });
-      });
-
-      loadPresentations(); //fetch
-
-      if (presentationArray[0].data != null) {
-        createPresList(presentationArray);
-        console.log(presentationArray[0]);
-        loadPresentation(presentationArray[0]);
-        loadSlides(showIndex);
       }
+
+      deletePresBtn.addEventListener('click', function () {
+        if (!presentationArray[0].presentationid) {
+          console.log('Nothing to delete');
+        } else {
+          const inputArray = [
+            accessData.id,
+            accessData.accesstoken,
+            presentationArray[0].presentationid,
+          ];
+
+          const body = {
+            id: inputArray[0],
+            accesstoken: inputArray[1],
+            presentationid: inputArray[2],
+          };
+
+          const config = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+          };
+
+          fetch('/delete-presentation', config)
+            .then((resp) => {
+              if (resp.status !== 200) {
+                throw new Error('Something went wrong.');
+              }
+              return resp.json();
+            })
+            .then((resp) => {
+              loadPresentations();
+              console.log(
+                'Presentation with id: ',
+                resp.presentationid,
+                ' deleted'
+              );
+
+              return resp;
+            })
+            .catch((err) => {
+              console.log(err);
+              return err;
+            });
+        }
+      });
 
       //---------------------Funksjoner--------------------------
 
@@ -462,11 +526,12 @@
       }
 
       function loadPresentation(currentPres) {
+        displayTitle.innerHTML = currentPres.title;
         console.log('arr:' + currentPres.data);
         createNavigationDots(currentPres.data.length);
         container.innerHTML = '';
         let titleDiv = document.createElement('div');
-        titleDiv.innerHTML = `<h6>${currentPres.title}</h6>`;
+        titleDiv.innerHTML = `<h6 contenteditable = true>${currentPres.title}</h6>`;
         titleDiv.classList.add('slide');
         container.appendChild(titleDiv);
         for (let slide of currentPres.data) {
@@ -499,6 +564,7 @@
 
           container.appendChild(div);
         }
+        loadSlides(showIndex);
       }
 
       function loadSlides(num) {
@@ -570,20 +636,24 @@
           .then((resp) => {
             const presentationObject = JSON.stringify(resp);
             localStorage.setItem('presentations', presentationObject);
-            return resp;
+            updatePresentationArray();
           })
           .catch((err) => {
-            alertDivText.textContent = '';
-            alertDivText.textContent = err.message;
-            alertDiv.style.display = 'block';
+            console.log(err);
             return err;
           });
       }
 
-      function createPresList(array) {
+      function createPresList() {
         presList.innerHTML = '';
-        displayTitle.innerHTML = array.title;
-        for (let part of array) {
+        if (presentationArray[0].length == 0 || !presentationArray[0].title) {
+          displayTitle.innerHTML = 'empty';
+        } else if (!presentationArray[0]) {
+          displayTitle.innerHTML = 'Undefined';
+        } else {
+          displayTitle.innerHTML = presentationArray[0].title;
+        }
+        for (let part of presentationArray) {
           let p = document.createElement('p');
           p.id = part.presentationid;
           p.classList.add('presOption');
@@ -591,6 +661,8 @@
           p.innerHTML = part.title;
           p.addEventListener('click', function () {
             displayTitle.innerHTML = p.title;
+            //find corresponding presentaionid in array and presentation.unshift(----)
+            // loadPresentation(---------);
           });
           presList.appendChild(p);
         }
@@ -607,8 +679,8 @@
       });
 
       displayImg.addEventListener('click', function () {
-        let newSlide = { img: (src = '') };
-        presentationArray[0].slides.push(newSlide);
+        let newSlide = { text: 'new text', img: (src = 'Bilder/eggBilde.jpg') };
+        presentationArray[0].data.push(newSlide);
         loadPresentation(presentationArray[0]);
         activeSlide(presentationArray[0].data.length);
       });
