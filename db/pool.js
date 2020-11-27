@@ -126,7 +126,6 @@ class StorageHandler {
     const accessToken = body.accesstoken;
     let password = encrypt.singleHash(body.password);
     let results = null;
-    console.log(`${body.password}, ${accessToken}`);
 
     try {
       await client.connect();
