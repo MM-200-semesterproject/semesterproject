@@ -191,7 +191,7 @@
         'Minimalist'
       );
 
-      if (!presentationObject) {
+      if (!presentationObject || !presentationObject.arr) {
         presentationArray.push(defaultPresentation);
       } else if (
         presentationObject.arr.length == 0 ||
