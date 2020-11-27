@@ -224,7 +224,6 @@
         insideAlertDiv.insertBefore(inputPassword, alertDivButton); //inserter input box overfor confirm knappen
 
         alertDivButton.onclick = () => {
-          console.log('yo dude');
           const inputArray = [accessData.id, accessData.accesstoken];
           const body = {
             id: inputArray[0],
@@ -277,7 +276,6 @@
         insideAlertDiv.insertBefore(newPassword, alertDivButton);
 
         alertDivButton.onclick = () => {
-          console.log('yo dude');
           const inputArray = [accessData.id, accessData.accesstoken];
           const body = {
             id: inputArray[0],
@@ -402,7 +400,7 @@
         }
       }
 
-      if (presentationObject) {
+      if (!presentationObject) {
         // cleanData(presentationObject.arr);
 
         console.log(presentationObject.arr);
