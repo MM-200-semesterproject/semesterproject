@@ -182,6 +182,45 @@
         checkUser();
       }
 
+      deleteUserBtn.addEventListener('click', function () {
+        const inputPassword = window.prompt(
+          'YOU ARE ABOUT DO DELETE YOU ACCOUNT. Please, enter your password to confirm.'
+        );
+
+        const inputArray = [accessData.id, accessData.accesstoken];
+        const body = {
+          id: inputArray[0],
+          password: inputPassword,
+          accesstoken: inputArray[1],
+        };
+
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+
+        fetch('/deleteUser', config)
+          .then((resp) => {
+            if (resp.status !== 200) {
+              throw new Error('Incorrect access credentials.');
+            }
+            return resp.json();
+          })
+          .then((resp) => {
+            location.href = '/';
+            return resp;
+          })
+          .catch((err) => {
+            alertDivText.textContent = '';
+            alertDivText.textContent = err.message;
+            alertDiv.style.display = 'block';
+            return err;
+          });
+      });
+
       function checkUser() {
         const inputArray = [accessData.id, accessData.accesstoken];
         const body = {
