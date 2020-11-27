@@ -154,7 +154,13 @@
       let themeOptions = document.querySelectorAll('.themeOption');
 
       let presList = document.querySelector('#presList');
+<<<<<<< HEAD
+      const editMenu = document.querySelector('.editMenu');
+      const header = document.querySelector('.header');
+      let presModeBtn = document.querySelector('#presentMode');
+=======
       let displayTitle = document.querySelector('#presTitleDisplay');
+>>>>>>> d147b043479855c6d76b3d0ab2e18ab0f1cefad9
 
       const updatePasswordBtn = document.querySelector('#updatePassword');
       const deleteUserBtn = document.querySelector('#deleteUser');
@@ -170,6 +176,24 @@
         : false;
 
       //---------------------Functionality Themes----------------
+
+      presModeBtn.onclick = () => {
+        editMenu.style.display = 'none';
+      };
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key == 'ArrowLeft') {
+          navigate(-1);
+        } else if (e.key == 'ArrowRight') {
+          navigate(1);
+        }
+        if (e.key == 'Escape') {
+          if (editMenu.style.display === 'none') {
+          }
+          editMenu.style.display === 'block';
+          console.log('heisann escape works');
+        }
+      });
 
       themeOptions.forEach((element) => {
         element.onclick = (e) => {
