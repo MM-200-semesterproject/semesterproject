@@ -118,24 +118,34 @@
 
     <script type="text/javascript">
       //-------- Global variables------------------------
+
       class Presentation {
         constructor(title, slides, theme) {
           this.title = title;
-          this.slides = slides;
+          this.data = slides;
           this.theme = theme;
         }
       }
 
+      let presentationArray = [];
+
       let firstPresentationArr = [
-        { text: 'My presentation' },
+        { text: 'Text 1' },
         { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
         { list: [1, 2, 3, 4, 5] },
       ];
 
-      presentation = new Presentation('MyTitle', firstPresentationArr);
+      defaultPresentation = new Presentation(
+        'MyTitle',
+        firstPresentationArr,
+        'Minimalist'
+      );
+
+      presentationArray.push(defaultPresentation);
+      console.log(presentationArray);
 
       let container = document.getElementById('container');
-      let showIndex = 1;
+      let showIndex = 0;
       let addTxt = document.getElementById('addTxt');
       let addImg = document.getElementById('addImg');
       let addList = document.getElementById('addList');
@@ -145,7 +155,10 @@
       let themeOptions = document.querySelectorAll('.themeOption');
 
       let presList = document.querySelector('#presList');
+      let displayTitle = document.querySelector('#presTitleDisplay');
 
+      const updatePasswordBtn = document.querySelector('#updatePassword');
+      const deleteUserBtn = document.querySelector('#deleteUser');
       const alertDiv = document.querySelector('.disableTotalScreen');
       const alertDivButton = document.querySelector('.alertButton');
       const alertDivText = document.querySelector('.alertText');
@@ -153,7 +166,7 @@
         ? JSON.parse(localStorage.getItem('accessData'))
         : false;
 
-      let presentationArray = localStorage.getItem('presentations')
+      let presentationObject = localStorage.getItem('presentations')
         ? JSON.parse(localStorage.getItem('presentations'))
         : false;
 
@@ -177,6 +190,49 @@
       if (!accessData) {
         alertDiv.style.display = 'block';
       } else {
+        checkUser();
+      }
+
+      deleteUserBtn.addEventListener('click', function () {
+        const inputPassword = window.prompt(
+          'YOU ARE ABOUT DO DELETE YOU ACCOUNT. Please, enter your password to confirm.'
+        );
+
+        const inputArray = [accessData.id, accessData.accesstoken];
+        const body = {
+          id: inputArray[0],
+          password: inputPassword,
+          accesstoken: inputArray[1],
+        };
+
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+
+        fetch('/deleteUser', config)
+          .then((resp) => {
+            if (resp.status !== 200) {
+              throw new Error('Incorrect access credentials.');
+            }
+            return resp.json();
+          })
+          .then((resp) => {
+            location.href = '/';
+            return resp;
+          })
+          .catch((err) => {
+            alertDivText.textContent = '';
+            alertDivText.textContent = err.message;
+            alertDiv.style.display = 'block';
+            return err;
+          });
+      });
+
+      function checkUser() {
         const inputArray = [accessData.id, accessData.accesstoken];
         const body = {
           id: inputArray[0],
@@ -200,8 +256,6 @@
             return resp.json();
           })
           .then((resp) => {
-            console.log('User verified');
-
             return resp;
           })
           .catch((err) => {
@@ -212,20 +266,18 @@
           });
       }
 
-      //loadpres and put arr in localstorage in presentationArray;
-
       createPresBtn.addEventListener('click', function () {
         const inputArray = [
           accessData.id,
           accessData.accesstoken,
-          presentation.title,
-          presentation.slides,
+          defaultPresentation.title,
+          defaultPresentation.data,
         ];
         const body = {
           id: inputArray[0],
           accesstoken: inputArray[1],
           title: inputArray[2],
-          slides: inputArray[3],
+          data: inputArray[3],
         };
         const config = {
           method: 'POST',
@@ -238,11 +290,15 @@
         fetch('/create-presentation', config)
           .then((resp) => {
             if (resp.status !== 200) {
-              throw new Error('COULD NOT CREATE');
+              throw new Error(
+                'Could not create a presentation with current login credentials. Try to log in.'
+              );
             }
             return resp.json();
           })
           .then((resp) => {
+            console.clear();
+            console.log(config.body);
             console.log('Presentation created');
             loadPresentations();
             return resp;
@@ -257,14 +313,25 @@
 
       loadPresentations(); //fetch
 
-     if (presentationArray) {
-        cleanData(presentationArray.arr);
+      function cleanData(array) {
+        //let clean = object.data.replace(/\\/g, '');
+        //object.data = clean;
 
-        createPresList(presentationArray.arr);
-        loadPresentation(presentationArray.arr[0].data);
+        for (let object of array) {
+          console.log(object.data);
+        }
+      }
+
+      if (presentationObject) {
+        // cleanData(presentationObject.arr);
+
+        console.log(presentationObject.arr);
+        createPresList(presentationObject.arr);
+        loadPresentation(presentationObject.arr[0]);
         loadSlides(showIndex);
       } else {
-        loadPresentation(presentation.slides);
+        createPresList(presentationArray);
+        loadPresentation(presentationArray[0]);
         loadSlides(showIndex);
       }
       //---------------------Funksjoner--------------------------
@@ -278,10 +345,11 @@
         loadSlides((showIndex += num));
       }
 
-      function createNavigationDots() {
+      function createNavigationDots(numberOfslides) {
+        console.log(numberOfslides);
         let navDots = document.getElementById('navDots');
         navDots.innerHTML = '';
-        for (let i = 1; i <= presentation.slides.length; i++) {
+        for (let i = 0; i <= numberOfslides; i++) {
           let span = document.createElement('span');
           span.classList.add('dot');
           span.addEventListener('click', function (evt) {
@@ -291,10 +359,15 @@
         }
       }
 
-      function loadPresentation(arr) {
-        createNavigationDots();
+      function loadPresentation(currentPres) {
+        console.log('arr:' + currentPres);
+        createNavigationDots(currentPres.data.length);
         container.innerHTML = '';
-        for (let slide of arr) {
+        let titleDiv = document.createElement('div');
+        titleDiv.innerHTML = `<h6>${currentPres.title}</h6>`;
+        titleDiv.classList.add('slide');
+        container.appendChild(titleDiv);
+        for (let slide of currentPres.data) {
           let div = document.createElement('div');
 
           let html = '';
@@ -330,9 +403,9 @@
         let slideshow = document.getElementsByClassName('slide');
         let dots = document.getElementsByClassName('dot');
         if (num > slideshow.length) {
-          showIndex = 1;
+          showIndex = 0;
         }
-        if (num < 1) {
+        if (num < 0) {
           showIndex = slideshow.length;
         }
         for (let i = 0; i < slideshow.length; i++) {
@@ -341,9 +414,8 @@
         for (let i = 0; i < dots.length; i++) {
           dots[i].className = dots[i].className.replace(' crntSlide', '');
         }
-        slideshow[showIndex - 1].style.display = 'flex';
-        console.log(dots);
-        dots[showIndex - 1].className += ' crntSlide';
+        slideshow[showIndex].style.display = 'flex';
+        dots[showIndex].className += ' crntSlide';
       }
 
       function imgFile() {
@@ -356,6 +428,18 @@
           console.log(e.target.result);
         };
         reader.readAsDataURL(addImg);
+      }
+      function getImgURL(img) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        console.log(canvas.toDataURL());
+
+        return canvas.toDataURL();
       }
 
       function loadPresentations() {
@@ -381,9 +465,8 @@
             return resp.json();
           })
           .then((resp) => {
-            const presentationArray = JSON.stringify(resp);
-            localStorage.setItem('presentations', presentationArray);
-            console.log(resp);
+            const presentationObject = JSON.stringify(resp);
+            localStorage.setItem('presentations', presentationObject);
             return resp;
           })
           .catch((err) => {
@@ -396,20 +479,16 @@
 
       function createPresList(array) {
         presList.innerHTML = '';
-        console.log(presList);
+        displayTitle.innerHTML = array[0].title;
         for (let part of array) {
-          console.log(part);
           let p = document.createElement('p');
           p.id = part.presentationid;
           p.classList.add('presOption');
           p.title = part.title;
           p.innerHTML = part.title;
           p.addEventListener('click', function () {
-            let displayTitle = document.querySelector('#presTitleDisplay');
             displayTitle.innerHTML = p.title;
           });
-
-          console.log(p);
           presList.appendChild(p);
         }
       }
@@ -418,26 +497,24 @@
 
       addTxt.addEventListener('click', function () {
         let newSlide = { text: 'Test1' };
-        presentation.slides.push(newSlide);
-        loadPresentation(presentation.slides);
-        createNavigationDots();
-        activeSlide(presentation.slides.length);
+        presentationArray[0].slides.push(newSlide);
+        console.log(presentationArray[0]);
+        loadPresentation(presentationArray[0]);
+        activeSlide(presentationArray[0].slides.length);
       });
 
       displayImg.addEventListener('click', function () {
         let newSlide = { img: (src = '') };
-        presentation.slides.push(newSlide);
-        loadPresentation(presentation.slides);
-        createNavigationDots();
-        activeSlide(presentation.slides.length);
+        presentationArray[0].slides.push(newSlide);
+        loadPresentation(presentationArray[0]);
+        activeSlide(presentationArray[0].slides.length);
       });
 
       addList.addEventListener('click', function () {
         let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
-        presentation.slides.push(newSlide);
-        loadPresentation(presentation.slides);
-        createNavigationDots();
-        activeSlide(presentation.slides.length);
+        presentationArray[0].slides.push(newSlide);
+        loadPresentation(presentationArray[0]);
+        activeSlide(presentationArray[0].slides.length);
       });
     </script>
   </body>
