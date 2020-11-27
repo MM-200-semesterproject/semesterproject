@@ -65,6 +65,19 @@ app.post('/deleteUser', async function (request, response) {
   }
 });
 
+app.post('/updateUser', async function (request, response) {
+  let result = null;
+  result = await pool.updateUser(request.body);
+  if (result instanceof Error) {
+    response.statusMessage = result.message;
+    response.status(400).json(result.message);
+    return;
+  } else {
+    response.status(200).json(result);
+    return;
+  }
+});
+
 app.post('/load-presentations', async function (request, response) {
   let result = null;
   result = await pool.loadPres(request.body);
