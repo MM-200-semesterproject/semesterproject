@@ -261,6 +261,35 @@ class StorageHandler {
     }
     return results;
   }
+
+  async viewPres(body) {
+    const client = new pg.Client(this.credentials);
+    const input = body;
+    let results = null;
+
+    try {
+      await client.connect();
+      results = await client.query(
+        'SELECT * FROM presentations WHERE presentationid = $1',
+        [input]
+      );
+
+      if (results.rows[0].published) {
+        results = results.rows[0];
+      } else {
+        new Error('The presentation is not published');
+      }
+
+      console.log(results.rows[0]);
+
+      client.end();
+    } catch (err) {
+      console.log(`Error on loadPres: ${err}`);
+      results = err;
+      client.end();
+    }
+    return results;
+  }
 }
 
 module.exports = new StorageHandler(dbCredentials);
