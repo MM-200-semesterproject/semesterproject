@@ -204,7 +204,11 @@
         reader.readAsDataURL(addImg);
       }
 
-      function getPresentation() {
+      window.onload = function () {
+        const path = window.location.pathname;
+        let pathArr = path.split('/');
+        console.log(pathArr[pathArr.length]);
+
         //from DB
         const inputArray = [accessData.id, accessData.accesstoken];
         const body = {
@@ -216,10 +220,9 @@
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(body),
         };
 
-        fetch(`/viewmode/presentation?pid=${presentationid}`, config)
+        fetch(`/${presentationid}`, config)
           .then((resp) => {
             if (resp.status !== 200) {
               throw new Error('Could not Load presentations');
@@ -235,7 +238,7 @@
             console.log(err);
             return err;
           });
-      }
+      };
 
       function createPresList(array) {
         presList.innerHTML = '';
