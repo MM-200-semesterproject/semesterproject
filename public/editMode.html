@@ -24,71 +24,80 @@
       </button>
     </header>
     <div class="editWrapper">
-      <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
       <div class="editMenu">
-        <br /><br />
-        <div>
-          <button id="presentMode" class="btnGreen">Presentation mode</button>
+        <section class="menuSection">
+          <h2>Current Project:</h2>
           <button class="selectBtn" id="selectBtn">
             <span id="presTitleDisplay"></span
             ><span class="dropdownArw" id="dropdownArw"></span>
             <div id="presList" class="selectOptions"></div>
-            <!--Use top: ; to position the list underneath button when done.-->
           </button>
 
           <button id="createPres" class="btnGreen" type="submit" value="submit">
             Create New Presentation
           </button>
-        </div>
+          <button class="btnGrey deleteBtn">Delete Presentation</button>
+        </section>
 
-        <h2>Add Slide with:</h2>
-        <button id="addTxt" class="btnGrey">Add Text Slide</button><br />
-        <input type="file" name="filename" id="addImg" class="btnGrey" />
-        <button type="button" id="displayImg" onclick="imgFile()">
-          Add Image Slide</button
-        ><br />
-        <button id="addList" class="btnGrey">Add List Slide</button><br />
+        <section class="menuSection">
+          <h2>Add A New Slide:</h2>
+          <button id="addTxt" class="btnGrey">Add Text Slide</button>
+          <input type="file" name="filename" id="addImg" class="btnGrey" />
+          <button class="btnGrey" id="displayImg" onclick="imgFile()">
+            Add Image Slide
+          </button>
+          <button id="addList" class="btnGrey">Add List Slide</button>
 
-        <button class="selectBtn" id="themeBtn">
-          Choose a theme<span class="dropdownArw" id="dropdownArw"></span>
-          <div class="selectOptions">
-            <p
-              class="themeOption"
-              id="default"
-              style="
-                box-shadow: inset 0 0 0 2px #cadce0, inset 0 0 0 4px #15414b;
-                background-color: #cadce0;
-              "
-            >
-              Minimalist
-            </p>
-            <p
-              class="themeOption"
-              id="sakura"
-              style="
-                background-color: #ffc5cf;
-                font-family: 'Courier New', Courier, monospace;
-              "
-            >
-              Sakura
-            </p>
-            <p
-              class="themeOption"
-              id="geometric"
-              style="
-                font-family: 'Limelight', cursive;
-                background-color: #1b202c;
-                color: #ffc65c;
-                text-shadow: none;
-              "
-            >
-              Geometric
-            </p>
-          </div>
-        </button>
-        <button id="savePres" class="btnGreen" type="submit" value="submit">
-          Save Presentation
-        </button>
+          <button class="selectBtn" id="themeBtn">
+            Choose a theme<span class="dropdownArw" id="dropdownArw"></span>
+            <div class="selectOptions">
+              <p
+                class="themeOption"
+                id="default"
+                style="
+                  box-shadow: inset 0 0 0 2px #cadce0, inset 0 0 0 4px #15414b;
+                  background-color: #cadce0;
+                "
+              >
+                Minimalist
+              </p>
+              <p
+                class="themeOption"
+                id="sakura"
+                style="
+                  background-color: #ffc5cf;
+                  font-family: 'Courier New', Courier, monospace;
+                "
+              >
+                Sakura
+              </p>
+              <p
+                class="themeOption"
+                id="geometric"
+                style="
+                  font-family: 'Limelight', cursive;
+                  background-color: #1b202c;
+                  color: #ffc65c;
+                  text-shadow: none;
+                "
+              >
+                Geometric
+              </p>
+            </div>
+          </button>
+
+          <button class="btnGrey deleteBtn" id="deleteSlide">
+            Delete Current Slide
+          </button>
+        </section>
+        <section class="menuSection">
+          <button id="savePres" class="btnGreen" type="submit" value="submit">
+            Save Presentation
+          </button>
+          <button id="presentMode" class="btnGreen">
+            Presentation mode<img class="appIcon" src="svg/expand.svg" />
+          </button>
+        </section>
       </div>
 
       <div class="editActiveArea">
@@ -176,6 +185,8 @@
 
       presModeBtn.onclick = () => {
         editMenu.style.display = 'none';
+        let esc = document.createElement('button');
+        esc.innerHTML = '';
       };
 
       window.addEventListener('keydown', (e) => {
@@ -497,6 +508,7 @@
       }
 
       function imgFile() {
+        alert();
         let addImg = document.getElementById('addImg').files[0];
         let reader = new FileReader();
         reader.onload = function (e) {
