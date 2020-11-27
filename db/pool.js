@@ -70,7 +70,6 @@ class StorageHandler {
         [input.username, input.password]
       );
       results = results.rows[0].id;
-      console.log(`row inserted with id: ${results}`);
       client.end();
     } catch (err) {
       results = err;
@@ -139,13 +138,7 @@ class StorageHandler {
         'DELETE FROM presentations WHERE userid = $1',
         [userid]
       );
-      console.log('DELETED pres');
-
       results = await client.query('DELETE FROM users WHERE id = $1', [userid]);
-
-      console.log('DELETED user');
-
-      console.log(`Presentations deleted`);
       //delete userinfo
 
       client.end();
@@ -268,35 +261,6 @@ class StorageHandler {
     }
     return results;
   }
-
-  async viewPres(body) {
-    const client = new pg.Client(this.credentials);
-    const input = body;
-    let results = null;
-
-    try {
-      await client.connect();
-      results = await client.query(
-        'SELECT published FROM presentations WHERE presentationid = $1',
-        [input]
-      );
-
-      console.log(results.rows[0]);
-      if (results.rows[0] != 'PRIVATE') {
-        results = await client.query(
-          'SELECT * FROM presentations WHERE presentationid = $1',
-          [input]
-        );
-        results = results.rows[0];
-      }
-
-      client.end();
-    } catch (err) {
-      console.log(`Error on loadPres: ${err}`);
-      results = err;
-      client.end();
-    }
-    return results;
-  }
 }
+
 module.exports = new StorageHandler(dbCredentials);
