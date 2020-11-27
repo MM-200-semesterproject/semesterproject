@@ -257,16 +257,7 @@
 
       loadPresentations(); //fetch
 
-      function cleanData(array) {
-        //let clean = object.data.replace(/\\/g, '');
-        //object.data = clean;
-
-        for (let object of array) {
-          console.log(object.data);
-        }
-      }
-
-      if (presentationArray) {
+     if (presentationArray) {
         cleanData(presentationArray.arr);
 
         createPresList(presentationArray.arr);
