@@ -109,7 +109,6 @@ app.get('/viewMode:presentationid', async function (request, response) {
   response.status(200).send('ASDASD');
   /**/
 });
-app.get('/sign-up');
 
 app.post('/update-presentation', async function (request, response) {
   //on "save presentation" in editMode.html
