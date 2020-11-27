@@ -103,10 +103,10 @@ app.post('/create-presentation', async function (request, response) {
   }
 });
 
-app.get('/viewMode.html/:presentationid', async function (request, response) {
-  response.sendFile(
-    path.join(__dirname, 'public', 'viewMode.html') + request.params
-  );
+app.get('/viewMode:presentationid', async function (request, response) {
+  console.log(request.params.presentationid);
+
+  response.status(200).send('ASDASD');
   /**/
 });
 app.get('/sign-up');
