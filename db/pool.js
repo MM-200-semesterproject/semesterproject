@@ -249,7 +249,7 @@ class StorageHandler {
   async createPres(inp) {
     const client = new pg.Client(this.credentials);
     const input = inp;
-    const slides = JSON.stringify(input.slides);
+    const slides = JSON.stringify(input.data);
     let results = null;
 
     try {

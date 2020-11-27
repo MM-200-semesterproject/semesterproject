@@ -101,6 +101,7 @@
           <button id="presentMode" class="btnGreen">
             Presentation mode<img class="appIcon" src="svg/expand.svg" />
           </button>
+          <button id="shareBtn" class="btnGreen">Share</button>
         </section>
       </div>
 
@@ -138,6 +139,13 @@
           this.theme = theme;
         }
       }
+
+      const shareBtn = document.getElementById('shareBtn');
+      const presentationidTest = 123245;
+      shareBtn.addEventListener('click', function (ev) {
+        let shareUrl = `https://moreslides.heroku.com/viewmode.html/presentation?presentationid=${presentationidTest}`;
+        window.open(shareUrl, 'NewWindow');
+      });
 
       let presentationArray = [];
 
@@ -380,7 +388,7 @@
           accessData.id,
           accessData.accesstoken,
           defaultPresentation.title,
-          firstPresentationArr,
+          defaultPresentation.data,
         ];
         const body = {
           id: inputArray[0],

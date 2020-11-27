@@ -93,7 +93,6 @@ app.post('/load-presentations', async function (request, response) {
 
 app.post('/create-presentation', async function (request, response) {
   let result = null;
-  console.log(request.body);
   result = await pool.createPres(request.body);
   if (result instanceof Error) {
     response.status(400).json(result);
@@ -104,23 +103,13 @@ app.post('/create-presentation', async function (request, response) {
   }
 });
 
-app.get(
-  '/view-mode/shared/:presentationid',
-  async function (request, response) {
-    let presentationid = request.params.presentationid;
-    console.log(request.baseUrl);
-    console.log(presentationid);
-    result = await pool.viewPres(presentationid);
-    if (result instanceof Error) {
-      console.log(result);
-      response.status(400).json({ msg: result });
-      return;
-    } else {
-      response.status(200).json(result);
-      return;
-    }
-  }
-);
+app.get('/viewMode.html/:presentationid', async function (request, response) {
+  response.sendFile(
+    path.join(__dirname, 'public', 'viewMode.html') + request.params
+  );
+  /**/
+});
+app.get('/sign-up');
 
 app.post('/update-presentation', async function (request, response) {
   //on "save presentation" in editMode.html
