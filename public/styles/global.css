@@ -24,6 +24,23 @@ header {
   justify-content: space-between;
 }
 
+header .appIcon {
+  height: 30px;
+  opacity: 0.8;
+  padding: 0;
+}
+
+header .btnGrey {
+  padding: 3px 3px 0;
+  margin: auto 5px auto auto;
+  background-color: #6d8990;
+  border: 1px solid #fff;
+}
+
+.editIcon {
+  display: none;
+}
+
 h1 {
   color: #e2e2e2;
   font-size: 30px;
@@ -472,9 +489,8 @@ h6:not(:only-child) {
 #userIcon {
   width: 38px;
   height: 38px;
-  margin: auto;
+  margin: auto 20px;
   border-radius: 50%;
-  margin-right: 20px;
   color: #fff;
   font-weight: 600;
   font-size: 28px;
