@@ -6,15 +6,13 @@ class Presentation {
     this.theme = theme;
   }
 }
-
+//Global var---------------------
 let firstPresentationArr = [
   { text: 'Title 1' },
   { text: 'Title 2' },
   { img: '../Bilder/eggBilde.jpg' },
   { list: [1, 2, 3, 4, 5] },
 ];
-
-//Global var---------------------
 presentation = new Presentation('MyTitle', firstPresentationArr);
 
 let container = document.getElementById('container');
@@ -76,14 +74,11 @@ presList.forEach((element) => {
     console.log(e.target);
     let chosenPresId = presentation.id;
     let chosenPresTitle = presentation.title;
-
     let displayTitle = document.querySelector('#presTitleDisplay');
-
     displayTitle.innerHTML = 0; //This will be a condition using e.target.id === to chosenPresId and will return this press title
   };
 });
 
-//funksjoner
 alertDivButton.onclick = () => (location.href = 'login.html');
 
 if (!accessData) {
@@ -122,8 +117,6 @@ if (!accessData) {
       return err;
     });
 }
-
-//loadpres and put arr in localstorage in presentationArray;
 
 createPresBtn.addEventListener('click', function () {
   const inputArray = [
@@ -165,8 +158,6 @@ createPresBtn.addEventListener('click', function () {
     });
 });
 
-//---------------------Funksjoner--------------------------
-
 function activeSlide(n) {
   loadSlides((showIndex = n));
 }
@@ -186,42 +177,7 @@ function createNavigationDots() {
     navDots.appendChild(span);
   }
 }
-// usikker på denne --------------------------------------------------------------
-function loadPresentation(arr) {
-  container.innerHTML = '';
-  for (let slide of arr) {
-    let div = document.createElement('div');
 
-    let html = '';
-    let text = '';
-    let img = '';
-    let list = '';
-
-    if (slide.text) {
-      text = '<h6>' + slide.text + '</h6>';
-    }
-    //----------mulig at deete skal endres
-    // if (slide.img) {
-    // img = '<img src=' + slide.img + ' >';
-    //  }
-    if (slide.list) {
-      let innerOl = '';
-      for (let element of slide.list) {
-        let listElement = '<li>' + element + '</li>';
-        innerOl += listElement;
-      }
-      list = '<ul>' + innerOl + '</ul>';
-    }
-    div.classList.add('slide');
-    html = `${text}
-              ${img}
-              ${list}`;
-    div.innerHTML = html;
-
-    container.appendChild(div);
-  }
-}
-//------------------------------------------------------den jeg er usikker på slutter her-------
 function loadSlides(num) {
   let slideshow = document.getElementsByClassName('slide');
   let dots = document.getElementsByClassName('dot');
@@ -257,6 +213,6 @@ addList.addEventListener('click', function () {
   activeSlide(presentation.slides.length);
 });
 
-//Called on window load -------------------------
+//påkaller funksjoner og sånnt -------------------------
 loadPresentation(presentation.slides);
 loadSlides(showIndex);
