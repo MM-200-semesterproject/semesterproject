@@ -15,6 +15,9 @@
   <body>
     <header class="header">
       <img src="svg/logo.svg" alt="More Slides logo" id="headerLogo" />
+      <button class="btnGrey editIcon">
+        <img class="appIcon" src="svg/editIcon.svg" />
+      </button>
       <button class="selectBtn" id="userIcon">
         U
         <div class="selectOptions">
@@ -167,6 +170,7 @@
       const header = document.querySelector('.header');
       let presModeBtn = document.querySelector('#presentMode');
       let displayTitle = document.querySelector('#presTitleDisplay');
+      let editBtn = document.querySelector('.editIcon');
 
       const updatePasswordBtn = document.querySelector('#updatePassword');
       const deleteUserBtn = document.querySelector('#deleteUser');
@@ -185,8 +189,12 @@
 
       presModeBtn.onclick = () => {
         editMenu.style.display = 'none';
-        let esc = document.createElement('button');
-        esc.innerHTML = '';
+        editBtn.style.display = 'block';
+      };
+
+      editBtn.onclick = () => {
+        editMenu.style.display = 'flex';
+        editBtn.style.display = 'none';
       };
 
       window.addEventListener('keydown', (e) => {
