@@ -22,6 +22,7 @@
         U
         <div class="selectOptions">
           <p id="updatePassword">Update password</p>
+          <p id="logoutUser">Log out</p>
           <p id="deleteUser">Delete user</p>
         </div>
       </button>
@@ -171,6 +172,7 @@
       let presModeBtn = document.querySelector('#presentMode');
       let displayTitle = document.querySelector('#presTitleDisplay');
       let editBtn = document.querySelector('.editIcon');
+      let logoutUser = document.querySelector('#logoutUser');
 
       const updatePasswordBtn = document.querySelector('#updatePassword');
       const deleteUserBtn = document.querySelector('#deleteUser');
@@ -196,6 +198,8 @@
         editMenu.style.display = 'flex';
         editBtn.style.display = 'none';
       };
+
+      logoutUser.onclick = () => (location.href = 'login.html');
 
       window.addEventListener('keydown', (e) => {
         if (e.key == 'ArrowLeft') {
