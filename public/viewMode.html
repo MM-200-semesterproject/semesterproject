@@ -80,13 +80,7 @@
 
       let presList = document.querySelector('#presList');
       let displayTitle = document.querySelector('#presTitleDisplay');
-
-      const alertDiv = document.querySelector('.disableTotalScreen');
-      const alertDivButton = document.querySelector('.alertButton');
-      const alertDivText = document.querySelector('.alertText');
-      let accessData = localStorage.getItem('accessData')
-        ? JSON.parse(localStorage.getItem('accessData'))
-        : false;
+      let loginBtn = document.querySelector('#loginBtn');
 
       let presentationObject = localStorage.getItem('presentations')
         ? JSON.parse(localStorage.getItem('presentations'))
@@ -106,111 +100,14 @@
         };
       });
 
+      loginBtn.onclick = () => (location.href = 'login.html');
       //funksjoner
-      alertDivButton.onclick = () => (location.href = 'login.html');
 
-      if (!accessData) {
-        alertDiv.style.display = 'block';
-      } else {
-        const inputArray = [accessData.id, accessData.accesstoken];
-        const body = {
-          id: inputArray[0],
-          accesstoken: inputArray[1],
-        };
+      // loadPresentation(); //fetch
 
-        const config = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body),
-        };
-        fetch('/login', config)
-          .then((resp) => {
-            if (resp.status !== 200) {
-              throw new Error(
-                'Incorrect access credentials. Try to log in again.'
-              );
-            }
-            return resp.json();
-          })
-          .then((resp) => {
-            console.log('User verified');
+      loadPresentation(presentationArray[0]);
+      loadSlides(showIndex);
 
-            return resp;
-          })
-          .catch((err) => {
-            alertDivText.textContent = '';
-            alertDivText.textContent = err.message;
-            alertDiv.style.display = 'block';
-            return err;
-          });
-      }
-
-      createPresBtn.addEventListener('click', function () {
-        const inputArray = [
-          accessData.id,
-          accessData.accesstoken,
-          defaultPresentation.title,
-          defaultPresentation.data,
-        ];
-        const body = {
-          id: inputArray[0],
-          accesstoken: inputArray[1],
-          title: inputArray[2],
-          data: inputArray[3],
-        };
-        const config = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body),
-        };
-
-        fetch('/create-presentation', config)
-          .then((resp) => {
-            if (resp.status !== 200) {
-              throw new Error('COULD NOT CREATE');
-            }
-            return resp.json();
-          })
-          .then((resp) => {
-            console.log('Presentation created');
-            loadPresentations();
-            return resp;
-          })
-          .catch((err) => {
-            alertDivText.textContent = '';
-            alertDivText.textContent = err.message;
-            alertDiv.style.display = 'block';
-            return err;
-          });
-      });
-
-      loadPresentations(); //fetch
-
-      function cleanData(array) {
-        //let clean = object.data.replace(/\\/g, '');
-        //object.data = clean;
-
-        for (let object of array) {
-          console.log(object.data);
-        }
-      }
-
-      if (presentationObject) {
-        // cleanData(presentationObject.arr);
-
-        console.log(presentationObject.arr);
-        createPresList(presentationObject.arr);
-        loadPresentation(presentationObject.arr[0]);
-        loadSlides(showIndex);
-      } else {
-        createPresList(presentationArray);
-        loadPresentation(presentationArray[0]);
-        loadSlides(showIndex);
-      }
       //---------------------Funksjoner--------------------------
 
       //----------------prøver å laste opp bilde til sliden-----------------------------
@@ -307,7 +204,7 @@
         reader.readAsDataURL(addImg);
       }
 
-      function loadPresentations() {
+      function getPresentation() {
         //from DB
         const inputArray = [accessData.id, accessData.accesstoken];
         const body = {
@@ -315,14 +212,14 @@
           accesstoken: inputArray[1],
         };
         const config = {
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(body),
         };
 
-        fetch('/load-presentations', config)
+        fetch(`/viewmode/presentation?pid=${presentationid}`, config)
           .then((resp) => {
             if (resp.status !== 200) {
               throw new Error('Could not Load presentations');
@@ -335,9 +232,7 @@
             return resp;
           })
           .catch((err) => {
-            alertDivText.textContent = '';
-            alertDivText.textContent = err.message;
-            alertDiv.style.display = 'block';
+            console.log(err);
             return err;
           });
       }
