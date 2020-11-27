@@ -135,11 +135,7 @@ class StorageHandler {
       client.end();
       return results;
     }
-
     newPassword = encrypt.singleHash(body.newPassword);
-
-    console.log([newPassword, userid, oldPassword]);
-
     try {
       await client.connect();
 
