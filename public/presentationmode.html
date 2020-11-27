@@ -156,8 +156,6 @@
       let presList = document.querySelector('#presList');
       let displayTitle = document.querySelector('#presTitleDisplay');
 
-      const updatePasswordBtn = document.querySelector('#updatePassword');
-      const deleteUserBtn = document.querySelector('#deleteUser');
       const alertDiv = document.querySelector('.disableTotalScreen');
       const alertDivButton = document.querySelector('.alertButton');
       const alertDivText = document.querySelector('.alertText');
@@ -189,57 +187,6 @@
       if (!accessData) {
         alertDiv.style.display = 'block';
       } else {
-        checkUser();
-      }
-
-      deleteUserBtn.addEventListener('click', function () {
-        const insideAlertDiv = document.querySelector('.alert');
-        const inputPassword = document.createElement('input');
-        inputPassword.setAttribute('type', 'password');
-        alertDiv.style.display = 'block';
-        alertDivButton.textContent = 'CONFIRM';
-        alertDivText.textContent = 'Please, enter your password to confirm.';
-
-        insideAlertDiv.insertBefore(inputPassword, alertDivButton); //inserter input box overfor confirm knappen
-
-        alertDivButton.onclick = () => {
-          console.log('yo dude');
-          const inputArray = [accessData.id, accessData.accesstoken];
-          const body = {
-            id: inputArray[0],
-            password: inputPassword.value,
-            accesstoken: inputArray[1],
-          };
-
-          const config = {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body),
-          };
-
-          fetch('/deleteUser', config)
-            .then((resp) => {
-              if (resp.status !== 200) {
-                throw new Error('Incorrect access credentials.');
-              }
-              return resp.json();
-            })
-            .then((resp) => {
-              location.href = '/';
-              return resp;
-            })
-            .catch((err) => {
-              alertDivText.textContent = '';
-              alertDivText.textContent = err.message;
-              alertDiv.style.display = 'block';
-              return err;
-            });
-        };
-      });
-
-      function checkUser() {
         const inputArray = [accessData.id, accessData.accesstoken];
         const body = {
           id: inputArray[0],
@@ -263,6 +210,8 @@
             return resp.json();
           })
           .then((resp) => {
+            console.log('User verified');
+
             return resp;
           })
           .catch((err) => {
@@ -297,15 +246,11 @@
         fetch('/create-presentation', config)
           .then((resp) => {
             if (resp.status !== 200) {
-              throw new Error(
-                'Could not create a presentation with current login credentials. Try to log in.'
-              );
+              throw new Error('COULD NOT CREATE');
             }
             return resp.json();
           })
           .then((resp) => {
-            console.clear();
-            console.log(config.body);
             console.log('Presentation created');
             loadPresentations();
             return resp;
@@ -436,18 +381,6 @@
         };
         reader.readAsDataURL(addImg);
       }
-      function getImgURL(img) {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-
-        console.log(canvas.toDataURL());
-
-        return canvas.toDataURL();
-      }
 
       function loadPresentations() {
         //from DB
@@ -467,7 +400,7 @@
         fetch('/load-presentations', config)
           .then((resp) => {
             if (resp.status !== 200) {
-              console.log('Could not Load presentations');
+              throw new Error('Could not Load presentations');
             }
             return resp.json();
           })
