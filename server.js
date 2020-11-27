@@ -65,6 +65,19 @@ app.post('/deleteUser', async function (request, response) {
   }
 });
 
+app.post('/updateUser', async function (request, response) {
+  let result = null;
+  result = await pool.updateUser(request.body);
+  if (result instanceof Error) {
+    response.statusMessage = result.message;
+    response.status(400).json(result.message);
+    return;
+  } else {
+    response.status(200).json(result);
+    return;
+  }
+});
+
 app.post('/load-presentations', async function (request, response) {
   let result = null;
   result = await pool.loadPres(request.body);
@@ -90,18 +103,23 @@ app.post('/create-presentation', async function (request, response) {
   }
 });
 
-app.post('/view-mode/:presentationid', async function (request, response) {
-  let presentationid = request.params.presentationid;
-  console.log(presentationid);
-  result = await pool.viewPres(presentationid);
-  if (result instanceof Error) {
-    response.status(400).json(result);
-    return;
-  } else {
-    response.status(200).json(result);
-    return;
+app.get(
+  '/view-mode/shared/:presentationid',
+  async function (request, response) {
+    let presentationid = request.params.presentationid;
+    console.log(request.baseUrl);
+    console.log(presentationid);
+    result = await pool.viewPres(presentationid);
+    if (result instanceof Error) {
+      console.log(result);
+      response.status(400).json({ msg: result });
+      return;
+    } else {
+      response.status(200).json(result);
+      return;
+    }
   }
-});
+);
 
 app.post('/update-presentation', async function (request, response) {
   //on "save presentation" in editMode.html
