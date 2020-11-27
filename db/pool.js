@@ -147,9 +147,7 @@ class StorageHandler {
         'UPDATE users SET password = $1 WHERE id = $2 AND password = $3 RETURNING id',
         [newPassword, userid, oldPassword]
       );
-
-      console.log(results);
-      results = results.rows[0].id || new Error('Wrong password');
+      results = results.rows[0] || new Error('Wrong password');
       client.end();
     } catch (err) {
       console.log(`updateUser: ${err}`);
