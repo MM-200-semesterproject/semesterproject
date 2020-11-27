@@ -124,6 +124,7 @@ class StorageHandler {
   async deleteUser(body) {
     const client = new pg.Client(this.credentials);
     const userid = body.userid;
+    const accessToken = body.acessToken;
     let password = encrypt.singleHash(body.password);
     let results = null;
 
@@ -131,19 +132,19 @@ class StorageHandler {
       //delete presentations
       await client.connect();
       results = await client.query(
+        'DELETE FROM users WHERE id = $1 AND password = $2 AND accesstoken = $3 ',
+        [userid, password, accessToken]
+      );
+
+      console.log(`user deleted`);
+
+      results = await client.query(
         'DELETE FROM presentations WHERE userid = $1',
         [userid]
       );
 
       console.log(`Presentations deleted`);
       //delete userinfo
-
-      results = await client.query(
-        'DELETE FROM users WHERE id = $1 AND password = $2',
-        [userid, password]
-      );
-
-      console.log(`user deleted`);
 
       client.end();
     } catch (err) {

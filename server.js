@@ -53,6 +53,18 @@ app.post('/login', async function (request, response) {
   }
 });
 
+app.post('/deleteUser', async function (request, response) {
+  let result = null;
+  result = await pool.deleteUser(request.body);
+  if (result instanceof Error) {
+    response.status(400).json(result);
+    return;
+  } else {
+    response.status(200).json(result);
+    return;
+  }
+});
+
 app.post('/load-presentations', async function (request, response) {
   let result = null;
   result = await pool.loadPres(request.body);
