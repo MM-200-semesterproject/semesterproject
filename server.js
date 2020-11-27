@@ -53,11 +53,10 @@ app.post('/login', async function (request, response) {
   }
 });
 
-app.post('/load-presentations', async function (request, response) {
+app.post('/deleteUser', async function (request, response) {
   let result = null;
-  result = await pool.loadPres(request.body);
+  result = await pool.deleteUser(request.body);
   if (result instanceof Error) {
-    console.log(result);
     response.status(400).json(result);
     return;
   } else {
@@ -66,9 +65,35 @@ app.post('/load-presentations', async function (request, response) {
   }
 });
 
+app.post('/load-presentations', async function (request, response) {
+  let result = null;
+  result = await pool.loadPres(request.body);
+  if (result instanceof Error) {
+    response.status(400).json(result);
+    return;
+  } else {
+    console.log(result);
+    response.status(200).json(result);
+    return;
+  }
+});
+
 app.post('/create-presentation', async function (request, response) {
   let result = null;
   result = await pool.createPres(request.body);
+  if (result instanceof Error) {
+    response.status(400).json(result);
+    return;
+  } else {
+    response.status(200).json(result);
+    return;
+  }
+});
+
+app.post('/view-mode/:presentationid', async function (request, response) {
+  let presentationid = request.params.presentationid;
+  console.log(presentationid);
+  result = await pool.viewPres(presentationid);
   if (result instanceof Error) {
     response.status(400).json(result);
     return;

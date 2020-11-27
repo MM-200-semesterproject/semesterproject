@@ -1,3 +1,4 @@
+const { json } = require('body-parser');
 const pg = require('pg');
 const encrypt = require('./encryption.js');
 const dbCredentials =
@@ -69,7 +70,6 @@ class StorageHandler {
         [input.username, input.password]
       );
       results = results.rows[0].id;
-      console.log(`row inserted with id: ${results}`);
       client.end();
     } catch (err) {
       results = err;
@@ -105,12 +105,11 @@ class StorageHandler {
         );
       } else {
         results = await client.query(
-          'SELECT * FROM users WHERE id = $1 AND accesstoken = $2',
+          'SELECT id, accesstoken FROM users WHERE id = $1 AND accesstoken = $2',
           [input.id, input.accesstoken]
         );
       }
-      results = results.rows[0];
-
+      results = results.rows[0] || new Error('Wrong user credentials');
       client.end();
     } catch (err) {
       results = err;
@@ -123,31 +122,28 @@ class StorageHandler {
 
   async deleteUser(body) {
     const client = new pg.Client(this.credentials);
-    const userid = body.userid;
+    const accessToken = body.accesstoken;
     let password = encrypt.singleHash(body.password);
     let results = null;
 
     try {
-      //delete presentations
       await client.connect();
+      results = await client.query(
+        'SELECT id FROM users WHERE password = $1 AND accesstoken = $2',
+        [password, accessToken]
+      );
+      const userid = results.rows[0].id || new Error('User not found');
+
       results = await client.query(
         'DELETE FROM presentations WHERE userid = $1',
         [userid]
       );
-
-      console.log(`Presentations deleted`);
+      results = await client.query('DELETE FROM users WHERE id = $1', [userid]);
       //delete userinfo
-
-      results = await client.query(
-        'DELETE FROM users WHERE id = $1 AND password = $2',
-        [userid, password]
-      );
-
-      console.log(`user deleted`);
 
       client.end();
     } catch (err) {
-      console.log(`Error on deleteUser: ${err}`);
+      console.log(`deleteUser: ${err}`);
       results = err;
       client.end();
     }
@@ -203,6 +199,7 @@ class StorageHandler {
 
         for (let i = 0; i < rowcount; i++) {
           let row = results.rows[i];
+          row.data = JSON.parse(results.rows[i].data);
           presentationArray.push(row);
         }
       }
@@ -219,13 +216,14 @@ class StorageHandler {
   async createPres(inp) {
     const client = new pg.Client(this.credentials);
     const input = inp;
+    const slides = JSON.stringify(input.slides);
     let results = null;
 
     try {
       await client.connect();
       results = await client.query(
         'INSERT INTO presentations(userid, title, data)VALUES($1,$2, $3) RETURNING presentationid',
-        [input.id, input.title, input.slides]
+        [input.id, input.title, slides]
       );
 
       results = results.rows[0];
