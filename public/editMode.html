@@ -46,10 +46,11 @@
         <section class="menuSection">
           <h2>Add A New Slide:</h2>
           <button id="addTxt" class="btnGrey">Add Text Slide</button>
-          <input type="file" name="filename" id="addImg" class="btnGrey" />
+
           <button class="btnGrey" id="displayImg" onclick="imgFile()">
             Add Image Slide
           </button>
+          <button id="imgChooseTest">imgChooseTest</button>
           <button id="addList" class="btnGrey">Add List Slide</button>
 
           <button class="selectBtn" id="themeBtn">
@@ -125,6 +126,19 @@
           You are not logged in, please log in to continue your editing.
         </p>
         <button id="alertBtn" class="btnGreen alertButton">Log in</button>
+      </div>
+    </div>
+    <div class="disableTotalScreenTest">
+      <div class="chooseImg">
+        <section class="chooseimgsection">
+          <img class="imgOpt" src="Bilder/eggBilde.jpg" />
+          <img class="imgOpt" src="Bilder/eggBilde.jpg" />
+          <img class="imgOpt" src="Bilder/eggBilde.jpg" />
+        </section>
+        <section class="chooseimgsection">
+          <input type="file" name="filename" id="addImg" class="btnGrey" />
+          <button id="addImgOk" class="btnGreen addImgOk">Add Image</button>
+        </section>
       </div>
     </div>
 
@@ -203,6 +217,26 @@
         }
       }
       //---------------------Functionality Themes----------------
+
+      let imgChooseTest = document.querySelector('#imgChooseTest');
+      let disableDiv = document.querySelector('.disableTotalScreenTest');
+
+      imgChooseTest.onclick = () => {
+        disableDiv.style.display = 'block';
+      };
+
+      let imgoptions = document.querySelectorAll('.imgOpt');
+      let addImgOk = document.querySelector('#addImgOk');
+
+      imgoptions.forEach((item) => {
+        item.onclick = (e) => {
+          item.style.width = '500px';
+        };
+      });
+
+      addImgOk.onclick = () => {
+        imgoptions.forEach((e) => {});
+      };
 
       presModeBtn.onclick = () => {
         editMenu.style.display = 'none';
