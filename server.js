@@ -102,17 +102,26 @@ app.post('/create-presentation', async function (request, response) {
   }
 });
 
-app.get('/viewMode:presentationid', async function (request, response) {
-  console.log(request.params.presentationid);
+app.get(
+  '/editMode.html/viewMode/:presentationid',
+  async function (request, response) {
+    //response.sendFile(path.join(__dirname, 'public'), viewMode.html);
 
-  response.status(200).send('ASDASD');
-  /**/
-});
+    response.status(200).send('ASDASD');
+    /**/
+  }
+);
 
 app.post('/update-presentation', async function (request, response) {
-  //on "save presentation" in editMode.html
-  console.log('I am inside /update-presentation in server.js');
-  response.status(200).send('hei from update-presentation in server.js');
+  let result = null;
+  result = await pool.updatePres(request.body);
+  if (result instanceof Error) {
+    response.status(400).json(result);
+    return;
+  } else {
+    response.status(200).json(result);
+    return;
+  }
 });
 
 app.post('/delete-presentation', async function (request, response) {
@@ -122,7 +131,6 @@ app.post('/delete-presentation', async function (request, response) {
     response.status(400).json(result);
     return;
   } else {
-    console.log('error in server:', result);
     response.status(200).json(result);
     return;
   }
