@@ -163,8 +163,9 @@ input:nth-of-type(1) {
 
 .chooseimgsection img {
   width: 30%;
-  border: 1px solid #6e7172;
+  border: 2px solid #6e717200;
   border-radius: 25px;
+  overflow: hidden;
 }
 /* TEST --------- PLEASE IGNORE ---- END*/
 
