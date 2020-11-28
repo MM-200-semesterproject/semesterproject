@@ -505,7 +505,15 @@
       }
 
       function savePresentation() {
-        console.log('526:', presentationArray[0].data);
+        console.log('508:', presentationArray[0].data);
+        let arrayOfAllTitles = document.querySelectorAll('.slide h6');
+        console.log('PresentationArr:' + presentationArray[0].data[0].text);
+        arrayOfAllTitles.forEach((title, index) => {
+          if (index < 1) return;
+          presentationArray[0].data[index - 1].text = title.textContent;
+        });
+        console.log('514:', presentationArray[0].data);
+
         const inputArray = [
           accessData.id,
           accessData.accesstoken,
