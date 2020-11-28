@@ -269,7 +269,7 @@
         activeSlide(presentationArray[0].data.length);
       });
 
-      addImg.addEventListener('change', imgFile, false);
+      addImg.addEventListener('change', imgFileHandler, false);
 
       addImgBtn.addEventListener('click', function () {
         disableDiv.style.display = 'none';
@@ -766,7 +766,7 @@
         dots[showIndex].className += ' crntSlide';
       }
 
-      function imgFile(e) {
+      function imgFileHandler(e) {
         let addImg = e.target.files[0];
         let reader = new FileReader();
         reader.onload = function (e) {
