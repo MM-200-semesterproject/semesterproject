@@ -508,42 +508,40 @@
 
       function savePresentation() {
         const theme = slideDiv.className;
+        const slideArray = querySelectorAll('.slide');
         const arrayOfAllTitles = document.querySelectorAll('.slide h6');
         const arrayOfAllLists = document.querySelectorAll('.slide ul');
         const arrayOfAllListItems = document.querySelectorAll('.slide ul li');
 
-        arrayOfAllLists.forEach((ListFromSlide, index) => {
-          console.log(index);
-          console.log(presentationArray[0].data[index]);
-          presentationArray[0].data[index].list = ListFromSlide.innerHTML;
-        });
+        // arrayOfAllLists.forEach((ListFromSlide, index) => {
+        //   presentationArray[0].data[index].list = ListFromSlide.innerHTML;
+        //   console.log(ListFromSlide.innerHTML);
+        // });
+        console.log(presentationArray);
 
-        let test = [];
-
-        arrayOfAllLists.forEach((list, index) => {
-          let currentChildNodeList = list.childNodes;
-          let currentChildNodeListValues = [];
-          currentChildNodeList.forEach((listItem) => {
-            currentChildNodeListValues.push(listItem.textContent);
+        // arrayOfAllTitles.forEach((titleFromSlide, index) => {
+        //   if (index < 1) {
+        //     //Title sliden
+        //     presentationArray[0].title = titleFromSlide.textContent;
+        //     return;
+        //   }
+        //   for (let i = 0; i < presentationArray[0].data.length; i++) {
+        //     let counter = 1;
+        //     if (counter <= arrayOfAllTitles.length) {
+        //       if (presentationArray[0].data[i].text) {
+        //         presentationArray[0].data[i].text = titleFromSlide.textContent;
+        //         counter++;
+        //         console.log(presentationArray[0].data[i].text);
+        //       }
+        //     }
+        //   }
+        // });
+        //arrayOfALlTitles er 1 lengre enn det er text elementer i presArry
+        arrayOfAllTitles.forEach((titleFromSlide, index, currArr) => {
+          let textObjects = presentationArray[0].data.map(function (e) {
+            return e.text;
           });
-          console.log('s');
-        });
-
-        arrayOfAllTitles.forEach((titleFromSlide, index) => {
-          if (index < 1) {
-            //Title sliden
-            presentationArray[0].title = titleFromSlide.textContent;
-            return;
-          }
-          for (let i = 0; i < presentationArray[0]; i++) {
-            let counter = 1;
-            if (counter <= arrayOfAllTitles.length) {
-              if (presentationArray[0].data[i].text) {
-                presentationArray[0].data[i].text = titleFromSlide.textContent;
-                counter++;
-              }
-            }
-          }
+          console.log(textObjects);
         });
 
         displayTitle.textContent = presentationArray[0].title;
