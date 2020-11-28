@@ -23,6 +23,7 @@
         <div class="selectOptions">
           <p id="updatePassword">Update password</p>
           <p id="logoutUser">Log out</p>
+          <hr />
           <p id="deleteUser">Delete user</p>
         </div>
       </button>
@@ -48,8 +49,11 @@
         <section class="menuSection">
           <h2>Add A New Slide:</h2>
           <button id="addTxt" class="btnGrey">Add Text Slide</button>
-          <input type="file" name="filename" id="addImg" class="btnGrey" />
-          <button class="btnGrey" id="displayImg">Add Image Slide</button>
+
+          <button class="btnGrey" id="displayImg" onclick="">
+            Add Image Slide
+          </button>
+          <button id="imgChooseTest">imgChooseTest</button>
           <button id="addList" class="btnGrey">Add List Slide</button>
 
           <button class="selectBtn" id="themeBtn">
@@ -128,6 +132,27 @@
       </div>
     </div>
 
+    <div class="containerChooseImg">
+      <div class="chooseImg">
+        <section class="chooseimgsection">
+          <img class="imgOpt" src="bilder/shrine.jpg" />
+          <img class="imgOpt" src="bilder/wallOfChina.jpg" />
+          <img class="imgOpt" src="bilder/streetsOfJapan.jpg" />
+        </section>
+        <hr />
+        <section class="chooseimgsection">
+          <input
+            type="file"
+            name="filename"
+            id="addImg"
+            class="btnGrey"
+            accept="image/png, image/jpeg"
+          />
+          <button id="addImgOk" class="btnGreen addImgOk">Add Image</button>
+        </section>
+      </div>
+    </div>
+
     <script type="text/javascript">
       //-------- Global variables------------------------
 
@@ -139,6 +164,7 @@
       const addTxt = document.getElementById('addTxt');
       const addImg = document.getElementById('addImg');
       let userInputImgURL;
+      const displayImg = document.getElementById('displayImg');
       const addList = document.getElementById('addList');
       const createPresBtn = document.getElementById('createPres');
       let deletePresBtn = document.querySelector('#deleteBtn');
@@ -158,6 +184,13 @@
       const alertDiv = document.querySelector('.disableTotalScreen');
       const alertDivButton = document.querySelector('.alertButton');
       const alertDivText = document.querySelector('.alertText');
+
+      //adding image from a popup div
+      let imgChooseTest = document.querySelector('#imgChooseTest');
+      let disableDiv = document.querySelector('.containerChooseImg');
+      let imgoptions = document.querySelectorAll('.imgOpt');
+      let addImgOk = document.querySelector('#addImgOk');
+
       let accessData = localStorage.getItem('accessData')
         ? JSON.parse(localStorage.getItem('accessData'))
         : false;
@@ -204,7 +237,11 @@
 
       addImg.addEventListener('change', imgFile, false);
 
-      displayImg.addEventListener('click', function () {
+      addImgOk.addEventListener('click', function () {
+        disableDiv.style.display = 'none';
+        if (!userInputImgURL) {
+          return;
+        }
         let newSlide = {
           text: 'Click here to edit title',
           img: userInputImgURL,
@@ -213,6 +250,23 @@
         loadPresentationToView(presentationArray[0]);
         activeSlide(presentationArray[0].data.length);
       });
+
+      //              adding image tests
+      imgChooseTest.onclick = () => {
+        disableDiv.style.display = 'block';
+      };
+      imgoptions.forEach((item) => {
+        item.onclick = (e) => {
+          imgoptions.forEach((item) => {
+            chosenImgUrl = '';
+            item.style.border = '2px solid #4e926300';
+          });
+          item.style.border = '2px solid #4e9263';
+          chosenImgUrl = item.getAttribute('src');
+          console.log(chosenImgUrl); //this works
+        };
+      });
+      //             Tests end here
 
       addList.addEventListener('click', function () {
         let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
