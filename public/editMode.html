@@ -274,7 +274,7 @@
       });
 
       addList.addEventListener('click', function () {
-        let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
+        let newSlide = { list: '<li>a</li><li>b</li><li>c</li>' };
         presentationArray[0].data.push(newSlide);
         loadPresentationToView(presentationArray[0]);
         activeSlide(presentationArray[0].data.length);
@@ -507,9 +507,17 @@
       }
 
       function savePresentation() {
+        const theme = slideDiv.className;
         const arrayOfAllTitles = document.querySelectorAll('.slide h6');
         const arrayOfAllLists = document.querySelectorAll('.slide ul');
-        const arrayOfAllListItems = document.querySelectorAll('.slide li');
+        const arrayOfAllListItems = document.querySelectorAll('.slide ul li');
+
+        arrayOfAllLists.forEach((ListFromSlide, index) => {
+          console.log(index);
+          console.log(presentationArray[0].data[index]);
+          presentationArray[0].data[index].list = ListFromSlide.innerHTML;
+        });
+
         let test = [];
 
         arrayOfAllTitles.forEach((titleFromSlide, index) => {
@@ -518,8 +526,15 @@
             presentationArray[0].title = titleFromSlide.textContent;
             return;
           }
-          presentationArray[0].data[index - 1].text =
-            titleFromSlide.textContent;
+          for (let i = 0; i < presentationArray[0]; i++) {
+            let counter = 1;
+            if (counter <= arrayOfAllTitles.length) {
+              if (presentationArray[0].data[i].text) {
+                presentationArray[0].data[i].text = titleFromSlide.textContent;
+                counter++;
+              }
+            }
+          }
         });
 
         displayTitle.textContent = presentationArray[0].title;
@@ -530,7 +545,7 @@
           presentationArray[0].title,
           presentationArray[0].data,
           shareStatus,
-          'minimalist',
+          theme,
           presentationArray[0].presentationid,
         ];
         const body = {
@@ -561,6 +576,7 @@
           .then((resp) => {
             console.log('Presentation save:', resp);
             presentationArray[0].published = resp.published;
+            createPresList();
             return resp;
           })
           .catch((err) => {
@@ -731,6 +747,10 @@
       function loadPresentationToView(currentPres) {
         loadShareStatus(currentPres.published);
         displayTitle.innerHTML = currentPres.title;
+        slideDiv.className = currentPres.theme;
+        if (!currentPres.theme) {
+          slideDiv.className = 'slideShowbodyDefault';
+        }
         createNavigationDots(currentPres.data.length);
         container.innerHTML = '';
         let titleDiv = document.createElement('div');
@@ -752,11 +772,11 @@
             img = '<br><img src=' + slide.img + ' >';
           }
           if (slide.list) {
-            let innerOl = '';
-            for (let element of slide.list) {
+            let innerOl = slide.list;
+            /* for (let element of slide.list) {
               let listElement = '<li>' + element + '</li>';
               innerOl += listElement;
-            }
+            }*/
             list = '<ul contenteditable=true >' + innerOl + '</ul>';
           }
           div.classList.add('slide');
@@ -845,6 +865,7 @@
               }
             }
             loadPresentationToView(presentationArray[0]);
+            showIndex = 0;
           });
           presList.appendChild(p);
         }
