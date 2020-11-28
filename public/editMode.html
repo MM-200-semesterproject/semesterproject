@@ -700,8 +700,8 @@
           shareBtn.innerHTML = `<img src="svg/lock.svg" title="Private" class="appIcon" />Share`;
           shareLink.style.display = 'none';
         } else if (!shareStatus) {
-          shareUrl = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
-          ref = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
+          shareUrl = `View public presentations`;
+          ref = `viewMode.html`;
           shareStatus = true;
           shareBtn.innerHTML = `<img src="svg/unlock.svg" title="Public" class="appIcon" />Unshare`;
           shareLink.style.display = 'block';
@@ -816,8 +816,8 @@
           shareStatus = false;
           shareBtn.innerHTML = 'Share';
         } else if (published == 'PUBLIC') {
-          shareUrl = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
-          ref = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
+          shareUrl = `View other public presentations`;
+          ref = `viewMode.html`;
           shareStatus = true;
           shareBtn.innerHTML = 'Unshare';
         }
