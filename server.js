@@ -116,9 +116,20 @@ app.get(
     //response.sendFile(path.join(__dirname, 'public'), viewMode.html);
 
     response.status(200).send('ASDASD');
-    /**/
   }
 );
+
+app.post('/public-list', async function (request, response) {
+  let result = null;
+  result = await pool.publicPres(request.body);
+  if (result instanceof Error) {
+    response.status(400).json(result);
+    return;
+  } else {
+    response.status(200).json(result);
+    return;
+  }
+});
 
 app.post('/update-presentation', async function (request, response) {
   let result = null;
