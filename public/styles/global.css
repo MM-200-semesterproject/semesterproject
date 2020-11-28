@@ -77,37 +77,49 @@ h3 {
 }
 
 h6 {
-  font-size: 100px;
-  font-weight: 300;
-  margin: auto auto;
-}
-
-h6:not(:only-child) {
   font-size: 50px;
+  font-weight: 300;
   margin: 0 auto;
 }
-header .appIcon {
+
+.slide:first-of-type h6 {
+  font-size: 100px;
+  font-weight: 400;
+  margin: auto;
+}
+header div .appIcon {
   height: 30px;
   opacity: 0.8;
   padding: 0;
 }
 
-header .editIcon {
-  padding: 3px 3px 0;
-  margin: auto 5px auto auto;
+header div .editIcon {
+  padding: 2px 2px 0;
   background-color: #6d8990;
   border: 1px solid #fff;
+  max-height: 100%;
+  font-size: unset;
 }
 
-header .shareBtn {
-  padding: 5px 10px 4px;
-  margin: auto 5px;
+header div button {
+  height: auto;
   box-shadow: none;
+  margin: auto 5px;
 }
 
-header .shareBtn .appIcon {
+header div .shareBtn {
+  padding: 5px 10px 4px;
+}
+
+header div .shareBtn .appIcon {
   height: 20px;
   margin-right: 10px;
+}
+
+header div:not(.selectOptions) {
+  display: flex;
+  align-content: center;
+  height: 100%;
 }
 
 header {
@@ -117,7 +129,7 @@ header {
   height: 4%;
   max-height: 60px;
   background-color: #485153;
-  box-shadow: 0 2px 4px #191c1d;
+  box-shadow: 0 4px 6px #191c1d;
   z-index: 9999;
   justify-content: space-between;
 }
@@ -491,6 +503,7 @@ input:nth-of-type(1) {
 
 .slide ul {
   text-align: left;
+  font-size: 30px;
   margin: auto;
   width: 100%;
 }
@@ -534,12 +547,12 @@ input:nth-of-type(1) {
 
 .slideShowbodyDefault {
   background-color: #fff;
-  box-shadow: 0 4px 10px #444849, inset -0.4vw -0.4vw 0 0 #15414b,
+  box-shadow: 0 25px 10px -15px #080f11, inset -0.4vw -0.4vw 0 0 #15414b,
     inset -0.3vw -0.3vw 0 0.8vw #cadce0, inset -0.2vw -0.2vw 0 1.1vw #15414b;
 }
 
 .slideShowbodyGeometric {
-  box-shadow: 0 4px 10px #444849;
+  box-shadow: 0 25px 10px -15px #080f11;
   background: url(../svg/geomBorder.svg) no-repeat;
   background-position: center;
   background-size: 95% 95%;
@@ -550,7 +563,7 @@ input:nth-of-type(1) {
 }
 
 .slideShowbodySakura {
-  box-shadow: 0 4px 10px #444849, inset 0 0 0 1vw #ffc5cf,
+  box-shadow: 0 25px 10px -15px #080f11, inset 0 0 0 1vw #ffc5cf,
     inset 0 0 0 1.5vw #fff;
   font-family: 'Courier New', Courier, monospace;
   font-weight: normal;
@@ -608,15 +621,16 @@ input:nth-of-type(1) {
 #userIcon {
   width: 38px;
   height: 38px;
-  margin: auto 20px;
+  margin: auto 20px auto 5px;
   border-radius: 50%;
   color: #fff;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 28px;
   justify-content: center;
   align-content: center;
   background-color: #e77793;
   box-shadow: inset 2px -2px 10px 1px #5d1426;
+  padding: 2px;
 }
 
 #addImgOk {
