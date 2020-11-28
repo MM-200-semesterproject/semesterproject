@@ -28,6 +28,19 @@
     </header>
 
     <div class="editWrapper">
+      <div class="editActiveArea">
+        <div class="aspectRatio">
+          <div id="slideDiv" class="slideShowbodyDefault">
+            <a class="prev" onclick="navigate(-1)">&#8249;</a>
+            <div id="container" class="slideContent"></div>
+            <a class="next" onclick="navigate(1)">&#8250;</a>
+          </div>
+        </div>
+
+        <div id="navDots" style="text-align: center">
+          <span id="dot"></span>
+        </div>
+      </div>
       <div class="editMenu">
         <section class="menuSection">
           <h2>Current Project:</h2>
@@ -43,20 +56,6 @@
             Presentation mode<img class="appIcon" src="svg/expand.svg" />
           </button>
         </section>
-      </div>
-
-      <div class="editActiveArea">
-        <div class="aspectRatio">
-          <div id="slideDiv" class="slideShowbodyDefault">
-            <a class="prev" onclick="navigate(-1)">&#8249;</a>
-            <div id="container" class="slideContent"></div>
-            <a class="next" onclick="navigate(1)">&#8250;</a>
-          </div>
-        </div>
-
-        <div id="navDots" style="text-align: center">
-          <span id="dot"></span>
-        </div>
       </div>
     </div>
 
