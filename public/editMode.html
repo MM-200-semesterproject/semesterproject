@@ -23,6 +23,7 @@
         <div class="selectOptions">
           <p id="updatePassword">Update password</p>
           <p id="logoutUser">Log out</p>
+          <hr />
           <p id="deleteUser">Delete user</p>
         </div>
       </button>
@@ -130,13 +131,15 @@
         <button id="alertBtn" class="btnGreen alertButton">Log in</button>
       </div>
     </div>
-    <div class="disableTotalScreenTest">
+
+    <div class="containerChooseImg">
       <div class="chooseImg">
         <section class="chooseimgsection">
           <img class="imgOpt" src="bilder/shrine.jpg" />
           <img class="imgOpt" src="bilder/wallOfChina.jpg" />
           <img class="imgOpt" src="bilder/streetsOfJapan.jpg" />
         </section>
+        <hr />
         <section class="chooseimgsection">
           <input type="file" name="filename" id="addImg" class="btnGrey" />
           <button id="addImgOk" class="btnGreen addImgOk">Add Image</button>
@@ -153,7 +156,7 @@
       const container = document.getElementById('container');
       let showIndex = 0;
       const addTxt = document.getElementById('addTxt');
-      const addImg = document.getElementById('addImg');
+      const displayImg = document.getElementById('displayImg');
       const addList = document.getElementById('addList');
       const createPresBtn = document.getElementById('createPres');
       let deletePresBtn = document.querySelector('#deleteBtn');
@@ -176,9 +179,8 @@
       let chosenImgUrl = '';
 
       //adding image from a popup div
-
       let imgChooseTest = document.querySelector('#imgChooseTest');
-      let disableDiv = document.querySelector('.disableTotalScreenTest');
+      let disableDiv = document.querySelector('.containerChooseImg');
       let imgoptions = document.querySelectorAll('.imgOpt');
       let addImgOk = document.querySelector('#addImgOk');
 
