@@ -132,9 +132,8 @@ hr {
 #shareLink {
   display: none;
   position: absolute;
-  top: 65px;
-  right: 15px;
-  float: right;
+  margin-top: 15px;
+  margin-right: 15px;
   z-index: 99;
 }
 
@@ -316,6 +315,7 @@ input:nth-of-type(1) {
 .editWrapper {
   display: flex;
   align-items: stretch;
+  flex-direction: row-reverse;
   height: 100%;
 }
 
