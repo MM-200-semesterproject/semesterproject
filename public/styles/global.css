@@ -101,7 +101,7 @@ header .editIcon {
 
 header .shareBtn {
   padding: 5px 10px 4px;
-  margin: auto 5px auto auto;
+  margin: auto 5px;
   box-shadow: none;
 }
 
@@ -515,7 +515,9 @@ input:nth-of-type(1) {
 
 /* ---- THEMES ---------------*/
 
-.slideShowbodyDefault {
+.slideShowbodyDefault,
+.slideShowbodyGeometric,
+.slideShowbodySakura {
   position: absolute;
   top: 0;
   right: 0;
@@ -524,29 +526,20 @@ input:nth-of-type(1) {
   width: 80%;
   height: 80%;
   margin: auto 10% 4%;
-  background-color: #fff;
-  box-shadow: 0 4px 10px #444849, inset -0.4vw -0.4vw 0 0 #15414b,
-    inset -0.3vw -0.3vw 0 0.8vw #cadce0, inset -0.2vw -0.2vw 0 1.1vw #15414b;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-content: center;
 }
 
+.slideShowbodyDefault {
+  background-color: #fff;
+  box-shadow: 0 4px 10px #444849, inset -0.4vw -0.4vw 0 0 #15414b,
+    inset -0.3vw -0.3vw 0 0.8vw #cadce0, inset -0.2vw -0.2vw 0 1.1vw #15414b;
+}
+
 .slideShowbodyGeometric {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  width: 80%;
-  height: 80%;
-  margin: auto 10% 4%;
   box-shadow: 0 4px 10px #444849;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-content: center;
   background: url(../svg/geomBorder.svg) no-repeat;
   background-position: center;
   background-size: 95% 95%;
@@ -557,20 +550,8 @@ input:nth-of-type(1) {
 }
 
 .slideShowbodySakura {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  width: 80%;
-  height: 80%;
-  margin: auto 10% 4%;
   box-shadow: 0 4px 10px #444849, inset 0 0 0 1vw #ffc5cf,
     inset 0 0 0 1.5vw #fff;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-content: center;
   font-family: 'Courier New', Courier, monospace;
   font-weight: normal;
   background-color: #ffc5cf;
