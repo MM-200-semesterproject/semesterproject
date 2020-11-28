@@ -53,7 +53,6 @@
           <button class="btnGrey" id="displayImg" onclick="">
             Add Image Slide
           </button>
-          <button id="imgChooseTest">imgChooseTest</button>
           <button id="addList" class="btnGrey">Add List Slide</button>
 
           <button class="selectBtn" id="themeBtn">
@@ -134,6 +133,9 @@
 
     <div class="containerChooseImg">
       <div class="chooseImg">
+        <img src="svg/x.svg" id="xIcon" />
+
+        <h3>Choose an image:</h3>
         <section class="chooseimgsection">
           <img class="imgOpt" src="bilder/shrine.jpg" />
           <img class="imgOpt" src="bilder/wallOfChina.jpg" />
@@ -141,6 +143,7 @@
         </section>
         <hr />
         <section class="chooseimgsection">
+          <h3>or pick one of your own:</h3>
           <input
             type="file"
             name="filename"
@@ -184,9 +187,9 @@
       const alertDiv = document.querySelector('.disableTotalScreen');
       const alertDivButton = document.querySelector('.alertButton');
       const alertDivText = document.querySelector('.alertText');
+      const xIcon = document.querySelector('#xIcon');
 
       //adding image from a popup div
-      let imgChooseTest = document.querySelector('#imgChooseTest');
       let disableDiv = document.querySelector('.containerChooseImg');
       let imgoptions = document.querySelectorAll('.imgOpt');
       let addImgOk = document.querySelector('#addImgOk');
@@ -220,6 +223,10 @@
       //-------------Eventlisteners----------------------------------------
       //-------------------------------------------
 
+      xIcon.onclick = () => {
+        disableDiv.style.display = 'none';
+      };
+
       alertDivButton.onclick = () => (location.href = 'login.html');
 
       shareBtn.addEventListener('click', function () {
@@ -252,7 +259,7 @@
       });
 
       //              adding image tests
-      imgChooseTest.onclick = () => {
+      displayImg.onclick = () => {
         disableDiv.style.display = 'block';
       };
       imgoptions.forEach((item) => {
