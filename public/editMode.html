@@ -49,9 +49,7 @@
           <h2>Add A New Slide:</h2>
           <button id="addTxt" class="btnGrey">Add Text Slide</button>
           <input type="file" name="filename" id="addImg" class="btnGrey" />
-          <button class="btnGrey" id="displayImg" onclick="">
-            Add Image Slide
-          </button>
+          <button class="btnGrey" id="displayImg">Add Image Slide</button>
           <button id="addList" class="btnGrey">Add List Slide</button>
 
           <button class="selectBtn" id="themeBtn">
@@ -204,7 +202,7 @@
       });
 
       displayImg.addEventListener('click', function () {
-        let newSlide = { text: 'new text', img: (src = 'Bilder/eggBilde.jpg') };
+        let newSlide = { text: 'new text', img: imgFile() };
         presentationArray[0].data.push(newSlide);
         loadPresentationToView(presentationArray[0]);
         activeSlide(presentationArray[0].data.length);
@@ -640,9 +638,9 @@
           let image = document.createElement('img');
           image.src = e.target.result;
           document.body.appendChild(image);
-          console.log(e.target.result);
+          console.log('RESULT: ' + e.target.result);
         };
-        reader.readAsDataURL(addImg);
+        return reader.readAsDataURL(addImg);
       }
       function getImgURL(img) {
         const canvas = document.createElement('canvas');
