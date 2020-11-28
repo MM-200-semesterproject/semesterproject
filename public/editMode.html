@@ -191,6 +191,7 @@
 
       const updatePasswordBtn = document.querySelector('#updatePassword');
       const deleteUserBtn = document.querySelector('#deleteUser');
+      const deleteSlideBtn = document.querySelector('#deleteSlide');
       const alertDiv = document.querySelector('.disableTotalScreen');
       const alertDivButton = document.querySelector('.alertButton');
       const alertDivText = document.querySelector('.alertText');
@@ -238,6 +239,7 @@
       savePresBtn.addEventListener('click', savePresentation);
 
       shareBtn.addEventListener('click', updateShareLink);
+      deleteSlideBtn.addEventListener('click', deleteSlide);
 
       addTxt.addEventListener('click', function () {
         let newSlide = { text: 'Click here to edit title' };
@@ -510,19 +512,32 @@
           });
       }
 
+      function deleteSlide() {
+        if (showIndex != 0) {
+          console.log(showIndex);
+
+          presentationArray[0].data.splice(showIndex - 1, 1);
+          loadPresentationToView(presentationArray[0]);
+        }
+      }
+
       function savePresentation() {
         const theme = slideDiv.className;
         const arrayOfAllTitles = document.querySelectorAll('.slide h6');
         const arrayOfAllLists = document.querySelectorAll('.slide ul');
         const arrayOfAllListItems = document.querySelectorAll('.slide ul li');
+        let slide = 0;
 
         arrayOfAllLists.forEach((ListFromSlide, index) => {
-          console.log(index);
-          console.log(presentationArray[0].data[index]);
-          presentationArray[0].data[index].list = ListFromSlide.innerHTML;
+          for (let i = slide; i < presentationArray[0].data.length; i++) {
+            if (presentationArray[0].data[i].list) {
+              presentationArray[0].data[i].list = ListFromSlide.innerHTML;
+              return (slide = i + 1);
+            }
+          }
         });
 
-        let test = [];
+        slide = 0;
 
         arrayOfAllTitles.forEach((titleFromSlide, index) => {
           if (index < 1) {
@@ -530,13 +545,10 @@
             presentationArray[0].title = titleFromSlide.textContent;
             return;
           }
-          for (let i = 0; i < presentationArray[0]; i++) {
-            let counter = 1;
-            if (counter <= arrayOfAllTitles.length) {
-              if (presentationArray[0].data[i].text) {
-                presentationArray[0].data[i].text = titleFromSlide.textContent;
-                counter++;
-              }
+          for (let i = slide; i < presentationArray[0].data.length; i++) {
+            if (presentationArray[0].data[i].text) {
+              presentationArray[0].data[i].text = titleFromSlide.textContent;
+              return (slide = i + 1);
             }
           }
         });
