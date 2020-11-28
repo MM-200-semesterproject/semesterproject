@@ -40,14 +40,16 @@
           <button id="createPres" class="btnGreen" type="submit" value="submit">
             Create New Presentation
           </button>
-          <button class="btnGrey deleteBtn">Delete Presentation</button>
+          <button id="deleteBtn" class="btnGrey deleteBtn">
+            Delete Presentation
+          </button>
         </section>
 
         <section class="menuSection">
           <h2>Add A New Slide:</h2>
           <button id="addTxt" class="btnGrey">Add Text Slide</button>
           <input type="file" name="filename" id="addImg" class="btnGrey" />
-          <button class="btnGrey" id="displayImg" onclick="imgFile()">
+          <button class="btnGrey" id="displayImg" onclick="">
             Add Image Slide
           </button>
           <button id="addList" class="btnGrey">Add List Slide</button>
@@ -131,40 +133,26 @@
     <script type="text/javascript">
       //-------- Global variables------------------------
 
-      class Presentation {
-        constructor(title, slides, theme) {
-          this.title = title;
-          this.data = slides;
-          this.theme = theme;
-        }
-      }
-
       const shareBtn = document.getElementById('shareBtn');
       const presentationidTest = 123245;
-      shareBtn.addEventListener('click', function (ev) {
-        let shareUrl = `https://moreslides.heroku.com/viewmode.html/presentation?presentationid=${presentationidTest}`;
-        window.open(shareUrl, 'NewWindow');
-      });
 
-      let presentationArray = [];
-
-      let container = document.getElementById('container');
+      const container = document.getElementById('container');
       let showIndex = 0;
-      let addTxt = document.getElementById('addTxt');
-      let addImg = document.getElementById('addImg');
-      let addList = document.getElementById('addList');
-      let createPresBtn = document.getElementById('createPres');
-
-      let slideDiv = document.querySelector('#slideDiv');
-      let themeOptions = document.querySelectorAll('.themeOption');
+      const addTxt = document.getElementById('addTxt');
+      const addImg = document.getElementById('addImg');
+      const addList = document.getElementById('addList');
+      const createPresBtn = document.getElementById('createPres');
+      let deletePresBtn = document.querySelector('#deleteBtn');
+      const slideDiv = document.querySelector('#slideDiv');
+      const themeOptions = document.querySelectorAll('.themeOption');
 
       let presList = document.querySelector('#presList');
       const editMenu = document.querySelector('.editMenu');
       const header = document.querySelector('.header');
-      let presModeBtn = document.querySelector('#presentMode');
-      let displayTitle = document.querySelector('#presTitleDisplay');
-      let editBtn = document.querySelector('.editIcon');
-      let logoutUser = document.querySelector('#logoutUser');
+      const presModeBtn = document.querySelector('#presentMode');
+      const displayTitle = document.querySelector('#presTitleDisplay');
+      const editBtn = document.querySelector('.editIcon');
+      const logoutUser = document.querySelector('#logoutUser');
 
       const updatePasswordBtn = document.querySelector('#updatePassword');
       const deleteUserBtn = document.querySelector('#deleteUser');
@@ -179,77 +167,55 @@
         ? JSON.parse(localStorage.getItem('presentations'))
         : false;
 
-      let firstPresentationArr = [
-        { text: 'Text 1' },
-        { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
-        { list: [1, 2, 3, 4, 5] },
-      ];
-      defaultPresentation = new Presentation(
-        'MyTitle',
-        firstPresentationArr,
-        'Minimalist'
-      );
+      let presentationArray = [];
 
-      if (!presentationObject || !presentationObject.arr) {
-        presentationArray.push(defaultPresentation);
-      } else if (
-        presentationObject.arr.length == 0 ||
-        presentationObject == false
-      ) {
-        presentationArray.push(defaultPresentation);
-      } else {
-        for (let i = 0; i < presentationObject.arr.length; i++) {
-          presentationArray.push(presentationObject.arr[i]);
-        }
-      }
-      //---------------------Functionality Themes----------------
+      //----------OnLoad----------------
 
-      presModeBtn.onclick = () => {
-        editMenu.style.display = 'none';
-        editBtn.style.display = 'block';
+      let defaultPresentation = {
+        title: 'NewTitle',
+        data: [{ text: 'Text 1' }],
+        theme: 'Minimalist',
       };
-
-      editBtn.onclick = () => {
-        editMenu.style.display = 'flex';
-        editBtn.style.display = 'none';
-      };
-
-      logoutUser.onclick = () => (location.href = 'login.html');
-
-      window.addEventListener('keydown', (e) => {
-        if (e.key == 'ArrowLeft') {
-          navigate(-1);
-        } else if (e.key == 'ArrowRight') {
-          navigate(1);
-        }
-        if (e.key == 'Escape') {
-          if (editMenu.style.display === 'none') {
-          }
-          editMenu.style.display === 'block';
-          console.log('heisann escape works');
-        }
-      });
-
-      themeOptions.forEach((element) => {
-        element.onclick = (e) => {
-          if (e.target.id === 'default') {
-            slideDiv.className = 'slideShowbodyDefault';
-          } else if (e.target.id === 'sakura') {
-            slideDiv.className = 'slideShowbodySakura';
-          } else if (e.target.id === 'geometric') {
-            slideDiv.className = 'slideShowbodyGeometric';
-          }
-        };
-      });
-
-      //funksjoner
-      alertDivButton.onclick = () => (location.href = 'login.html');
 
       if (!accessData) {
         alertDiv.style.display = 'block';
       } else {
         checkUser();
       }
+
+      loadPresentationObject();
+
+      //-------------Eventlisteners----------------------------------------
+      //-------------------------------------------
+
+      alertDivButton.onclick = () => (location.href = 'login.html');
+
+      shareBtn.addEventListener('click', function () {
+        let shareUrl = `https://moreslides.heroku.com/viewmode.html/presentation?presentationid=${presentationidTest}`;
+        window.open(shareUrl, 'NewWindow');
+      });
+
+      addTxt.addEventListener('click', function () {
+        let newSlide = { text: 'Test1' };
+        presentationArray[0].data.push(newSlide);
+        console.log(presentationArray[0]);
+        loadPresentationToView(presentationArray[0]);
+        activeSlide(presentationArray[0].data.length);
+      });
+
+      displayImg.addEventListener('click', function () {
+        let newSlide = { text: 'new text', img: (src = 'Bilder/eggBilde.jpg') };
+        presentationArray[0].data.push(newSlide);
+        loadPresentationToView(presentationArray[0]);
+        activeSlide(presentationArray[0].data.length);
+      });
+
+      addList.addEventListener('click', function () {
+        let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
+        presentationArray[0].data.push(newSlide);
+        loadPresentationToView(presentationArray[0]);
+        activeSlide(presentationArray[0].data.length);
+      });
 
       deleteUserBtn.addEventListener('click', function () {
         const insideAlertDiv = document.querySelector('.alert');
@@ -348,6 +314,53 @@
         };
       });
 
+      createPresBtn.addEventListener('click', createPresentation);
+      deletePresBtn.addEventListener('click', deletePresentation);
+
+      //---------------------Functionality Themes----------------
+
+      presModeBtn.onclick = () => {
+        editMenu.style.display = 'none';
+        editBtn.style.display = 'block';
+      };
+
+      editBtn.onclick = () => {
+        editMenu.style.display = 'flex';
+        editBtn.style.display = 'none';
+      };
+
+      logoutUser.onclick = () => (location.href = 'login.html');
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key == 'ArrowLeft') {
+          navigate(-1);
+        } else if (e.key == 'ArrowRight') {
+          navigate(1);
+        }
+        if (e.key == 'Escape') {
+          if (editMenu.style.display === 'none') {
+          }
+          editMenu.style.display === 'block';
+          console.log('heisann escape works');
+        }
+      });
+
+      themeOptions.forEach((element) => {
+        element.onclick = (e) => {
+          if (e.target.id === 'default') {
+            slideDiv.className = 'slideShowbodyDefault';
+          } else if (e.target.id === 'sakura') {
+            slideDiv.className = 'slideShowbodySakura';
+          } else if (e.target.id === 'geometric') {
+            slideDiv.className = 'slideShowbodyGeometric';
+          }
+        };
+      });
+
+      //------EventListeners END-------------------------------
+      //---------------------Functions--------------------------
+      //-----------------------------------------------------------
+
       function checkUser() {
         const inputArray = [accessData.id, accessData.accesstoken];
         const body = {
@@ -382,7 +395,7 @@
           });
       }
 
-      createPresBtn.addEventListener('click', function () {
+      function createPresentation() {
         const inputArray = [
           accessData.id,
           accessData.accesstoken,
@@ -413,10 +426,8 @@
             return resp.json();
           })
           .then((resp) => {
-            console.clear();
-            console.log(config.body);
+            loadPresentationObject();
             console.log('Presentation created');
-            loadPresentations();
             return resp;
           })
           .catch((err) => {
@@ -425,21 +436,120 @@
             alertDiv.style.display = 'block';
             return err;
           });
-      });
-
-      loadPresentations(); //fetch
-
-      if (presentationArray[0].data != null) {
-        createPresList(presentationArray);
-        console.log(presentationArray[0]);
-        loadPresentation(presentationArray[0]);
-        loadSlides(showIndex);
       }
 
-      //---------------------Funksjoner--------------------------
+      function deletePresentation() {
+        if (!presentationArray[0].presentationid) {
+          console.log('Nothing to delete');
+        } else {
+          const inputArray = [
+            accessData.id,
+            accessData.accesstoken,
+            presentationArray[0].presentationid,
+          ];
 
-      //----------------prøver å laste opp bilde til sliden-----------------------------
+          const body = {
+            id: inputArray[0],
+            accesstoken: inputArray[1],
+            presentationid: inputArray[2],
+          };
 
+          const config = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+          };
+
+          fetch('/delete-presentation', config)
+            .then((resp) => {
+              if (resp.status !== 200) {
+                throw new Error('Something went wrong.');
+              }
+              return resp.json();
+            })
+            .then((resp) => {
+              loadPresentationObject();
+              console.log(
+                'Presentation with id: ',
+                resp.presentationid,
+                ' deleted'
+              );
+
+              return resp;
+            })
+            .catch((err) => {
+              console.log(err);
+              return err;
+            });
+        }
+      }
+
+      function loadPresentationObject() {
+        //from DB
+        const inputArray = [accessData.id, accessData.accesstoken];
+        const body = {
+          id: inputArray[0],
+          accesstoken: inputArray[1],
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+
+        fetch('/load-presentations', config)
+          .then((resp) => {
+            if (resp.status !== 200) {
+              console.log('Could not Load presentations');
+            }
+            return resp.json();
+          })
+          .then((resp) => {
+            const presentationObject = JSON.stringify(resp);
+            localStorage.setItem('presentations', presentationObject);
+            updatePresentationArray();
+          })
+          .catch((err) => {
+            console.log(err);
+            return err;
+          });
+      }
+
+      function updatePresentationArray() {
+        presentationObject = localStorage.getItem('presentations')
+          ? JSON.parse(localStorage.getItem('presentations'))
+          : false;
+
+        if (
+          !presentationObject ||
+          !presentationObject.arr ||
+          presentationObject == false
+        ) {
+          presentationArray = [{ title: 'empty' }];
+          loadPresentationObject();
+          createPresList();
+        } else if (presentationObject.arr.length == 0) {
+          presentationArray = [{ title: 'empty' }];
+          createPresList();
+          console.log(presentationObject.arr.length, 'in line207');
+        } else if (presentationObject.arr.length > 0) {
+          presentationArray = [];
+          for (let i = 0; i < presentationObject.arr.length; i++) {
+            presentationArray.unshift(presentationObject.arr[i]);
+            console.log(presentationArray[0].presentationid);
+          }
+          loadPresentationToView(presentationArray[0]);
+          createPresList();
+        } else {
+          console.log(presentationObject);
+        }
+      }
+
+      //------funksjoner:show single slide and navigation
       function activeSlide(n) {
         loadSlides((showIndex = n));
       }
@@ -461,12 +571,13 @@
         }
       }
 
-      function loadPresentation(currentPres) {
+      function loadPresentationToView(currentPres) {
+        displayTitle.innerHTML = currentPres.title;
         console.log('arr:' + currentPres.data);
         createNavigationDots(currentPres.data.length);
         container.innerHTML = '';
         let titleDiv = document.createElement('div');
-        titleDiv.innerHTML = `<h6>${currentPres.title}</h6>`;
+        titleDiv.innerHTML = `<h6 contenteditable = true>${currentPres.title}</h6>`;
         titleDiv.classList.add('slide');
         container.appendChild(titleDiv);
         for (let slide of currentPres.data) {
@@ -499,6 +610,7 @@
 
           container.appendChild(div);
         }
+        loadSlides(showIndex);
       }
 
       function loadSlides(num) {
@@ -545,45 +657,16 @@
         return canvas.toDataURL();
       }
 
-      function loadPresentations() {
-        //from DB
-        const inputArray = [accessData.id, accessData.accesstoken];
-        const body = {
-          id: inputArray[0],
-          accesstoken: inputArray[1],
-        };
-        const config = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body),
-        };
-
-        fetch('/load-presentations', config)
-          .then((resp) => {
-            if (resp.status !== 200) {
-              console.log('Could not Load presentations');
-            }
-            return resp.json();
-          })
-          .then((resp) => {
-            const presentationObject = JSON.stringify(resp);
-            localStorage.setItem('presentations', presentationObject);
-            return resp;
-          })
-          .catch((err) => {
-            alertDivText.textContent = '';
-            alertDivText.textContent = err.message;
-            alertDiv.style.display = 'block';
-            return err;
-          });
-      }
-
-      function createPresList(array) {
+      function createPresList() {
         presList.innerHTML = '';
-        displayTitle.innerHTML = array.title;
-        for (let part of array) {
+        if (presentationArray[0].length == 0 || !presentationArray[0].title) {
+          displayTitle.innerHTML = 'empty';
+        } else if (!presentationArray[0]) {
+          displayTitle.innerHTML = 'Undefined';
+        } else {
+          displayTitle.innerHTML = presentationArray[0].title;
+        }
+        for (let part of presentationArray) {
           let p = document.createElement('p');
           p.id = part.presentationid;
           p.classList.add('presOption');
@@ -591,34 +674,12 @@
           p.innerHTML = part.title;
           p.addEventListener('click', function () {
             displayTitle.innerHTML = p.title;
+            //find corresponding presentaionid in array and presentation.unshift(----)
+            // loadPresentationToView(---------);
           });
           presList.appendChild(p);
         }
       }
-
-      //-------------create slides with button----------------------------------------
-
-      addTxt.addEventListener('click', function () {
-        let newSlide = { text: 'Test1' };
-        presentationArray[0].data.push(newSlide);
-        console.log(presentationArray[0]);
-        loadPresentation(presentationArray[0]);
-        activeSlide(presentationArray[0].data.length);
-      });
-
-      displayImg.addEventListener('click', function () {
-        let newSlide = { img: (src = '') };
-        presentationArray[0].slides.push(newSlide);
-        loadPresentation(presentationArray[0]);
-        activeSlide(presentationArray[0].data.length);
-      });
-
-      addList.addEventListener('click', function () {
-        let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
-        presentationArray[0].data.push(newSlide);
-        loadPresentation(presentationArray[0]);
-        activeSlide(presentationArray[0].data.length);
-      });
     </script>
   </body>
 </html>
