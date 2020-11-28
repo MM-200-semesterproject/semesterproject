@@ -85,7 +85,6 @@ app.post('/load-presentations', async function (request, response) {
     response.status(400).json(result);
     return;
   } else {
-    console.log(result);
     response.status(200).json(result);
     return;
   }
@@ -117,9 +116,16 @@ app.post('/update-presentation', async function (request, response) {
 });
 
 app.post('/delete-presentation', async function (request, response) {
-  //on "save presentation" in editMode.html
-  console.log('I am inside /delete-presentation in server.js');
-  response.status(200).send('hei from delete-presentation in server.js');
+  let result = null;
+  result = await pool.deletePres(request.body);
+  if (result instanceof Error) {
+    response.status(400).json(result);
+    return;
+  } else {
+    console.log('error in server:', result);
+    response.status(200).json(result);
+    return;
+  }
 });
 
 app.listen(app.get('port'), function () {

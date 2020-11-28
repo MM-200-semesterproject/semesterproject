@@ -187,21 +187,29 @@ class StorageHandler {
     const client = new pg.Client(this.credentials);
     const input = inp;
     let results = null;
-
     try {
       await client.connect();
       results = await client.query(
-        'DELETE FROM presentations WHERE userid = $1 AND presentationid =$2',
-        [input.userid, input.presentationid]
+        'SELECT id FROM users WHERE accesstoken = $1',
+        [input.accesstoken]
       );
 
-      console.log(`presentation with id ${input.presentationid} deleted`);
+      if (input.id == results.rows[0].id) {
+        results = await client.query(
+          'DELETE FROM presentations WHERE userid= $1 AND presentationid= $2 RETURNING presentationid;',
+          [input.id, input.presentationid]
+        );
+        results = results.rows[0];
+      } else {
+        new Error();
+      }
 
       client.end();
     } catch (err) {
-      console.log(`Error on deleteUser: ${err}`);
+      results = err;
       client.end();
     }
+    return results;
   }
 
   async loadPres(body) {
