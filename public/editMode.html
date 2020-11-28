@@ -505,17 +505,17 @@
       }
 
       function savePresentation() {
-        console.log('508:', presentationArray[0].data);
         let arrayOfAllTitles = document.querySelectorAll('.slide h6');
         arrayOfAllTitles.forEach((titleFromSlide, index) => {
           if (index < 1) {
+            //Title sliden
             presentationArray[0].title = titleFromSlide.textContent;
             return;
           }
           presentationArray[0].data[index - 1].text =
             titleFromSlide.textContent;
         });
-        console.log('Array after for each:' + presentationArray[0]);
+        displayTitle.textContent = presentationArray[0].title;
 
         const inputArray = [
           accessData.id,
