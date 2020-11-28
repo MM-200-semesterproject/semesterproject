@@ -19,6 +19,10 @@
       <button class="btnGrey editIcon">
         <img class="appIcon" src="svg/editIcon.svg" />
       </button>
+      <button id="shareBtn" class="btnGreen shareBtn">
+        <img src="svg/lock.svg" title="Private" class="appIcon" />Share
+      </button>
+
       <button class="selectBtn" id="userIcon">
         U
         <div class="selectOptions">
@@ -29,10 +33,7 @@
         </div>
       </button>
     </header>
-    <div class="header">
-      <a id="shareLink" href="#">Presentation is "PRIVATE"</a>
-      <button id="shareBtn" class="">Share</button>
-    </div>
+    <a id="shareLink" href="#">Presentation is "PRIVATE"</a>
     <div class="editWrapper">
       <div class="editMenu">
         <section class="menuSection">
@@ -194,7 +195,6 @@
       const alertDivText = document.querySelector('.alertText');
       const xIcon = document.querySelector('#xIcon');
 
-      //adding image from a popup div
       let disableDiv = document.querySelector('.containerChooseImg');
       let imgoptions = document.querySelectorAll('.imgOpt');
       let addImgBtn = document.querySelector('#addImgOk');
@@ -262,7 +262,6 @@
         activeSlide(presentationArray[0].data.length);
       });
 
-      //              adding image tests
       displayImg.onclick = () => {
         disableDiv.style.display = 'block';
       };
@@ -276,7 +275,6 @@
           console.log(userInputImgURL); //this works
         };
       });
-      //             Tests end here
 
       addList.addEventListener('click', function () {
         let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
@@ -643,17 +641,20 @@
           shareUrl = 'Could not share presentation';
           ref = '';
           shareStatus = false;
-          shareBtn.innerHTML = 'Share';
+          shareBtn.innerHTML = `<img src="svg/lock.svg" title="Private" class="appIcon" />Share`;
+          shareLink.style.display = 'block';
         } else if (shareStatus) {
           shareUrl = 'Presentation is "PRIVATE"';
           ref = '';
           shareStatus = false;
-          shareBtn.innerHTML = 'Share';
+          shareBtn.innerHTML = `<img src="svg/lock.svg" title="Private" class="appIcon" />Share`;
+          shareLink.style.display = 'none';
         } else if (!shareStatus) {
           shareUrl = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
           ref = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
           shareStatus = true;
-          shareBtn.innerHTML = 'Unshare';
+          shareBtn.innerHTML = `<img src="svg/unlock.svg" title="Public" class="appIcon" />Unshare`;
+          shareLink.style.display = 'block';
         }
         shareLink.innerHTML = shareUrl;
         shareLink.href = ref;
