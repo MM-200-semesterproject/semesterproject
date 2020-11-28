@@ -24,7 +24,6 @@
       </button>
 
       <button class="selectBtn" id="userIcon">
-        U
         <div class="selectOptions">
           <p id="updatePassword">Update password</p>
           <p id="logoutUser">Log out</p>
@@ -33,10 +32,8 @@
         </div>
       </button>
     </header>
-
     <div class="editWrapper">
       <a id="shareLink" href="#">Presentation is "PRIVATE"</a>
-
       <div class="editActiveArea">
         <div class="aspectRatio">
           <div id="slideDiv" class="slideShowbodyDefault">
@@ -45,7 +42,6 @@
             <a class="next" onclick="navigate(1)">&#8250;</a>
           </div>
         </div>
-
         <div id="navDots" style="text-align: center">
           <span id="dot"></span>
         </div>
@@ -502,7 +498,11 @@
       }
 
       function savePresentation() {
-        let arrayOfAllTitles = document.querySelectorAll('.slide h6');
+        const arrayOfAllTitles = document.querySelectorAll('.slide h6');
+        const arrayOfAllLists = document.querySelectorAll('.slide ul');
+        const arrayOfAllListItems = document.querySelectorAll('.slide li');
+        let test = [];
+
         arrayOfAllTitles.forEach((titleFromSlide, index) => {
           if (index < 1) {
             //Title sliden
@@ -512,6 +512,7 @@
           presentationArray[0].data[index - 1].text =
             titleFromSlide.textContent;
         });
+
         displayTitle.textContent = presentationArray[0].title;
 
         const inputArray = [
@@ -739,7 +740,7 @@
             text = '<h6 contenteditable=true >' + slide.text + '</h6>';
           }
           if (slide.img) {
-            img = '<img src=' + slide.img + ' >';
+            img = '<br><img src=' + slide.img + ' >';
           }
           if (slide.list) {
             let innerOl = '';
