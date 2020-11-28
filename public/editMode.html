@@ -236,30 +236,7 @@
 
       savePresBtn.addEventListener('click', savePresentation);
 
-      shareBtn.addEventListener('click', function () {
-        let shareLink = document.getElementById('shareLink');
-        let shareUrl = null;
-        let ref = null;
-        if (!presentationArray[0].presentationid) {
-          shareUrl = 'Could not share presentation';
-          ref = '';
-          shareStatus = false;
-          shareBtn.innerHTML = 'Share';
-        } else if (shareBtn.innerHTML == 'Unshare') {
-          shareUrl = 'Presentation is "PRIVATE"';
-          ref = '';
-          shareStatus = false;
-          shareBtn.innerHTML = 'Share';
-        } else {
-          shareUrl = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
-          ref = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
-          shareStatus = true;
-          shareBtn.innerHTML = 'Unshare';
-        }
-        shareLink.innerHTML = shareUrl;
-        shareLink.href = ref;
-        savePresentation();
-      });
+      shareBtn.addEventListener('click', updateShareLink);
 
       addTxt.addEventListener('click', function () {
         let newSlide = { text: 'Click here to edit title' };
@@ -530,7 +507,7 @@
       }
 
       function savePresentation() {
-        console.log('hei, Im saving your presentation');
+        console.log('526:', presentationArray[0].data);
         const inputArray = [
           accessData.id,
           accessData.accesstoken,
@@ -567,7 +544,7 @@
           })
           .then((resp) => {
             console.log('Presentation save:', resp);
-
+            presentationArray[0].published = resp.published;
             return resp;
           })
           .catch((err) => {
@@ -657,6 +634,32 @@
           });
       }
 
+      function updateShareLink() {
+        let shareLink = document.getElementById('shareLink');
+        let shareUrl = null;
+        let ref = null;
+
+        if (!presentationArray[0].presentationid) {
+          shareUrl = 'Could not share presentation';
+          ref = '';
+          shareStatus = false;
+          shareBtn.innerHTML = 'Share';
+        } else if (shareStatus) {
+          shareUrl = 'Presentation is "PRIVATE"';
+          ref = '';
+          shareStatus = false;
+          shareBtn.innerHTML = 'Share';
+        } else if (!shareStatus) {
+          shareUrl = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
+          ref = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
+          shareStatus = true;
+          shareBtn.innerHTML = 'Unshare';
+        }
+        shareLink.innerHTML = shareUrl;
+        shareLink.href = ref;
+        savePresentation();
+      }
+
       function updatePresentationArray() {
         presentationObject = localStorage.getItem('presentations')
           ? JSON.parse(localStorage.getItem('presentations'))
@@ -707,6 +710,7 @@
       }
 
       function loadPresentationToView(currentPres) {
+        loadShareStatus(currentPres.published);
         displayTitle.innerHTML = currentPres.title;
         createNavigationDots(currentPres.data.length);
         container.innerHTML = '';
@@ -745,6 +749,25 @@
           container.appendChild(div);
         }
         loadSlides(showIndex);
+      }
+
+      function loadShareStatus(published) {
+        let shareLink = document.getElementById('shareLink');
+        let shareUrl = null;
+        let ref = null;
+        if (published == 'PRIVATE') {
+          shareUrl = 'Presentation is "PRIVATE"';
+          ref = '';
+          shareStatus = false;
+          shareBtn.innerHTML = 'Share';
+        } else if (published == 'PUBLIC') {
+          shareUrl = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
+          ref = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
+          shareStatus = true;
+          shareBtn.innerHTML = 'Unshare';
+        }
+        shareLink.innerHTML = shareUrl;
+        shareLink.href = ref;
       }
 
       function loadSlides(num) {
