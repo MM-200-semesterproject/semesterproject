@@ -104,6 +104,13 @@ header {
   justify-content: space-between;
 }
 
+hr {
+  background-image: linear-gradient(90deg, #5e606100, #919191b7, #5e606100);
+  height: 1px;
+  width: 90%;
+  border: none;
+}
+
 input {
   border: none;
   border-radius: 5px;
@@ -113,8 +120,6 @@ input {
   box-shadow: inset 0 0 4px #212324;
   width: 97%;
 }
-
-/* ----- dropdown menu end --------------*/
 
 input:nth-of-type(1) {
   margin-bottom: 10px;
@@ -128,13 +133,61 @@ input:nth-of-type(1) {
   font-weight: 300;
   border-radius: 25px;
   width: 500px;
-  height: 180px;
+  height: auto;
   left: 50%;
-  top: 50%;
+  top: 30%;
   margin-left: -250px;
-  margin-top: -300px;
   padding: 60px 40px;
 }
+
+.alert button {
+  box-shadow: 0 6px 5px -5px #080f11c9;
+}
+
+/* TEST --------- PLEASE IGNORE ----- START*/
+.chooseImg {
+  position: absolute;
+  text-align: center;
+  background-color: #fff;
+  font-size: 28px;
+  font-weight: 300;
+  border-radius: 25px;
+  padding: 40px 30px;
+  width: 700px;
+  height: auto;
+  left: 50%;
+  top: 20%;
+  margin-left: -350px;
+}
+
+.chooseimgsection {
+  display: flex;
+  justify-content: space-between;
+  align-content: space-between;
+  margin: auto;
+  margin-bottom: 50px;
+  width: auto;
+  max-width: 90%;
+}
+
+.chooseimgsection:last-of-type {
+  display: inline;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.chooseimgsection input {
+  width: auto;
+  margin-top: 28px;
+}
+
+.chooseimgsection img {
+  width: 30%;
+  border: 2px solid #4e926300;
+  border-radius: 25px;
+  overflow: hidden;
+}
+/* TEST --------- PLEASE IGNORE ---- END*/
 
 .aspectRatio {
   width: 100%;
@@ -165,7 +218,8 @@ input:nth-of-type(1) {
   background-color: #e4d6d6;
 }
 
-.disableTotalScreen {
+.disableTotalScreen,
+.containerChooseImg {
   background-color: rgba(42, 43, 44, 0.3);
   width: 100%;
   height: 100%;
@@ -251,8 +305,8 @@ input:nth-of-type(1) {
   right: 0;
   background: linear-gradient(
     90deg,
-    rgba(226, 226, 226, 0),
-    rgba(226, 226, 226, 1)
+    rgba(143, 143, 143, 0),
+    rgba(179, 179, 179, 0.6)
   );
 }
 
@@ -260,8 +314,8 @@ input:nth-of-type(1) {
   left: 0;
   background: linear-gradient(
     90deg,
-    rgba(226, 226, 226, 1),
-    rgba(226, 226, 226, 0)
+    rgba(179, 179, 179, 0.6),
+    rgba(143, 143, 143, 0)
   );
 }
 .prev,
@@ -279,6 +333,7 @@ input:nth-of-type(1) {
   opacity: 0;
   transition: opacity 0.6s, transform 0.6s;
   transition-delay: 0.3s;
+  user-select: none;
 }
 
 .prev:hover,
@@ -346,14 +401,14 @@ input:nth-of-type(1) {
   left: 0;
   background-color: #fff;
   box-shadow: 0 2px 6px 2px #213033;
-  z-index: 10;
+  z-index: 9999;
   width: 100%;
   opacity: 0;
   overflow: hidden;
   text-align: left;
   visibility: collapse;
   transition: visibility 0.3s, opacity 0.3s, text-shadow 0.3s;
-  transition-delay: 0.2s;
+  transition-delay: 0.3s;
 }
 
 .signupHeading {
@@ -543,4 +598,11 @@ input:nth-of-type(1) {
   align-content: center;
   background-color: #e77793;
   box-shadow: inset 2px -2px 10px 1px #5d1426;
+}
+
+#addImgOk {
+  margin: 20px 80px 0 0;
+  padding: 10px 20px;
+  box-shadow: 0 6px 5px -5px #080f11c9;
+  float: right;
 }
