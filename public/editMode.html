@@ -731,7 +731,7 @@
             text = '<h6 contenteditable=true >' + slide.text + '</h6>';
           }
           if (slide.img) {
-            img = '<br><img src=' + slide.img + ' >';
+            img = '<img src=' + slide.img + ' >';
           }
           if (slide.list) {
             let innerOl = '';
@@ -786,7 +786,7 @@
         for (let i = 0; i < dots.length; i++) {
           dots[i].className = dots[i].className.replace(' crntSlide', '');
         }
-        slideshow[showIndex].style.display = 'block';
+        slideshow[showIndex].style.display = 'flex';
         dots[showIndex].className += ' crntSlide';
       }
 
