@@ -267,11 +267,11 @@
             img = '<img src=' + slide.img + ' >';
           }
           if (slide.list) {
-            let innerOl = '';
-            for (let element of slide.list) {
+            let innerOl = slide.list;
+            /* for (let element of slide.list) {
               let listElement = '<li>' + element + '</li>';
               innerOl += listElement;
-            }
+            }*/
             list = '<ul contenteditable=true >' + innerOl + '</ul>';
           }
           div.classList.add('slide');
