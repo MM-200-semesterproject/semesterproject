@@ -624,12 +624,13 @@ input:nth-of-type(1) {
   margin: auto 20px auto 5px;
   border-radius: 50%;
   color: #fff;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 28px;
   justify-content: center;
   align-content: center;
   background-color: #e77793;
   box-shadow: inset 2px -2px 10px 1px #5d1426;
+  padding: 2px;
 }
 
 #addImgOk {
