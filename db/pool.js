@@ -241,7 +241,6 @@ class StorageHandler {
         for (let i = 0; i < rowcount; i++) {
           let row = results.rows[i];
           row.data = JSON.parse(results.rows[i].data);
-          console.log('244', results.rows[i].data);
           presentationArray.push(row);
         }
       }
