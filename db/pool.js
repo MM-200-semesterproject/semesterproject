@@ -284,6 +284,7 @@ class StorageHandler {
   async updatePres(inp) {
     const client = new pg.Client(this.credentials);
     let input = inp;
+    let data = JSON.stringify(input.data);
     console.log('inp:', inp);
     let results = null;
     const shareStatus = input.share;
@@ -308,12 +309,12 @@ class StorageHandler {
         results = await client.query(
           'UPDATE presentations SET data =$1, title =$2, theme=$3, published=$4 WHERE presentationid = $5 AND userid =$6',
           [
-            input.data,
+            data,
             input.title,
             input.theme,
             published,
             input.presentationid,
-            input.userid,
+            input.id,
           ]
         );
         results = await client.query(
