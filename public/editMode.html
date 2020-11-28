@@ -133,9 +133,9 @@
     <div class="disableTotalScreenTest">
       <div class="chooseImg">
         <section class="chooseimgsection">
-          <img class="imgOpt" src="Bilder/eggBilde.jpg" />
-          <img class="imgOpt" src="Bilder/eggBilde.jpg" />
-          <img class="imgOpt" src="Bilder/eggBilde.jpg" />
+          <img class="imgOpt" src="bilder/shrine.jpg" />
+          <img class="imgOpt" src="bilder/wallOfChina.jpg" />
+          <img class="imgOpt" src="bilder/streetsOfJapan.jpg" />
         </section>
         <section class="chooseimgsection">
           <input type="file" name="filename" id="addImg" class="btnGrey" />
@@ -173,6 +173,15 @@
       const alertDiv = document.querySelector('.disableTotalScreen');
       const alertDivButton = document.querySelector('.alertButton');
       const alertDivText = document.querySelector('.alertText');
+      let chosenImgUrl = '';
+
+      //adding image from a popup div
+
+      let imgChooseTest = document.querySelector('#imgChooseTest');
+      let disableDiv = document.querySelector('.disableTotalScreenTest');
+      let imgoptions = document.querySelectorAll('.imgOpt');
+      let addImgOk = document.querySelector('#addImgOk');
+
       let accessData = localStorage.getItem('accessData')
         ? JSON.parse(localStorage.getItem('accessData'))
         : false;
@@ -196,27 +205,6 @@
       } else {
         checkUser();
       }
-
-      let imgChooseTest = document.querySelector('#imgChooseTest');
-      let disableDiv = document.querySelector('.disableTotalScreenTest');
-
-      imgChooseTest.onclick = () => {
-        disableDiv.style.display = 'block';
-      };
-
-      let imgoptions = document.querySelectorAll('.imgOpt');
-      let addImgOk = document.querySelector('#addImgOk');
-
-      imgoptions.forEach((item) => {
-        item.onclick = (e) => {
-          item.style.width = '500px';
-          //add code for all items to normal size above and add code for changing size here!
-        };
-      });
-
-      addImgOk.onclick = () => {
-        imgoptions.forEach((e) => {});
-      };
 
       loadPresentationObject();
 
@@ -244,6 +232,29 @@
         loadPresentationToView(presentationArray[0]);
         activeSlide(presentationArray[0].data.length);
       });
+
+      //              adding image tests
+      imgChooseTest.onclick = () => {
+        disableDiv.style.display = 'block';
+      };
+      imgoptions.forEach((item) => {
+        item.onclick = (e) => {
+          imgoptions.forEach((item) => {
+            chosenImgUrl = '';
+            item.style.border = '2px solid #4e926300';
+          });
+          item.style.border = '2px solid #4e9263';
+          chosenImgUrl = item.getAttribute('src');
+          console.log(chosenImgUrl); //this works
+        };
+      });
+
+      addImgOk.onclick = () => {
+        disableDiv.style.display = 'none';
+        //change img src to either chosenUrl, OR to the imagebrowsefiles url
+      };
+
+      //             Tests end here
 
       addList.addEventListener('click', function () {
         let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
