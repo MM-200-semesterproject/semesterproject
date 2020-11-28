@@ -241,6 +241,7 @@ class StorageHandler {
         for (let i = 0; i < rowcount; i++) {
           let row = results.rows[i];
           row.data = JSON.parse(results.rows[i].data);
+          console.log('244', results.rows[i].data);
           presentationArray.push(row);
         }
       }
@@ -283,18 +284,50 @@ class StorageHandler {
   async updatePres(inp) {
     const client = new pg.Client(this.credentials);
     let input = inp;
+    console.log('inp:', inp);
     let results = null;
+    const shareStatus = input.share;
+    let published = '';
+    if (shareStatus) {
+      published = 'PUBLIC';
+    } else {
+      published = 'PRIVATE';
+    }
+    console.log('Published:', published);
 
     try {
       await client.connect();
       results = await client.query(
-        'UPDATE presentations SET data = $1 , title = $2 WHERE presentationid = $3 AND userid = $4 RETURNING title, userid, presentationid, data ',
-        [input.slides, input.title, input.presentationid, input.userid]
+        'SELECT id FROM users WHERE accesstoken = $1',
+        [input.accesstoken]
       );
-      results = results.rows[0];
-      console.log(
-        `column updated with presentation: ${results.title} for presentation with id:${results.presentationid}`
-      );
+      console.log('302:', results.rows[0]);
+
+      if (input.id == results.rows[0].id) {
+        console.log('311:', results.rows[0]);
+        results = await client.query(
+          'UPDATE presentations SET data =$1, title =$2, theme=$3, published=$4 WHERE presentationid = $5 AND userid =$6',
+          [
+            input.data,
+            input.title,
+            input.theme,
+            published,
+            input.presentationid,
+            input.userid,
+          ]
+        );
+        results = await client.query(
+          'SELECT * FROM presentations WHERE presentationid = $1',
+          [input.presentationid]
+        );
+
+        results = results.rows[0];
+        console.log(results);
+        console.log(
+          `column updated with presentation: ${results.title} for presentation with id:${results.presentationid}`
+        );
+      }
+
       client.end();
     } catch (err) {
       console.log(`Error in UpdatePres: ${err}`);
