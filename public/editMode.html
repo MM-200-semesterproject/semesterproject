@@ -505,7 +505,14 @@
       }
 
       function savePresentation() {
-        let arrayOfAllTitles = document.querySelectorAll('.slide h6');
+        const arrayOfAllTitles = document.querySelectorAll('.slide h6');
+        const arrayOfAllLists = document.querySelectorAll('.slide ul');
+        const arrayOfAllListItems = document.querySelectorAll('.slide li');
+        let test = [];
+        arrayOfAllLists.forEach((list, index) => {
+          test.push(list.childNodes);
+        });
+        console.log(test);
         arrayOfAllTitles.forEach((titleFromSlide, index) => {
           if (index < 1) {
             //Title sliden
@@ -515,6 +522,11 @@
           presentationArray[0].data[index - 1].text =
             titleFromSlide.textContent;
         });
+
+        arrayOfAllLists.forEach((listItem, index) => {
+          presentationArray[0].data[index].list;
+        });
+
         displayTitle.textContent = presentationArray[0].title;
 
         const inputArray = [
