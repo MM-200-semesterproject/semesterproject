@@ -639,7 +639,7 @@ input:nth-of-type(1) {
   float: right;
 }
 
-#publicPrivate [] #xIcon {
+#xIcon {
   float: right;
   margin-top: -20px;
   opacity: 0.8;

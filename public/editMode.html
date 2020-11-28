@@ -10,6 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Limelight&family=Roboto:wght@100;400;500;900&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
 
   <body>
@@ -196,7 +197,7 @@
 
       let disableDiv = document.querySelector('.containerChooseImg');
       let imgoptions = document.querySelectorAll('.imgOpt');
-      let addImgOk = document.querySelector('#addImgOk');
+      let addImgBtn = document.querySelector('#addImgOk');
 
       let accessData = localStorage.getItem('accessData')
         ? JSON.parse(localStorage.getItem('accessData'))
@@ -235,33 +236,7 @@
 
       savePresBtn.addEventListener('click', savePresentation);
 
-      shareBtn.addEventListener('click', function () {
-        let shareLink = document.getElementById('shareLink');
-        let shareUrl = null;
-        let ref = null;
-        if (!presentationArray[0].presentationid) {
-          shareUrl = 'Could not share presentation';
-          shareLink.style.display = 'block';
-          ref = '';
-          shareStatus = false;
-          shareBtn.innerHTML = `<img src="svg/lock.svg" title="Private" class="appIcon" />Share`;
-        } else if (shareBtn.textContent == 'Unshare') {
-          shareUrl = 'Presentation is "PRIVATE"';
-          shareLink.style.display = 'none';
-          ref = '';
-          shareStatus = false;
-          shareBtn.innerHTML = `<img src="svg/lock.svg" title="Private" class="appIcon" />Share`;
-        } else {
-          shareUrl = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
-          shareLink.style.display = 'block';
-          ref = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
-          shareStatus = true;
-          shareBtn.innerHTML = `<img src="svg/unlock.svg" title="Public" class="appIcon" />Unshare`;
-        }
-        shareLink.innerHTML = shareUrl;
-        shareLink.href = ref;
-        savePresentation();
-      });
+      shareBtn.addEventListener('click', updateShareLink);
 
       addTxt.addEventListener('click', function () {
         let newSlide = { text: 'Click here to edit title' };
@@ -273,7 +248,7 @@
 
       addImg.addEventListener('change', imgFile, false);
 
-      addImgOk.addEventListener('click', function () {
+      addImgBtn.addEventListener('click', function () {
         disableDiv.style.display = 'none';
         if (!userInputImgURL) {
           return;
@@ -287,18 +262,17 @@
         activeSlide(presentationArray[0].data.length);
       });
 
-      //              adding image tests
       displayImg.onclick = () => {
         disableDiv.style.display = 'block';
       };
       imgoptions.forEach((item) => {
         item.onclick = (e) => {
           imgoptions.forEach((item) => {
-            chosenImgUrl = '';
             item.style.border = '2px solid #4e926300';
           });
           item.style.border = '2px solid #4e9263';
-          chosenImgUrl = item.getAttribute('src');
+          userInputImgURL = item.getAttribute('src');
+          console.log(userInputImgURL); //this works
         };
       });
 
@@ -531,7 +505,7 @@
       }
 
       function savePresentation() {
-        console.log('hei, Im saving your presentation');
+        console.log('526:', presentationArray[0].data);
         const inputArray = [
           accessData.id,
           accessData.accesstoken,
@@ -568,7 +542,7 @@
           })
           .then((resp) => {
             console.log('Presentation save:', resp);
-
+            presentationArray[0].published = resp.published;
             return resp;
           })
           .catch((err) => {
@@ -658,6 +632,35 @@
           });
       }
 
+      function updateShareLink() {
+        let shareLink = document.getElementById('shareLink');
+        let shareUrl = null;
+        let ref = null;
+
+        if (!presentationArray[0].presentationid) {
+          shareUrl = 'Could not share presentation';
+          ref = '';
+          shareStatus = false;
+          shareBtn.innerHTML = `<img src="svg/lock.svg" title="Private" class="appIcon" />Share`;
+          shareLink.style.display = 'block';
+        } else if (shareStatus) {
+          shareUrl = 'Presentation is "PRIVATE"';
+          ref = '';
+          shareStatus = false;
+          shareBtn.innerHTML = `<img src="svg/lock.svg" title="Private" class="appIcon" />Share`;
+          shareLink.style.display = 'none';
+        } else if (!shareStatus) {
+          shareUrl = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
+          ref = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
+          shareStatus = true;
+          shareBtn.innerHTML = `<img src="svg/unlock.svg" title="Public" class="appIcon" />Unshare`;
+          shareLink.style.display = 'block';
+        }
+        shareLink.innerHTML = shareUrl;
+        shareLink.href = ref;
+        savePresentation();
+      }
+
       function updatePresentationArray() {
         presentationObject = localStorage.getItem('presentations')
           ? JSON.parse(localStorage.getItem('presentations'))
@@ -708,6 +711,7 @@
       }
 
       function loadPresentationToView(currentPres) {
+        loadShareStatus(currentPres.published);
         displayTitle.innerHTML = currentPres.title;
         createNavigationDots(currentPres.data.length);
         container.innerHTML = '';
@@ -746,6 +750,25 @@
           container.appendChild(div);
         }
         loadSlides(showIndex);
+      }
+
+      function loadShareStatus(published) {
+        let shareLink = document.getElementById('shareLink');
+        let shareUrl = null;
+        let ref = null;
+        if (published == 'PRIVATE') {
+          shareUrl = 'Presentation is "PRIVATE"';
+          ref = '';
+          shareStatus = false;
+          shareBtn.innerHTML = 'Share';
+        } else if (published == 'PUBLIC') {
+          shareUrl = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
+          ref = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
+          shareStatus = true;
+          shareBtn.innerHTML = 'Unshare';
+        }
+        shareLink.innerHTML = shareUrl;
+        shareLink.href = ref;
       }
 
       function loadSlides(num) {
