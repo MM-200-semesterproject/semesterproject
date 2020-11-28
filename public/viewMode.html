@@ -10,20 +10,39 @@
       href="https://fonts.googleapis.com/css2?family=Limelight&family=Roboto:wght@100;400;500;900&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
 
   <body>
     <header class="header">
       <img src="svg/logo.svg" alt="More Slides logo" id="headerLogo" />
-
-      <button id="loginBtn" class="btnGreen">Log in</button>
+      <button class="btnGrey editIcon">
+        <img class="appIcon" src="svg/editIcon.svg" />
+      </button>
+      <button class="selectBtn" id="userIcon">
+        U
+        <div class="selectOptions">
+          <p id="logInUser">Go to Login</p>
+        </div>
+      </button>
     </header>
 
     <div class="editWrapper">
-      <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
       <div class="editMenu">
-        <br /><br />
-        other Publised presentations: list
+        <section class="menuSection">
+          <h2>Current Project:</h2>
+          <button class="selectBtn" id="selectBtn">
+            <span id="presTitleDisplay"></span
+            ><span class="dropdownArw" id="dropdownArw"></span>
+            <div id="presList" class="selectOptions"></div>
+          </button>
+        </section>
+
+        <section class="menuSection">
+          <button id="presentMode" class="btnGreen">
+            Presentation mode<img class="appIcon" src="svg/expand.svg" />
+          </button>
+        </section>
       </div>
 
       <div class="editActiveArea">
@@ -41,52 +60,126 @@
       </div>
     </div>
 
+    <div class="disableTotalScreen">
+      <div class="alert">
+        <p class="alertText">
+          You are not logged in, please log in to continue your editing.
+        </p>
+        <button id="alertBtn" class="btnGreen alertButton">Log in</button>
+      </div>
+    </div>
+
+    <div class="containerChooseImg">
+      <div class="chooseImg">
+        <img src="svg/x.svg" id="xIcon" />
+
+        <h3>Choose an image:</h3>
+        <section class="chooseimgsection">
+          <img class="imgOpt" src="bilder/shrine.jpg" />
+          <img class="imgOpt" src="bilder/wallOfChina.jpg" />
+          <img class="imgOpt" src="bilder/streetsOfJapan.jpg" />
+        </section>
+        <hr />
+        <section class="chooseimgsection">
+          <h3>or pick one of your own:</h3>
+          <input
+            type="file"
+            name="filename"
+            id="addImg"
+            class="btnGrey"
+            accept="image/png, image/jpeg"
+          />
+          <button id="addImgOk" class="btnGreen addImgOk">Add Image</button>
+        </section>
+      </div>
+    </div>
+
     <script type="text/javascript">
       //-------- Global variables------------------------
 
-      class Presentation {
-        constructor(title, slides, theme) {
-          this.title = title;
-          this.data = slides;
-          this.theme = theme;
-        }
-      }
+      const shareBtn = document.getElementById('shareBtn');
+      let shareStatus = false;
 
-      let presentationArray = [];
-
-      let firstPresentationArr = [
-        { text: 'Text 1' },
-        { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
-        { list: [1, 2, 3, 4, 5] },
-      ];
-
-      defaultPresentation = new Presentation(
-        'MyTitle',
-        firstPresentationArr,
-        'Minimalist'
-      );
-
-      presentationArray.push(defaultPresentation);
-
-      let container = document.getElementById('container');
+      const container = document.getElementById('container');
       let showIndex = 0;
-      let addTxt = document.getElementById('addTxt');
-      let addImg = document.getElementById('addImg');
-      let addList = document.getElementById('addList');
-      let createPresBtn = document.getElementById('createPres');
 
-      let slideDiv = document.querySelector('#slideDiv');
-      let themeOptions = document.querySelectorAll('.themeOption');
+      let userInputImgURL;
+      const displayImg = document.getElementById('displayImg');
+      const addList = document.getElementById('addList');
+      const slideDiv = document.querySelector('#slideDiv');
+      const themeOptions = document.querySelectorAll('.themeOption');
 
       let presList = document.querySelector('#presList');
-      let displayTitle = document.querySelector('#presTitleDisplay');
-      let loginBtn = document.querySelector('#loginBtn');
+      const editMenu = document.querySelector('.editMenu');
+      const header = document.querySelector('.header');
+      const presModeBtn = document.querySelector('#presentMode');
+      const displayTitle = document.querySelector('#presTitleDisplay');
+      const editBtn = document.querySelector('.editIcon');
+      const logInUser = document.querySelector('#logInUser');
+
+      const xIcon = document.querySelector('#xIcon');
+
+      //adding image from a popup div
+      let disableDiv = document.querySelector('.containerChooseImg');
+      let imgoptions = document.querySelectorAll('.imgOpt');
+      let addImgBtn = document.querySelector('#addImgOk');
 
       let presentationObject = localStorage.getItem('presentations')
         ? JSON.parse(localStorage.getItem('presentations'))
         : false;
 
+      let presentationArray = [];
+
+      //----------OnLoad----------------
+
+      //-------------Eventlisteners----------------------------------------
+      //-------------------------------------------
+
+      xIcon.onclick = () => {
+        disableDiv.style.display = 'none';
+      };
+
+      alertDivButton.onclick = () => (location.href = 'login.html');
+
+      imgoptions.forEach((item) => {
+        item.onclick = (e) => {
+          imgoptions.forEach((item) => {
+            item.style.border = '2px solid #4e926300';
+          });
+          item.style.border = '2px solid #4e9263';
+          userInputImgURL = item.getAttribute('src');
+          console.log(userInputImgURL); //this works
+        };
+      });
+      //             Tests end here
+
       //---------------------Functionality Themes----------------
+
+      presModeBtn.onclick = () => {
+        editMenu.style.display = 'none';
+        editBtn.style.display = 'block';
+      };
+
+      editBtn.onclick = () => {
+        editMenu.style.display = 'flex';
+        editBtn.style.display = 'none';
+      };
+
+      logInUser.onclick = () => (location.href = 'login.html');
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key == 'ArrowLeft') {
+          navigate(-1);
+        } else if (e.key == 'ArrowRight') {
+          navigate(1);
+        }
+        if (e.key == 'Escape') {
+          if (editMenu.style.display === 'none') {
+          }
+          editMenu.style.display === 'block';
+          console.log('heisann escape works');
+        }
+      });
 
       themeOptions.forEach((element) => {
         element.onclick = (e) => {
@@ -100,18 +193,39 @@
         };
       });
 
-      loginBtn.onclick = () => (location.href = 'login.html');
-      //funksjoner
+      //------EventListeners END-------------------------------
+      //---------------------Functions--------------------------
+      //-----------------------------------------------------------
 
-      // loadPresentation(); //fetch
+      function updatePresentationArray() {
+        presentationObject = localStorage.getItem('presentations')
+          ? JSON.parse(localStorage.getItem('presentations'))
+          : false;
 
-      loadPresentation(presentationArray[0]);
-      loadSlides(showIndex);
+        if (
+          !presentationObject ||
+          !presentationObject.arr ||
+          presentationObject == false
+        ) {
+          presentationArray = [{ title: 'empty' }];
+          createPresList();
+        } else if (presentationObject.arr.length == 0) {
+          presentationArray = [{ title: 'empty' }];
+          createPresList();
+          console.log(presentationObject.arr.length, 'in line207');
+        } else if (presentationObject.arr.length > 0) {
+          presentationArray = [];
+          for (let i = 0; i < presentationObject.arr.length; i++) {
+            presentationArray.unshift(presentationObject.arr[i]);
+          }
+          loadPresentationToView(presentationArray[0]);
+          createPresList();
+        } else {
+          console.log(presentationObject);
+        }
+      }
 
-      //---------------------Funksjoner--------------------------
-
-      //----------------prøver å laste opp bilde til sliden-----------------------------
-
+      //------funksjoner:show single slide and navigation
       function activeSlide(n) {
         loadSlides((showIndex = n));
       }
@@ -120,7 +234,6 @@
       }
 
       function createNavigationDots(numberOfslides) {
-        console.log(numberOfslides);
         let navDots = document.getElementById('navDots');
         navDots.innerHTML = '';
         for (let i = 0; i <= numberOfslides; i++) {
@@ -133,12 +246,12 @@
         }
       }
 
-      function loadPresentation(currentPres) {
-        console.log('arr:' + currentPres);
+      function loadPresentationToView(currentPres) {
+        displayTitle.innerHTML = currentPres.title;
         createNavigationDots(currentPres.data.length);
         container.innerHTML = '';
         let titleDiv = document.createElement('div');
-        titleDiv.innerHTML = `<h6>${currentPres.title}</h6>`;
+        titleDiv.innerHTML = `<h6 contenteditable = true>${currentPres.title}</h6>`;
         titleDiv.classList.add('slide');
         container.appendChild(titleDiv);
         for (let slide of currentPres.data) {
@@ -171,6 +284,7 @@
 
           container.appendChild(div);
         }
+        loadSlides(showIndex);
       }
 
       function loadSlides(num) {
@@ -192,31 +306,65 @@
         dots[showIndex].className += ' crntSlide';
       }
 
-      function imgFile() {
-        let addImg = document.getElementById('addImg').files[0];
+      function imgFile(e) {
+        let addImg = e.target.files[0];
         let reader = new FileReader();
         reader.onload = function (e) {
           let image = document.createElement('img');
           image.src = e.target.result;
-          document.body.appendChild(image);
-          console.log(e.target.result);
+          userInputImgURL = e.target.result;
         };
+
         reader.readAsDataURL(addImg);
       }
 
-      window.onload = function () {
-        const param = window.location.search;
-        let findParam = new URLSearchParams(param);
-        console.log(findParam.get('presId'));
+      function createPresList() {
+        presList.innerHTML = '';
+        if (presentationArray[0].length == 0 || !presentationArray[0].title) {
+          displayTitle.innerHTML = 'empty';
+        } else if (!presentationArray[0]) {
+          displayTitle.innerHTML = 'Undefined';
+        } else {
+          displayTitle.innerHTML = presentationArray[0].title;
+        }
+        for (let part of presentationArray) {
+          let p = document.createElement('p');
+          p.id = part.presentationid;
+          p.classList.add('presOption');
+          p.title = part.title;
+          p.innerHTML = part.title;
+          p.id = part.presentationid;
+          p.addEventListener('click', function () {
+            displayTitle.innerHTML = p.title;
+            for (let i = 0; i < presentationArray.length; i++) {
+              if (p.id == presentationArray[i].presentationid) {
+                let newPres = presentationArray.splice(i, 1);
+                presentationArray.unshift(newPres[0]);
+              }
+            }
+            loadPresentationToView(presentationArray[0]);
+          });
+          presList.appendChild(p);
+        }
+      }
 
+      /* const param = window.location.search;
+      let findParam = new URLSearchParams(param);
+      console.log(findParam.get('presId'));*/
+
+      window.onload = function () {
+        const body = {
+          published: 'PUBLIC',
+        };
         const config = {
-          method: 'GET',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
+          body: JSON.stringify(body),
         };
-
-        fetch(`/viewMode:${findParam.get('presId')}`, config)
+        //fetch(`/viewMode:${findParam.get('presId')}`, config)
+        fetch(`/public-list`, config)
           .then((resp) => {
             if (resp.status !== 200) {
               throw new Error('Could not Load presentations');
@@ -226,53 +374,13 @@
           .then((resp) => {
             const presentationObject = JSON.stringify(resp);
             localStorage.setItem('presentations', presentationObject);
-            return resp;
+            updatePresentationArray();
           })
           .catch((err) => {
             console.log(err);
             return err;
           });
       };
-
-      function createPresList(array) {
-        presList.innerHTML = '';
-        displayTitle.innerHTML = array[0].title;
-        for (let part of array) {
-          let p = document.createElement('p');
-          p.id = part.presentationid;
-          p.classList.add('presOption');
-          p.title = part.title;
-          p.innerHTML = part.title;
-          p.addEventListener('click', function () {
-            displayTitle.innerHTML = p.title;
-          });
-          presList.appendChild(p);
-        }
-      }
-
-      //-------------create slides with button----------------------------------------
-
-      addTxt.addEventListener('click', function () {
-        let newSlide = { text: 'Test1' };
-        presentationArray[0].slides.push(newSlide);
-        console.log(presentationArray[0]);
-        loadPresentation(presentationArray[0]);
-        activeSlide(presentationArray[0].slides.length);
-      });
-
-      displayImg.addEventListener('click', function () {
-        let newSlide = { img: (src = '') };
-        presentationArray[0].slides.push(newSlide);
-        loadPresentation(presentationArray[0]);
-        activeSlide(presentationArray[0].slides.length);
-      });
-
-      addList.addEventListener('click', function () {
-        let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
-        presentationArray[0].slides.push(newSlide);
-        loadPresentation(presentationArray[0]);
-        activeSlide(presentationArray[0].slides.length);
-      });
     </script>
   </body>
 </html>
