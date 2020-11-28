@@ -785,7 +785,7 @@
             text = '<h6 contenteditable=true >' + slide.text + '</h6>';
           }
           if (slide.img) {
-            img = '<br><img src=' + slide.img + ' >';
+            img = '<img src=' + slide.img + ' >';
           }
           if (slide.list) {
             let innerOl = slide.list;
@@ -814,12 +814,12 @@
           shareUrl = 'Presentation is "PRIVATE"';
           ref = '';
           shareStatus = false;
-          shareBtn.innerHTML = 'Share';
+          shareBtn.innerHTML = `<img src="svg/lock.svg" title="Private" class="appIcon" />Share`;
         } else if (published == 'PUBLIC') {
           shareUrl = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
           ref = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
           shareStatus = true;
-          shareBtn.innerHTML = 'Unshare';
+          shareBtn.innerHTML = `<img src="svg/unlock.svg" title="Private" class="appIcon" />Unshare`;
         }
         shareLink.innerHTML = shareUrl;
         shareLink.href = ref;
