@@ -507,12 +507,15 @@
       function savePresentation() {
         console.log('508:', presentationArray[0].data);
         let arrayOfAllTitles = document.querySelectorAll('.slide h6');
-        console.log('PresentationArr:' + presentationArray[0].data[0].text);
-        arrayOfAllTitles.forEach((title, index) => {
-          if (index < 1) return;
-          presentationArray[0].data[index - 1].text = title.textContent;
+        arrayOfAllTitles.forEach((titleFromSlide, index) => {
+          if (index < 1) {
+            presentationArray[0].title = titleFromSlide.textContent;
+            return;
+          }
+          presentationArray[0].data[index - 1].text =
+            titleFromSlide.textContent;
         });
-        console.log('514:', presentationArray[0].data);
+        console.log('Array after for each:' + presentationArray[0]);
 
         const inputArray = [
           accessData.id,
