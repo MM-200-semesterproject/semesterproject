@@ -507,6 +507,14 @@
         const arrayOfAllListItems = document.querySelectorAll('.slide li');
         let test = [];
 
+        arrayOfAllLists.forEach((list, index) => {
+          let currentChildNodeList = list.childNodes;
+          let currentChildNodeListValues = [];
+          currentChildNodeList.forEach((listItem) => {
+            currentChildNodeListValues.push(listItem.textContent);
+          });
+        });
+
         arrayOfAllTitles.forEach((titleFromSlide, index) => {
           if (index < 1) {
             //Title sliden
