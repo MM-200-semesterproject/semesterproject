@@ -138,6 +138,7 @@
       let showIndex = 0;
       const addTxt = document.getElementById('addTxt');
       const addImg = document.getElementById('addImg');
+      let userInputImgURL;
       const addList = document.getElementById('addList');
       const createPresBtn = document.getElementById('createPres');
       let deletePresBtn = document.querySelector('#deleteBtn');
@@ -194,15 +195,20 @@
       });
 
       addTxt.addEventListener('click', function () {
-        let newSlide = { text: 'Test1' };
+        let newSlide = { text: 'Click here to edit title' };
         presentationArray[0].data.push(newSlide);
         console.log(presentationArray[0]);
         loadPresentationToView(presentationArray[0]);
         activeSlide(presentationArray[0].data.length);
       });
 
+      addImg.addEventListener('change', imgFile, false);
+
       displayImg.addEventListener('click', function () {
-        let newSlide = { text: 'new text', img: imgFile() };
+        let newSlide = {
+          text: 'Click here to edit title',
+          img: userInputImgURL,
+        };
         presentationArray[0].data.push(newSlide);
         loadPresentationToView(presentationArray[0]);
         activeSlide(presentationArray[0].data.length);
@@ -630,29 +636,16 @@
         dots[showIndex].className += ' crntSlide';
       }
 
-      function imgFile() {
-        alert();
-        let addImg = document.getElementById('addImg').files[0];
+      function imgFile(e) {
+        let addImg = e.target.files[0];
         let reader = new FileReader();
         reader.onload = function (e) {
           let image = document.createElement('img');
           image.src = e.target.result;
-          document.body.appendChild(image);
-          console.log('RESULT: ' + e.target.result);
+          userInputImgURL = e.target.result;
         };
-        return reader.readAsDataURL(addImg);
-      }
-      function getImgURL(img) {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
 
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-
-        console.log(canvas.toDataURL());
-
-        return canvas.toDataURL();
+        reader.readAsDataURL(addImg);
       }
 
       function createPresList() {
