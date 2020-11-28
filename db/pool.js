@@ -337,6 +337,43 @@ class StorageHandler {
     return results;
   }
 
+  async publicPres(body) {
+    const client = new pg.Client(this.credentials);
+    const input = body.published;
+    let results = null;
+    let presentationArray = [];
+
+    try {
+      await client.connect();
+      results = await client.query(
+        'SELECT COUNT(published) FROM presentations WHERE published = $1',
+        [input]
+      );
+
+      let rowcount = results.rows[0].count;
+      results = await client.query(
+        'SELECT data, title, theme, presentationid FROM presentations WHERE published = $1',
+        [input]
+      );
+
+      for (let i = 0; i < rowcount; i++) {
+        let row = results.rows[i];
+        row.data = JSON.parse(results.rows[i].data);
+        console.log('244', results.rows[i].data);
+        presentationArray.push(row);
+      }
+
+      results =
+        { arr: presentationArray } || new Error('No public presentations');
+      client.end();
+    } catch (err) {
+      console.log(`Error on loadPres: ${err}`);
+      results = err;
+      client.end();
+    }
+    return results;
+  }
+
   async viewPres(body) {
     const client = new pg.Client(this.credentials);
     const input = body;
@@ -348,8 +385,7 @@ class StorageHandler {
         'SELECT * FROM presentations WHERE presentationid = $1',
         [input]
       );
-
-      if (results.rows[0].published) {
+      if (JSON.stringify(results.rows[0].published) == 'PUBLIC') {
         results = results.rows[0];
       } else {
         new Error('The presentation is not published');
@@ -359,7 +395,7 @@ class StorageHandler {
 
       client.end();
     } catch (err) {
-      console.log(`Error on loadPres: ${err}`);
+      console.log(`Error in viewPres: ${err}`);
       results = err;
       client.end();
     }
