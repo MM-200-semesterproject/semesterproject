@@ -29,6 +29,10 @@
         </div>
       </button>
     </header>
+    <div class="header">
+      <a id="shareLink" href="#">Presentation is "PRIVATE"</a>
+      <button id="shareBtn" class="">Share</button>
+    </div>
     <div class="editWrapper">
       <div class="editMenu">
         <section class="menuSection">
@@ -105,7 +109,6 @@
           <button id="presentMode" class="btnGreen">
             Presentation mode<img class="appIcon" src="svg/expand.svg" />
           </button>
-          <button id="shareBtn" class="btnGreen">Share</button>
         </section>
       </div>
 
@@ -158,7 +161,7 @@
       //-------- Global variables------------------------
 
       const shareBtn = document.getElementById('shareBtn');
-      const presentationidTest = 123245;
+      let shareStatus = false;
 
       const container = document.getElementById('container');
       let showIndex = 0;
@@ -168,6 +171,7 @@
       const displayImg = document.getElementById('displayImg');
       const addList = document.getElementById('addList');
       const createPresBtn = document.getElementById('createPres');
+      const savePresBtn = document.getElementById('savePres');
       let deletePresBtn = document.querySelector('#deleteBtn');
       const slideDiv = document.querySelector('#slideDiv');
       const themeOptions = document.querySelectorAll('.themeOption');
@@ -190,7 +194,7 @@
       let imgChooseTest = document.querySelector('#imgChooseTest');
       let disableDiv = document.querySelector('.containerChooseImg');
       let imgoptions = document.querySelectorAll('.imgOpt');
-      let addImgOk = document.querySelector('#addImgOk');
+      let addImgBtn = document.querySelector('#addImgOk');
 
       let accessData = localStorage.getItem('accessData')
         ? JSON.parse(localStorage.getItem('accessData'))
@@ -223,22 +227,44 @@
 
       alertDivButton.onclick = () => (location.href = 'login.html');
 
+      savePresBtn.addEventListener('click', savePresentation);
+
       shareBtn.addEventListener('click', function () {
-        let shareUrl = `https://moreslides.heroku.com/viewmode.html/presentation?presentationid=${presentationidTest}`;
-        window.open(shareUrl, 'NewWindow');
+        let shareLink = document.getElementById('shareLink');
+        let shareUrl = null;
+        let ref = null;
+        if (!presentationArray[0].presentationid) {
+          shareUrl = 'Could not share presentation';
+          ref = '';
+          shareStatus = false;
+          shareBtn.innerHTML = 'Share';
+        } else if (shareBtn.innerHTML == 'Unshare') {
+          shareUrl = 'Presentation is "PRIVATE"';
+          ref = '';
+          shareStatus = false;
+          shareBtn.innerHTML = 'Share';
+        } else {
+          shareUrl = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
+          ref = `${window.location.href}/viewMode/${presentationArray[0].presentationid}`;
+          shareStatus = true;
+          shareBtn.innerHTML = 'Unshare';
+        }
+        shareLink.innerHTML = shareUrl;
+        shareLink.href = ref;
+        savePresentation();
       });
 
       addTxt.addEventListener('click', function () {
         let newSlide = { text: 'Click here to edit title' };
         presentationArray[0].data.push(newSlide);
-        console.log(presentationArray[0]);
+        console.log(presentationArray[0].data);
         loadPresentationToView(presentationArray[0]);
         activeSlide(presentationArray[0].data.length);
       });
 
       addImg.addEventListener('change', imgFile, false);
 
-      addImgOk.addEventListener('click', function () {
+      addImgBtn.addEventListener('click', function () {
         disableDiv.style.display = 'none';
         if (!userInputImgURL) {
           return;
@@ -259,12 +285,11 @@
       imgoptions.forEach((item) => {
         item.onclick = (e) => {
           imgoptions.forEach((item) => {
-            chosenImgUrl = '';
             item.style.border = '2px solid #4e926300';
           });
           item.style.border = '2px solid #4e9263';
-          chosenImgUrl = item.getAttribute('src');
-          console.log(chosenImgUrl); //this works
+          userInputImgURL = item.getAttribute('src');
+          console.log(userInputImgURL); //this works
         };
       });
       //             Tests end here
@@ -497,6 +522,53 @@
           });
       }
 
+      function savePresentation() {
+        console.log('hei, Im saving your presentation');
+        const inputArray = [
+          accessData.id,
+          accessData.accesstoken,
+          presentationArray[0].title,
+          presentationArray[0].data,
+          shareStatus,
+          'minimalist',
+          presentationArray[0].presentationid,
+        ];
+        const body = {
+          id: inputArray[0],
+          accesstoken: inputArray[1],
+          title: inputArray[2],
+          data: inputArray[3],
+          share: inputArray[4],
+          theme: inputArray[5],
+          presentationid: inputArray[6],
+        };
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        };
+
+        fetch('/update-presentation', config)
+          .then((resp) => {
+            if (resp.status !== 200) {
+              console.log(resp);
+              throw new Error('Could not save presentation.');
+            }
+            return resp.json();
+          })
+          .then((resp) => {
+            console.log('Presentation save:', resp);
+
+            return resp;
+          })
+          .catch((err) => {
+            console.log('Could not save:', err);
+            return err;
+          });
+      }
+
       function deletePresentation() {
         if (!presentationArray[0].presentationid) {
           console.log('Nothing to delete');
@@ -589,7 +661,6 @@
           presentationObject == false
         ) {
           presentationArray = [{ title: 'empty' }];
-          loadPresentationObject();
           createPresList();
         } else if (presentationObject.arr.length == 0) {
           presentationArray = [{ title: 'empty' }];
@@ -599,7 +670,6 @@
           presentationArray = [];
           for (let i = 0; i < presentationObject.arr.length; i++) {
             presentationArray.unshift(presentationObject.arr[i]);
-            console.log(presentationArray[0].presentationid);
           }
           loadPresentationToView(presentationArray[0]);
           createPresList();
@@ -617,7 +687,6 @@
       }
 
       function createNavigationDots(numberOfslides) {
-        console.log(numberOfslides);
         let navDots = document.getElementById('navDots');
         navDots.innerHTML = '';
         for (let i = 0; i <= numberOfslides; i++) {
@@ -632,7 +701,6 @@
 
       function loadPresentationToView(currentPres) {
         displayTitle.innerHTML = currentPres.title;
-        console.log('arr:' + currentPres.data);
         createNavigationDots(currentPres.data.length);
         container.innerHTML = '';
         let titleDiv = document.createElement('div');
@@ -718,10 +786,16 @@
           p.classList.add('presOption');
           p.title = part.title;
           p.innerHTML = part.title;
+          p.id = part.presentationid;
           p.addEventListener('click', function () {
             displayTitle.innerHTML = p.title;
-            //find corresponding presentaionid in array and presentation.unshift(----)
-            // loadPresentationToView(---------);
+            for (let i = 0; i < presentationArray.length; i++) {
+              if (p.id == presentationArray[i].presentationid) {
+                let newPres = presentationArray.splice(i, 1);
+                presentationArray.unshift(newPres[0]);
+              }
+            }
+            loadPresentationToView(presentationArray[0]);
           });
           presList.appendChild(p);
         }
