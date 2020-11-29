@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Viewing</title>
+    <link rel="stylesheet" type="text/css" href="styles/global.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Limelight&family=Roboto:wght@100;400;500;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  </head>
+
+  <body>
+    <header class="header">
+      <img src="svg/logo.svg" alt="More Slides logo" id="headerLogo" />
+      <div>
+        <button class="btnGrey editIcon" style="display: block">
+          <a href="editMode.html" id="editBtnLink">A</a>
+          <img class="appIcon" src="svg/editIcon.svg" />
+        </button>
+
+        <button class="selectBtn" id="userIcon">
+          u
+          <div class="selectOptions">
+            <p id="logInUser">Login</p>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <div class="editWrapper">
+      <div class="editActiveArea">
+        <div class="aspectRatio">
+          <div id="slideDiv" class="slideShowbodyDefault">
+            <a class="prev" onclick="navigate(-1)">&#8249;</a>
+            <div id="container" class="slideContent"></div>
+            <a class="next" onclick="navigate(1)">&#8250;</a>
+          </div>
+        </div>
+
+        <div id="navDots" style="text-align: center">
+          <span id="dot"></span>
+        </div>
+      </div>
+      <div class="editMenu" style="justify-content: space-evenly">
+        <section class="menuSection">
+          <h2>Choose public presentation:</h2>
+          <button class="selectBtn" id="selectBtn">
+            <span id="presTitleDisplay"></span
+            ><span class="dropdownArw" id="dropdownArw"></span>
+            <div id="presList" class="selectOptions"></div>
+          </button>
+        </section>
+
+        <section class="menuSection">
+          <button id="presentMode" class="btnGreen">
+            Presentation mode<img class="appIcon" src="svg/expand.svg" />
+          </button>
+        </section>
+      </div>
+    </div>
+    <script src="./js/globalVariables.js"></script>
+    <script src="./js/viewModeClient.js"></script>
+  </body>
+</html>

@@ -1,3 +1,4 @@
+const { json } = require('body-parser');
 const pg = require('pg');
 const encrypt = require('./encryption.js');
 const dbCredentials =
@@ -69,7 +70,6 @@ class StorageHandler {
         [input.username, input.password]
       );
       results = results.rows[0].id;
-      console.log(`row inserted with id: ${results}`);
       client.end();
     } catch (err) {
       results = err;
@@ -105,49 +105,75 @@ class StorageHandler {
         );
       } else {
         results = await client.query(
-          'SELECT * FROM users WHERE id = $1 AND accesstoken = $2',
+          'SELECT id, accesstoken FROM users WHERE id = $1 AND accesstoken = $2',
           [input.id, input.accesstoken]
         );
       }
-      results = results.rows[0];
-
+      results = results.rows[0] || new Error('Wrong user credentials');
       client.end();
     } catch (err) {
       results = err;
       console.log(`Error on loadUser: ${err}`);
       client.end();
+    }
+    return results;
+  }
+
+  async updateUser(body) {
+    const client = new pg.Client(this.credentials);
+    const userid = body.id;
+    const oldPassword = encrypt.singleHash(body.oldPassword);
+    let newPassword = REGEXHandler.validate('noEmail', body.newPassword);
+    let results = null;
+
+    if (!newPassword.password) {
+      results = new Error(
+        'The password has to be at least 8 characters long and include at least one capital letter and one number'
+      );
+      client.end();
       return results;
+    }
+    newPassword = encrypt.singleHash(body.newPassword);
+    try {
+      await client.connect();
+
+      results = await client.query(
+        'UPDATE users SET password = $1 WHERE id = $2 AND password = $3 RETURNING id',
+        [newPassword, userid, oldPassword]
+      );
+      results = results.rows[0] || new Error('Wrong password');
+      client.end();
+    } catch (err) {
+      console.log(`updateUser: ${err}`);
+      results = err;
+      client.end();
     }
     return results;
   }
 
   async deleteUser(body) {
     const client = new pg.Client(this.credentials);
-    const userid = body.userid;
-    let password = encrypt.singleHash(body.password);
+    const accessToken = body.accesstoken;
+    const password = encrypt.singleHash(body.password);
     let results = null;
 
     try {
-      //delete presentations
       await client.connect();
+      results = await client.query(
+        'SELECT id FROM users WHERE password = $1 AND accesstoken = $2',
+        [password, accessToken]
+      );
+      const userid = results.rows[0].id || new Error('User not found');
+
       results = await client.query(
         'DELETE FROM presentations WHERE userid = $1',
         [userid]
       );
-
-      console.log(`Presentations deleted`);
-      //delete userinfo
-
-      results = await client.query(
-        'DELETE FROM users WHERE id = $1 AND password = $2',
-        [userid, password]
-      );
-
-      console.log(`user deleted`);
+      results = await client.query('DELETE FROM users WHERE id = $1', [userid]);
 
       client.end();
     } catch (err) {
-      console.log(`Error on deleteUser: ${err}`);
+      console.log(`deleteUser: ${err}`);
       results = err;
       client.end();
     }
@@ -158,21 +184,29 @@ class StorageHandler {
     const client = new pg.Client(this.credentials);
     const input = inp;
     let results = null;
-
     try {
       await client.connect();
       results = await client.query(
-        'DELETE FROM presentations WHERE userid = $1 AND presentationid =$2',
-        [input.userid, input.presentationid]
+        'SELECT id FROM users WHERE accesstoken = $1',
+        [input.accesstoken]
       );
 
-      console.log(`presentation with id ${input.presentationid} deleted`);
+      if (input.id == results.rows[0].id) {
+        results = await client.query(
+          'DELETE FROM presentations WHERE userid= $1 AND presentationid= $2 RETURNING presentationid;',
+          [input.id, input.presentationid]
+        );
+        results = results.rows[0];
+      } else {
+        new Error();
+      }
 
       client.end();
     } catch (err) {
-      console.log(`Error on deleteUser: ${err}`);
+      results = err;
       client.end();
     }
+    return results;
   }
 
   async loadPres(body) {
@@ -184,23 +218,30 @@ class StorageHandler {
 
     try {
       await client.connect();
-      let results = await client.query(
-        'SELECT COUNT(userid) FROM presentations WHERE userid = $1',
-        [input.id]
-      );
-
-      let rowcount = results.rows[0].count;
-
       results = await client.query(
-        'SELECT * FROM presentations WHERE userid = $1',
-        [input.id]
+        'SELECT id FROM users WHERE accesstoken = $1',
+        [input.accesstoken]
       );
-      for (let i = 0; i < rowcount; i++) {
-        let row = results.rows[i];
-        presentationArray.push(row);
-      }
-      results = presentationArray;
 
+      if (input.id == results.rows[0].id) {
+        results = await client.query(
+          'SELECT COUNT(userid) FROM presentations WHERE userid = $1',
+          [input.id]
+        );
+
+        let rowcount = results.rows[0].count;
+        results = await client.query(
+          'SELECT * FROM presentations WHERE userid = $1',
+          [input.id]
+        );
+
+        for (let i = 0; i < rowcount; i++) {
+          let row = results.rows[i];
+          row.data = JSON.parse(results.rows[i].data);
+          presentationArray.push(row);
+        }
+      }
+      results = { arr: presentationArray };
       client.end();
     } catch (err) {
       console.log(`Error on loadPres: ${err}`);
@@ -213,18 +254,17 @@ class StorageHandler {
   async createPres(inp) {
     const client = new pg.Client(this.credentials);
     const input = inp;
+    const slides = JSON.stringify(input.data);
     let results = null;
 
     try {
       await client.connect();
       results = await client.query(
         'INSERT INTO presentations(userid, title, data)VALUES($1,$2, $3) RETURNING presentationid',
-        [input.id, input.title, input.slides]
+        [input.id, input.title, slides]
       );
 
       results = results.rows[0];
-      console.log(`Row created with presentationID: ${results.presentationid}`);
-      console.log('Client will end now!');
       client.end();
     } catch (err) {
       console.log(`Error on createPres: ${err}`);
@@ -237,22 +277,117 @@ class StorageHandler {
   async updatePres(inp) {
     const client = new pg.Client(this.credentials);
     let input = inp;
+    let data = JSON.stringify(input.data);
+    console.log('inp:', inp);
+    let results = null;
+    const shareStatus = input.share;
+    let published = '';
+    if (shareStatus) {
+      published = 'PUBLIC';
+    } else {
+      published = 'PRIVATE';
+    }
+    console.log('Published:', published);
+
+    try {
+      await client.connect();
+      results = await client.query(
+        'SELECT id FROM users WHERE accesstoken = $1',
+        [input.accesstoken]
+      );
+      console.log('302:', results.rows[0]);
+
+      if (input.id == results.rows[0].id) {
+        console.log('311:', results.rows[0]);
+        results = await client.query(
+          'UPDATE presentations SET data =$1, title =$2, theme=$3, published=$4 WHERE presentationid = $5 AND userid =$6',
+          [
+            data,
+            input.title,
+            input.theme,
+            published,
+            input.presentationid,
+            input.id,
+          ]
+        );
+        results = await client.query(
+          'SELECT * FROM presentations WHERE presentationid = $1',
+          [input.presentationid]
+        );
+
+        results = results.rows[0];
+        console.log(results);
+        console.log(
+          `column updated with presentation: ${results.title} for presentation with id:${results.presentationid}`
+        );
+      }
+
+      client.end();
+    } catch (err) {
+      console.log(`Error in UpdatePres: ${err}`);
+      results = err;
+    }
+    return results;
+  }
+
+  async publicPres(body) {
+    const client = new pg.Client(this.credentials);
+    const input = body.published;
+    let results = null;
+    let presentationArray = [];
+
+    try {
+      await client.connect();
+      results = await client.query(
+        'SELECT COUNT(published) FROM presentations WHERE published = $1',
+        [input]
+      );
+
+      let rowcount = results.rows[0].count;
+      results = await client.query(
+        'SELECT data, title, theme, presentationid FROM presentations WHERE published = $1',
+        [input]
+      );
+
+      for (let i = 0; i < rowcount; i++) {
+        let row = results.rows[i];
+        row.data = JSON.parse(results.rows[i].data);
+        console.log('244', results.rows[i].data);
+        presentationArray.push(row);
+      }
+
+      results =
+        { arr: presentationArray } || new Error('No public presentations');
+      client.end();
+    } catch (err) {
+      console.log(`Error on loadPres: ${err}`);
+      results = err;
+      client.end();
+    }
+    return results;
+  }
+
+  async viewPres(body) {
+    const client = new pg.Client(this.credentials);
+    const input = body;
     let results = null;
 
     try {
       await client.connect();
       results = await client.query(
-        'UPDATE presentations SET data = $1 , title = $2 WHERE presentationid = $3 AND userid = $4 RETURNING title, userid, presentationid, data ',
-        [input.slides, input.title, input.presentationid, input.userid]
+        'SELECT * FROM presentations WHERE presentationid = $1',
+        [input]
       );
-      results = results.rows[0];
-      console.log(
-        `column updated with presentation: ${results.title} for presentation with id:${results.presentationid}`
-      );
+      if (JSON.stringify(results.rows[0].published) == 'PUBLIC') {
+        results = results.rows[0];
+      } else {
+        new Error('The presentation is not published');
+      }
       client.end();
     } catch (err) {
-      console.log(`Error in UpdatePres: ${err}`);
+      console.log(`Error in viewPres: ${err}`);
       results = err;
+      client.end();
     }
     return results;
   }

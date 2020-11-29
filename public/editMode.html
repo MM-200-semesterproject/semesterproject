@@ -10,99 +10,121 @@
       href="https://fonts.googleapis.com/css2?family=Limelight&family=Roboto:wght@100;400;500;900&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
 
   <body>
     <header class="header">
       <img src="svg/logo.svg" alt="More Slides logo" id="headerLogo" />
+      <div>
+        <button class="btnGrey editIcon">
+          <img class="appIcon" src="svg/editIcon.svg" />
+        </button>
+        <button id="shareBtn" class="btnGreen shareBtn">
+          <img src="svg/lock.svg" title="Private" class="appIcon" />Share
+        </button>
+
+        <button class="selectBtn" id="userIcon">
+          u
+          <div class="selectOptions">
+            <p id="updatePassword">Update password</p>
+            <p id="logoutUser">Log out</p>
+            <hr />
+            <p id="deleteUser">Delete user</p>
+          </div>
+        </button>
+      </div>
     </header>
     <div class="editWrapper">
-      <!-- The sidebar menu for our edit page. Buttons can be clickable text instead, or whole thing a menu instead -->
-      <div class="editMenu">
-        <br /><br />
-        <div>
-          <section class="select">
-            <button class="selectBtn" id="selectBtn">
-              placeholder<span class="dropdownArw" id="dropdownArw"></span>
-            </button>
-            <div class="selectOptions">
-              <a id="pres1">pres 1</a>
-              <a id="pres2">pres 2</a>
-              <a id="pres2">pres 2</a>
-            </div>
-          </section>
-          <input
-            id="inpPresTitle"
-            class="input"
-            type="text"
-            placeholder="Presentation Title"
-          />
-          <button id="savePres" class="btnGreen" type="submit" value="submit">
-            Save Presentation
-          </button>
-          <button id="createPres" class="btnGreen" type="submit" value="submit">
-            Create New Presentation
-          </button>
-        </div>
-
-        <h2>Add Slide with:</h2>
-        <button id="addTxt" class="btnGrey">Text</button><br />
-        <button id="addImg" class="btnGrey">Image</button><br />
-        <button id="addList" class="btnGrey">List</button><br />
-
-        <section class="select">
-          <button class="selectBtn" id="themeBtn">
-            Choose a theme<span class="dropdownArw" id="dropdownArw"></span>
-          </button>
-          <div class="selectOptions">
-            <a
-              class="themeOption"
-              id="default"
-              style="
-                box-shadow: inset 0 0 0 2px #cadce0, inset 0 0 0 4px #15414b;
-                background-color: #cadce0;
-              "
-              >Minimalist</a
-            >
-            <a
-              class="themeOption"
-              id="sakura"
-              style="
-                background-color: #ffc5cf;
-                font-family: 'Courier New', Courier, monospace;
-              "
-              >Sakura</a
-            >
-            <a
-              class="themeOption"
-              id="geometric"
-              style="
-                font-family: 'Limelight', cursive;
-                background-color: #1b202c;
-                color: #ffc65c;
-              "
-              >Geometric</a
-            >
-          </div>
-        </section>
-
-        <button id="presentMode" class="btnGreen">Presentation mode</button>
-      </div>
-
+      <a id="shareLink" href="#">Presentation is "PRIVATE"</a>
       <div class="editActiveArea">
         <div class="aspectRatio">
           <div id="slideDiv" class="slideShowbodyDefault">
             <a class="prev" onclick="navigate(-1)">&#8249;</a>
             <div id="container" class="slideContent"></div>
+
             <a class="next" onclick="navigate(1)">&#8250;</a>
           </div>
         </div>
-
         <div id="navDots" style="text-align: center">
-          <span class="dot" onclick="activeSlide(1)"></span>
-          <span class="dot" onclick="activeSlide(2)"></span>
-          <span class="dot" onclick="activeSlide(3)"></span>
+          <span id="dot"></span>
         </div>
+      </div>
+      <div class="editMenu">
+        <section class="menuSection">
+          <h2>Current Project:</h2>
+          <button class="selectBtn" id="selectBtn">
+            <span id="presTitleDisplay"></span
+            ><span class="dropdownArw" id="dropdownArw"></span>
+            <div id="presList" class="selectOptions"></div>
+          </button>
+
+          <button id="createPres" class="btnGreen" type="submit" value="submit">
+            Create New Presentation
+          </button>
+          <button id="deleteBtn" class="btnGrey deleteBtn">
+            Delete Presentation
+          </button>
+        </section>
+
+        <section class="menuSection">
+          <h2>Add A New Slide:</h2>
+          <button id="addTxt" class="btnGrey">Add Text Slide</button>
+
+          <button class="btnGrey" id="displayImg" onclick="">
+            Add Image Slide
+          </button>
+          <button id="addList" class="btnGrey">Add List Slide</button>
+
+          <button class="selectBtn" id="themeBtn">
+            Choose a theme<span class="dropdownArw" id="dropdownArw"></span>
+            <div class="selectOptions themes">
+              <p
+                class="themeOption"
+                id="default"
+                style="
+                  box-shadow: inset 0 0 0 2px #cadce0, inset 0 0 0 4px #15414b;
+                  background-color: #cadce0;
+                "
+              >
+                Minimalist
+              </p>
+              <p
+                class="themeOption"
+                id="sakura"
+                style="
+                  background-color: #ffc5cf;
+                  font-family: 'Courier New', Courier, monospace;
+                "
+              >
+                Sakura
+              </p>
+              <p
+                class="themeOption"
+                id="geometric"
+                style="
+                  font-family: 'Limelight', cursive;
+                  background-color: #1b202c;
+                  color: #ffc65c;
+                "
+              >
+                Geometric
+              </p>
+            </div>
+          </button>
+
+          <button class="btnGrey deleteBtn" id="deleteSlide">
+            Delete Current Slide
+          </button>
+        </section>
+        <section class="menuSection">
+          <button id="savePres" class="btnGreen" type="submit" value="submit">
+            Save Presentation
+          </button>
+          <button id="presentMode" class="btnGreen">
+            Presentation mode<img class="appIcon" src="svg/expand.svg" />
+          </button>
+        </section>
       </div>
     </div>
 
@@ -115,261 +137,32 @@
       </div>
     </div>
 
-    <script type="text/javascript">
-      //---------------------Functionality Themes----------------
-      let slideDiv = document.querySelector('#slideDiv');
-      let themeOptions = document.querySelectorAll('.themeOption');
+    <div class="containerChooseImg">
+      <div class="chooseImg">
+        <img src="svg/x.svg" id="xIcon" />
 
-      themeOptions.forEach((element) => {
-        element.onclick = (e) => {
-          if (e.target.id === 'default') {
-            slideDiv.className = 'slideShowbodyDefault';
-          } else if (e.target.id === 'sakura') {
-            slideDiv.className = 'slideShowbodySakura';
-          } else if (e.target.id === 'geometric') {
-            slideDiv.className = 'slideShowbodyGeometric';
-          }
-        };
-      });
-      //-------- Global variables------------------------
-      class Presentation {
-        constructor(title, slides, theme) {
-          this.title = title;
-          this.slides = slides;
-          this.theme = theme;
-        }
-      }
-
-      let firstPresentationArr = [
-        { text: 'Title 1' },
-        { text: 'Title 2' },
-        { text: 'Title 3', img: 'Bilder/eggBilde.jpg' },
-        { list: [1, 2, 3, 4, 5] },
-      ];
-
-      presentation = new Presentation('MyTitle', firstPresentationArr);
-
-      let container = document.getElementById('container');
-      let showIndex = 1;
-      let addTxt = document.getElementById('addTxt');
-      let addImg = document.getElementById('addImg');
-      let addList = document.getElementById('addList');
-      let createPresBtn = document.getElementById('createPres');
-
-      const alertDiv = document.querySelector('.disableTotalScreen');
-      const alertDivButton = document.querySelector('.alertButton');
-      const alertDivText = document.querySelector('.alertText');
-      let accessData = localStorage.getItem('accessData')
-        ? JSON.parse(localStorage.getItem('accessData'))
-        : false;
-
-      //----config-----
-      let body = null;
-
-      //funksjoner
-      alertDivButton.onclick = () => (location.href = 'login.html');
-
-      if (!accessData) {
-        alertDiv.style.display = 'block';
-      } else {
-        const inputArray = [accessData.id, accessData.accesstoken];
-        const body = {
-          id: inputArray[0],
-          accesstoken: inputArray[1],
-        };
-
-        const config = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body),
-        };
-        fetch('/login', config)
-          .then((resp) => {
-            console.log(config.body.username, config.body.password);
-            if (resp.status !== 200) {
-              throw new Error(
-                'Incorrect access credentials. Try to log in again.'
-              );
-            }
-            return resp.json();
-          })
-          .then((resp) => {
-            console.log('User verified');
-
-            return resp;
-          })
-          .catch((err) => {
-            alertDivText.textContent = '';
-            alertDivText.textContent = err.message;
-            alertDiv.style.display = 'block';
-            return err;
-          });
-      }
-
-      //loadpres and put arr in localstorage in presentationArray;
-
-      createPresBtn.addEventListener('click', function () {
-        const inputArray = [
-          accessData.id,
-          accessData.accesstoken,
-          presentation.title,
-          presentation.slides,
-        ];
-        const body = {
-          id: inputArray[0],
-          accesstoken: inputArray[1],
-          title: inputArray[2],
-          slides: inputArray[3],
-        };
-        const config = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body),
-        };
-
-        fetch('/create-presentation', config)
-          .then((resp) => {
-            if (resp.status !== 200) {
-              throw new Error('COULD NOT CREATE');
-            }
-            return resp.json();
-          })
-          .then((resp) => {
-            console.log('Presentation created');
-            return resp;
-          })
-          .catch((err) => {
-            alertDivText.textContent = '';
-            alertDivText.textContent = err.message;
-            alertDiv.style.display = 'block';
-            return err;
-          });
-      });
-
-      loadPresentation(presentation.slides);
-      loadSlides(showIndex);
-      //---------------------Funksjoner--------------------------
-
-      //----------------prøver å laste opp bilde til sliden-----------------------------
-      function readImgUrl(input) {
-        if (input.files && input.files[0]) {
-          var reader = new FileReader();
-
-          reader.onload = function (evnt) {
-            $('addImg').attr('src', evnt.target.result);
-          };
-
-          reader.readAsDataURL(input.files[0]);
-        }
-      }
-      function activeSlide(n) {
-        loadSlides((showIndex = n));
-      }
-      function navigate(num) {
-        loadSlides((showIndex += num));
-      }
-
-      function createNavigationDots() {
-        let navDots = document.getElementById('navDots');
-        navDots.innerHTML = '';
-        for (let i = 1; i <= presentation.slides.length; i++) {
-          let span = document.createElement('span');
-          span.classList.add('dot');
-          span.addEventListener('click', function (evt) {
-            activeSlide(i);
-          });
-          navDots.appendChild(span);
-        }
-      }
-
-      function loadPresentation(arr) {
-        container.innerHTML = '';
-        for (let slide of arr) {
-          let div = document.createElement('div');
-
-          let html = '';
-          let text = '';
-          let img = '';
-          let list = '';
-
-          if (slide.text) {
-            text = '<h6>' + slide.text + '</h6>';
-          }
-          if (slide.img) {
-            img =
-              '<img src=' +
-              slide.img +
-              ' style="max-width: 100%; max-height: 100%">';
-          }
-          if (slide.list) {
-            let innerOl = '';
-            for (let element of slide.list) {
-              let listElement = '<li>' + element + '</li>';
-              innerOl += listElement;
-            }
-            list = '<ul>' + innerOl + '</ul>';
-          }
-          div.classList.add('slide');
-          html = `${text}
-                  ${img}
-                  ${list}`;
-          div.innerHTML = html;
-
-          console.log(div);
-          container.appendChild(div);
-        }
-      }
-
-      function loadSlides(num) {
-        let slideshow = document.getElementsByClassName('slide');
-        let dots = document.getElementsByClassName('dot');
-        if (num > slideshow.length) {
-          showIndex = 1;
-        }
-        if (num < 1) {
-          showIndex = slideshow.length;
-        }
-        for (let i = 0; i < slideshow.length; i++) {
-          slideshow[i].style.display = 'none';
-        }
-        for (let i = 0; i < dots.length; i++) {
-          dots[i].className = dots[i].className.replace(' crntSlide', '');
-        }
-        slideshow[showIndex - 1].style.display = 'block';
-        dots[showIndex - 1].className += ' crntSlide';
-      }
-
-      //-------------create slides with button----------------------------------------
-
-      addTxt.addEventListener('click', function () {
-        let newSlide = { text: 'Test1' };
-        presentation.slides.push(newSlide);
-        loadPresentation(presentation.slides);
-        createNavigationDots();
-        activeSlide(presentation.slides.length);
-      });
-
-      addImg.addEventListener('click', function () {
-        let newSlide = { img: 'Bilder/eggBilde.jpg' };
-        presentation.slides.push(newSlide);
-        loadPresentation(presentation.slides);
-        createNavigationDots();
-        activeSlide(presentation.slides.length);
-      });
-
-      addList.addEventListener('click', function () {
-        let newSlide = { list: ['a', 'b', 'c', 'd', 'e'] };
-        presentation.slides.push(newSlide);
-        loadPresentation(presentation.slides);
-        createNavigationDots();
-        activeSlide(presentation.slides.length);
-        //-------------------ahhhh yeeeee--------påkaler bildeurltingen---------------------------
-        readImgUrl();
-      });
-    </script>
+        <h3>Choose an image:</h3>
+        <section class="chooseimgsection">
+          <img class="imgOpt" src="./Bilder/shrine.jpg" />
+          <img class="imgOpt" src="./Bilder/wallOfChina.jpg" />
+          <img class="imgOpt" src="./Bilder/streetsOfJapan.jpg" />
+        </section>
+        <hr />
+        <section class="chooseimgsection">
+          <h3>or pick one of your own:</h3>
+          <input
+            type="file"
+            name="filename"
+            id="addImg"
+            class="btnGrey"
+            accept="image/png, image/jpeg"
+          />
+          <button id="addImgOk" class="btnGreen addImgOk">Add Image</button>
+        </section>
+      </div>
+    </div>
+    <script src="./js/globalVariables.js"></script>
+    <script src="./js/functionDeclarationsEditMode.js"></script>
+    <script src="./js/client.js"></script>
   </body>
 </html>
