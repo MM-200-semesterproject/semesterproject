@@ -1,12 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const db = require('./db/dbUpdates.js');
-
 const pool = require('./db/pool.js');
-//Getting modules instanced
 const app = express();
 const path = require('path');
-const { ppid } = require('process');
 
 app.set('port', process.env.PORT || 8080);
 app.use(express.static('public'));
@@ -25,7 +21,6 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 app.post('/signUp', async function (request, response) {
-  // Sends object to pool.js-->DB;
   let result = await pool.newUser(request.body);
   if (result instanceof Error) {
     if (!result.statusCode) {
