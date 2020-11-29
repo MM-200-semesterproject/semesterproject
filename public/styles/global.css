@@ -79,7 +79,7 @@ h3 {
 h6 {
   font-size: 50px;
   font-weight: 300;
-  margin: 0 auto;
+  margin: auto;
 }
 
 .slide:first-of-type h6 {
