@@ -179,6 +179,7 @@
       const savePresBtn = document.getElementById('savePres');
       let deletePresBtn = document.querySelector('#deleteBtn');
       const slideDiv = document.querySelector('#slideDiv');
+      const theme = slideDiv.className;
       const themeOptions = document.querySelectorAll('.themeOption');
 
       let presList = document.querySelector('#presList');
@@ -236,7 +237,7 @@
 
       alertDivButton.onclick = () => (location.href = 'login.html');
 
-      savePresBtn.addEventListener('click', savePresentation);
+      savePresBtn.addEventListener('click', savePresentationOnServer);
 
       shareBtn.addEventListener('click', updateShareLink);
       deleteSlideBtn.addEventListener('click', deleteSlide);
@@ -245,6 +246,7 @@
         let newSlide = { text: 'Click here to edit title' };
         presentationArray[0].data.push(newSlide);
         console.log(presentationArray[0].data);
+        savePresentation();
         loadPresentationToView(presentationArray[0]);
         activeSlide(presentationArray[0].data.length);
       });
@@ -261,6 +263,7 @@
           img: userInputImgURL,
         };
         presentationArray[0].data.push(newSlide);
+        savePresentation();
         loadPresentationToView(presentationArray[0]);
         activeSlide(presentationArray[0].data.length);
       });
@@ -282,6 +285,7 @@
       addList.addEventListener('click', function () {
         let newSlide = { list: '<li>a</li><li>b</li><li>c</li>' };
         presentationArray[0].data.push(newSlide);
+        savePresentation();
         loadPresentationToView(presentationArray[0]);
         activeSlide(presentationArray[0].data.length);
       });
@@ -522,7 +526,7 @@
       }
 
       function savePresentation() {
-        const theme = slideDiv.className;
+        const slideArray = document.querySelectorAll('.slide');
         const arrayOfAllTitles = document.querySelectorAll('.slide h6');
         const arrayOfAllLists = document.querySelectorAll('.slide ul');
         const arrayOfAllListItems = document.querySelectorAll('.slide ul li');
@@ -554,7 +558,10 @@
         });
 
         displayTitle.textContent = presentationArray[0].title;
+      }
 
+      function savePresentationOnServer() {
+        savePresentation();
         const inputArray = [
           accessData.id,
           accessData.accesstoken,
@@ -708,7 +715,7 @@
         }
         shareLink.innerHTML = shareUrl;
         shareLink.href = ref;
-        savePresentation();
+        savePresentationOnServer();
       }
 
       function updatePresentationArray() {
@@ -828,11 +835,11 @@
       function loadSlides(num) {
         let slideshow = document.getElementsByClassName('slide');
         let dots = document.getElementsByClassName('dot');
-        if (num > slideshow.length) {
+        if (num >= slideshow.length) {
           showIndex = 0;
         }
         if (num < 0) {
-          showIndex = slideshow.length;
+          showIndex = slideshow.length - 1;
         }
         for (let i = 0; i < slideshow.length; i++) {
           slideshow[i].style.display = 'none';
@@ -840,7 +847,10 @@
         for (let i = 0; i < dots.length; i++) {
           dots[i].className = dots[i].className.replace(' crntSlide', '');
         }
+        slideshow[showIndex];
+
         slideshow[showIndex].style.display = 'flex';
+
         dots[showIndex].className += ' crntSlide';
       }
 
