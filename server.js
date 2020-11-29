@@ -105,15 +105,6 @@ app.post('/create-presentation', async function (request, response) {
   }
 });
 
-app.get(
-  '/editMode.html/viewMode/:presentationid',
-  async function (request, response) {
-    //response.sendFile(path.join(__dirname, 'public'), viewMode.html);
-
-    response.status(200).send('ASDASD');
-  }
-);
-
 app.post('/public-list', async function (request, response) {
   let result = null;
   result = await pool.publicPres(request.body);
