@@ -265,7 +265,7 @@
         createNavigationDots(currentPres.data.length);
         container.innerHTML = '';
         let titleDiv = document.createElement('div');
-        titleDiv.innerHTML = `<h6 contenteditable = true>${currentPres.title}</h6>`;
+        titleDiv.innerHTML = `<h6>${currentPres.title}</h6>`;
         titleDiv.classList.add('slide');
         container.appendChild(titleDiv);
         for (let slide of currentPres.data) {
@@ -277,7 +277,7 @@
           let list = '';
 
           if (slide.text) {
-            text = '<h6 contenteditable=true >' + slide.text + '</h6>';
+            text = '<h6>' + slide.text + '</h6>';
           }
           if (slide.img) {
             img = '<img src=' + slide.img + ' >';
@@ -288,7 +288,7 @@
               let listElement = '<li>' + element + '</li>';
               innerOl += listElement;
             }*/
-            list = '<ul contenteditable=true >' + innerOl + '</ul>';
+            list = '<ul>' + innerOl + '</ul>';
           }
           div.classList.add('slide');
           html = `${text}

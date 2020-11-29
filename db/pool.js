@@ -115,7 +115,6 @@ class StorageHandler {
       results = err;
       console.log(`Error on loadUser: ${err}`);
       client.end();
-      return results;
     }
     return results;
   }
