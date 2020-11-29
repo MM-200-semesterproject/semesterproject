@@ -127,7 +127,6 @@ class StorageHandler {
     let results = null;
 
     if (!newPassword.password) {
-      //Check if the new password is a valid password
       results = new Error(
         'The password has to be at least 8 characters long and include at least one capital letter and one number'
       );
@@ -171,7 +170,6 @@ class StorageHandler {
         [userid]
       );
       results = await client.query('DELETE FROM users WHERE id = $1', [userid]);
-      //delete userinfo
 
       client.end();
     } catch (err) {
@@ -267,9 +265,6 @@ class StorageHandler {
       );
 
       results = results.rows[0];
-
-      console.log(`Row created with presentationID: ${results.presentationid}`);
-      console.log('Client will end now!');
       client.end();
     } catch (err) {
       console.log(`Error on createPres: ${err}`);
@@ -388,9 +383,6 @@ class StorageHandler {
       } else {
         new Error('The presentation is not published');
       }
-
-      console.log(results.rows[0]);
-
       client.end();
     } catch (err) {
       console.log(`Error in viewPres: ${err}`);
