@@ -288,11 +288,11 @@
       function loadSlides(num) {
         let slideshow = document.getElementsByClassName('slide');
         let dots = document.getElementsByClassName('dot');
-        if (num > slideshow.length) {
+        if (num >= slideshow.length) {
           showIndex = 0;
         }
         if (num < 0) {
-          showIndex = slideshow.length;
+          showIndex = slideshow.length - 1;
         }
         for (let i = 0; i < slideshow.length; i++) {
           slideshow[i].style.display = 'none';
@@ -300,7 +300,10 @@
         for (let i = 0; i < dots.length; i++) {
           dots[i].className = dots[i].className.replace(' crntSlide', '');
         }
+        slideshow[showIndex];
+
         slideshow[showIndex].style.display = 'flex';
+
         dots[showIndex].className += ' crntSlide';
       }
 
