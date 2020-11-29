@@ -45,9 +45,9 @@
           <span id="dot"></span>
         </div>
       </div>
-      <div class="editMenu">
+      <div class="editMenu" style="justify-content: space-evenly">
         <section class="menuSection">
-          <h2>Current Project:</h2>
+          <h2>Choose public presentation:</h2>
           <button class="selectBtn" id="selectBtn">
             <span id="presTitleDisplay"></span
             ><span class="dropdownArw" id="dropdownArw"></span>
@@ -63,100 +63,28 @@
       </div>
     </div>
 
-    <div class="disableTotalScreen">
-      <div class="alert">
-        <p class="alertText">
-          You are not logged in, please log in to continue your editing.
-        </p>
-        <button id="alertBtn" class="btnGreen alertButton">Log in</button>
-      </div>
-    </div>
-
-    <div class="containerChooseImg">
-      <div class="chooseImg">
-        <img src="svg/x.svg" id="xIcon" />
-
-        <h3>Choose an image:</h3>
-        <section class="chooseimgsection">
-          <img class="imgOpt" src="bilder/shrine.jpg" />
-          <img class="imgOpt" src="bilder/wallOfChina.jpg" />
-          <img class="imgOpt" src="bilder/streetsOfJapan.jpg" />
-        </section>
-        <hr />
-        <section class="chooseimgsection">
-          <h3>or pick one of your own:</h3>
-          <input
-            type="file"
-            name="filename"
-            id="addImg"
-            class="btnGrey"
-            accept="image/png, image/jpeg"
-          />
-          <button id="addImgOk" class="btnGreen addImgOk">Add Image</button>
-        </section>
-      </div>
-    </div>
-
     <script type="text/javascript">
-      //-------- Global variables------------------------
-
-      const shareBtn = document.getElementById('shareBtn');
-      let shareStatus = false;
-
-      let editBtnLink = document.querySelector('#editBtnLink');
+      const editBtnLink = document.querySelector('#editBtnLink');
 
       const container = document.getElementById('container');
-      let showIndex = 0;
-
-      let userInputImgURL;
-      const displayImg = document.getElementById('displayImg');
       const addList = document.getElementById('addList');
       const slideDiv = document.querySelector('#slideDiv');
-      const themeOptions = document.querySelectorAll('.themeOption');
 
-      let presList = document.querySelector('#presList');
+      const presList = document.querySelector('#presList');
       const editMenu = document.querySelector('.editMenu');
-      const header = document.querySelector('.header');
       const presModeBtn = document.querySelector('#presentMode');
       const displayTitle = document.querySelector('#presTitleDisplay');
       const editBtn = document.querySelector('.editIcon');
       const logInUser = document.querySelector('#logInUser');
 
-      const xIcon = document.querySelector('#xIcon');
-
-      //adding image from a popup div
-      let disableDiv = document.querySelector('.containerChooseImg');
-      let imgoptions = document.querySelectorAll('.imgOpt');
-      let addImgBtn = document.querySelector('#addImgOk');
+      let showIndex = 0;
+      let userInputImgURL;
 
       let presentationObject = localStorage.getItem('presentations')
         ? JSON.parse(localStorage.getItem('presentations'))
         : false;
 
       let presentationArray = [];
-
-      //----------OnLoad----------------
-
-      //-------------Eventlisteners----------------------------------------
-      //-------------------------------------------
-
-      xIcon.onclick = () => {
-        disableDiv.style.display = 'none';
-      };
-
-      imgoptions.forEach((item) => {
-        item.onclick = (e) => {
-          imgoptions.forEach((item) => {
-            item.style.border = '2px solid #4e926300';
-          });
-          item.style.border = '2px solid #4e9263';
-          userInputImgURL = item.getAttribute('src');
-          console.log(userInputImgURL); //this works
-        };
-      });
-      //             Tests end here
-
-      //---------------------Functionality Themes----------------
 
       presModeBtn.onclick = () => {
         editMenu.style.display = 'none';
@@ -188,22 +116,6 @@
         }
       });
 
-      themeOptions.forEach((element) => {
-        element.onclick = (e) => {
-          if (e.target.id === 'default') {
-            slideDiv.className = 'slideShowbodyDefault';
-          } else if (e.target.id === 'sakura') {
-            slideDiv.className = 'slideShowbodySakura';
-          } else if (e.target.id === 'geometric') {
-            slideDiv.className = 'slideShowbodyGeometric';
-          }
-        };
-      });
-
-      //------EventListeners END-------------------------------
-      //---------------------Functions--------------------------
-      //-----------------------------------------------------------
-
       function exitFullscreen() {
         editMenu.style.display = 'flex';
         slideDiv.style.margin = 'auto 10% 4%';
@@ -226,7 +138,6 @@
         } else if (presentationObject.arr.length == 0) {
           presentationArray = [{ title: 'empty' }];
           createPresList();
-          console.log(presentationObject.arr.length, 'in line207');
         } else if (presentationObject.arr.length > 0) {
           presentationArray = [];
           for (let i = 0; i < presentationObject.arr.length; i++) {
@@ -235,11 +146,9 @@
           loadPresentationToView(presentationArray[0]);
           createPresList();
         } else {
-          console.log(presentationObject);
         }
       }
 
-      //------funksjoner:show single slide and navigation
       function activeSlide(n) {
         loadSlides((showIndex = n));
       }
@@ -284,10 +193,6 @@
           }
           if (slide.list) {
             let innerOl = slide.list;
-            /* for (let element of slide.list) {
-              let listElement = '<li>' + element + '</li>';
-              innerOl += listElement;
-            }*/
             list = '<ul>' + innerOl + '</ul>';
           }
           div.classList.add('slide');
@@ -323,18 +228,6 @@
         dots[showIndex].className += ' crntSlide';
       }
 
-      function imgFile(e) {
-        let addImg = e.target.files[0];
-        let reader = new FileReader();
-        reader.onload = function (e) {
-          let image = document.createElement('img');
-          image.src = e.target.result;
-          userInputImgURL = e.target.result;
-        };
-
-        reader.readAsDataURL(addImg);
-      }
-
       function createPresList() {
         presList.innerHTML = '';
         if (presentationArray[0].length == 0 || !presentationArray[0].title) {
@@ -365,10 +258,6 @@
         }
       }
 
-      /* const param = window.location.search;
-      let findParam = new URLSearchParams(param);
-      console.log(findParam.get('presId'));*/
-
       window.onload = function () {
         const body = {
           published: 'PUBLIC',
@@ -380,7 +269,7 @@
           },
           body: JSON.stringify(body),
         };
-        //fetch(`/viewMode:${findParam.get('presId')}`, config)
+
         fetch(`/public-list`, config)
           .then((resp) => {
             if (resp.status !== 200) {
