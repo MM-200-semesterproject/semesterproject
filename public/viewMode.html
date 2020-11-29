@@ -16,15 +16,19 @@
   <body>
     <header class="header">
       <img src="svg/logo.svg" alt="More Slides logo" id="headerLogo" />
-      <button class="btnGrey editIcon">
-        <img class="appIcon" src="svg/editIcon.svg" />
-      </button>
-      <button class="selectBtn" id="userIcon">
-        u
-        <div class="selectOptions">
-          <p id="logInUser">Go to Login</p>
-        </div>
-      </button>
+      <div>
+        <button class="btnGrey editIcon" style="display: block">
+          <a href="editMode.html" id="editBtnLink">A</a>
+          <img class="appIcon" src="svg/editIcon.svg" />
+        </button>
+
+        <button class="selectBtn" id="userIcon">
+          u
+          <div class="selectOptions">
+            <p id="logInUser">Go to Login</p>
+          </div>
+        </button>
+      </div>
     </header>
 
     <div class="editWrapper">
@@ -99,6 +103,8 @@
       const shareBtn = document.getElementById('shareBtn');
       let shareStatus = false;
 
+      let editBtnLink = document.querySelector('#editBtnLink');
+
       const container = document.getElementById('container');
       let showIndex = 0;
 
@@ -154,12 +160,17 @@
 
       presModeBtn.onclick = () => {
         editMenu.style.display = 'none';
-        editBtn.style.display = 'block';
+        slideDiv.style.margin = '1% 6% auto';
+        slideDiv.style.width = '88%';
+        slideDiv.style.height = '88%';
+        editBtnLink.style.display = 'none';
       };
 
       editBtn.onclick = () => {
-        editMenu.style.display = 'flex';
-        editBtn.style.display = 'none';
+        if ((editMenu.style.display = 'flex')) {
+          editBtnLink.style.display = 'block';
+        }
+        exitFullscreen();
       };
 
       logInUser.onclick = () => (location.href = 'login.html');
@@ -172,9 +183,8 @@
         }
         if (e.key == 'Escape') {
           if (editMenu.style.display === 'none') {
+            exitFullscreen();
           }
-          editMenu.style.display === 'block';
-          console.log('heisann escape works');
         }
       });
 
@@ -193,6 +203,13 @@
       //------EventListeners END-------------------------------
       //---------------------Functions--------------------------
       //-----------------------------------------------------------
+
+      function exitFullscreen() {
+        editMenu.style.display = 'flex';
+        slideDiv.style.margin = 'auto 10% 4%';
+        slideDiv.style.width = '80%';
+        slideDiv.style.height = '80%';
+      }
 
       function updatePresentationArray() {
         presentationObject = localStorage.getItem('presentations')
